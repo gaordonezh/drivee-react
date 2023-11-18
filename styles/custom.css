@@ -1,0 +1,43 @@
+.main__container {
+  background-image: linear-gradient(var(--token-2c3d7eb7-aec5-4ee1-a7fd-dc72eeddd29e, rgb(24, 24, 24)) 2px, transparent 2px),
+    linear-gradient(var(--token-2c3d7eb7-aec5-4ee1-a7fd-dc72eeddd29e, rgb(24, 24, 24)) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      var(--token-2c3d7eb7-aec5-4ee1-a7fd-dc72eeddd29e, rgb(24, 24, 24)) 1px,
+      var(--token-ba23e750-a8d7-4666-8d73-292e3c805d01, rgb(17, 17, 17)) 1px
+    );
+}
+
+.auth__image {
+  @apply hidden bg-auth flex-1 lg:flex items-center justify-center bg-no-repeat bg-center bg-cover relative z-10;
+}
+.auth__image::after {
+  @apply content-[''] absolute top-0 left-0 right-0 bottom-0 z-[-1];
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.8));
+}
+.hero__image {
+  @apply bg-hero bg-no-repeat bg-right-bottom bg-cover relative;
+}
+.hero__height {
+  height: calc(100vh - 84px);
+  @apply flex flex-col lg:flex-row items-center justify-center relative;
+}
+.booking__filters {
+  @apply relative;
+  border: 1px solid blue;
+}
+.booking__filters--box {
+  @apply absolute bottom-0 right-0 left-0 flex justify-center px-10;
+  border: 1px solid green;
+}
+.booking__filters--card {
+  @apply bg-white max-w-4xl rounded-md shadow-md shadow-gray-500 px-5 py-5;
+  border: 1px solid red;
+}
+.booking__filters--main {
+  @apply flex gap-5 mb-5;
+  border: 1px solid green;
+}
+.booking__filters--others {
+  border: 1px solid green;
+}
