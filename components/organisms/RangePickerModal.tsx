@@ -1,9 +1,9 @@
 import React, { useState, useId } from 'react';
 import DateRangePicker, { RangePickerStateType } from './DateRangePicker';
 import PortalCreator from '../molecules/PortalCreator';
-import Modal from './Modal';
 import Button from '../atoms/Button';
 import moment from 'moment-timezone';
+import Modal from '../molecules/Modal';
 
 interface RangePickerModalProps {
   handleClose: VoidFunction;

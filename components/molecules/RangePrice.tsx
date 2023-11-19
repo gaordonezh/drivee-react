@@ -31,6 +31,7 @@ const RangePrice = ({ priceFrom, priceTo, setFields }: RangePriceProps) => {
           type="number"
           placeholder="S/. Desde"
           min={0}
+          onBlur={validateEnd}
           value={priceFrom}
           onChange={(event) => handleChange('priceFrom', event.target.value)}
         />

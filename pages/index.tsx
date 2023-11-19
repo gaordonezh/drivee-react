@@ -10,7 +10,7 @@ import GeneralInputFilters from '@/components/organisms/GeneralInputFilters';
 
 const Home = () => {
   const router = useRouter();
-  const [fields, setFields] = useState({ location: '', startAt: '', endAt: '', type: 'car' });
+  const [fields, setFields] = useState({ location: '', startAt: '', endAt: '' });
 
   const handleRedirect = () => router.push({ pathname: '/booking', query: objectCleaner(fields) });
 

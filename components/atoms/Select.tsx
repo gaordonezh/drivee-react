@@ -24,6 +24,13 @@ const Select = ({ data, keyToShow, keyToGey, value, setValue }: SelectProps) => 
     setFiltered([...data]);
   }, [data]);
 
+  useEffect(() => {
+    if (!value) return;
+    const finder = data.find((item) => item[keyToGey] === value);
+    if (!finder) return;
+    setSearch(finder[keyToShow]);
+  }, [value]);
+
   const handleSearch = (valueToSearch: string) => {
     const searched = data.filter((item) => item[keyToShow].toLowerCase().includes(valueToSearch.toLowerCase()));
     setFiltered([...searched]);

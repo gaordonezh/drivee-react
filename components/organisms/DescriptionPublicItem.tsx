@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import Button from '../atoms/Button';
-import ChipButton from '../atoms/ChipButton';
+import Chip from '../atoms/Chip';
 import { combineClassnames } from '@/utils/functions';
 import { useRouter } from 'next/router';
 
@@ -35,7 +35,7 @@ const DescriptionPublicItem = ({ className, reverse, title, tags, description, b
         {tags.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             {tags.map((item) => (
-              <ChipButton label={item} key={item} />
+              <Chip label={item} key={item} />
             ))}
           </div>
         ) : null}

@@ -3,7 +3,7 @@ import { BsFacebook, BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 
 import Button from '@/components/atoms/Button';
-import ChipButton from '@/components/atoms/ChipButton';
+import Chip from '@/components/atoms/Chip';
 import Input from '@/components/atoms/Input';
 import Divider from '@/components/protons/Divider';
 
@@ -14,9 +14,9 @@ const Signup = () => {
       <p className="font-light text-sm">Nos encantaría tenerte con nosotros. Únete a nuestros clientes en todo el mundo y mejore su productividad</p>
 
       <div className="flex flex-col gap-2 mt-10">
-        <ChipButton label="Continuar con Facebook" icon={<BsFacebook size={20} color="1877F2" />} onClick={() => signIn('facebook')} />
-        <ChipButton label="Continuar con Google" icon={<FcGoogle size={20} />} onClick={() => signIn('google')} />
-        <ChipButton label="Continuar con GitHub" icon={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} />
+        <Chip label="Continuar con Facebook" iconLeft={<BsFacebook size={20} color="1877F2" />} onClick={() => signIn('facebook')} />
+        <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} />
+        <Chip label="Continuar con GitHub" iconLeft={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} />
       </div>
       <Divider className="my-5" />
       <form autoComplete="on" className="flex flex-col gap-4">

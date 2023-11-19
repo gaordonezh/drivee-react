@@ -24,20 +24,38 @@
 }
 .booking__filters {
   @apply relative;
-  border: 1px solid blue;
 }
 .booking__filters--box {
   @apply absolute bottom-0 right-0 left-0 flex justify-center px-10;
-  border: 1px solid green;
 }
 .booking__filters--card {
-  @apply bg-white max-w-4xl rounded-md shadow-md shadow-gray-500 px-5 py-5;
-  border: 1px solid red;
+  @apply bg-white w-full md:max-w-4xl rounded-md shadow-md shadow-gray-500 px-5 py-5;
 }
 .booking__filters--main {
-  @apply flex gap-5 mb-5;
-  border: 1px solid green;
+  @apply flex flex-col gap-5 mb-5 md:flex-row;
 }
-.booking__filters--others {
-  border: 1px solid green;
+
+/* DRAWER CLASS */
+.drawer__container {
+  @apply fixed z-50 top-0 left-0 right-0 bottom-0;
+  display: flex;
+  flex-direction: row;
+}
+.drawer__item--left {
+  @apply bg-white w-[80%] sm:w-[400px] overflow-auto p-5;
+}
+.drawer__item--right {
+  @apply bg-people-say w-[20%] sm:w-drawer-right;
+}
+
+/* GRID CHIPS */
+.filter__chips--container {
+  @apply flex items-center;
+}
+.filter__chips--action {
+  @apply w-[200px] md:w-[210px];
+}
+.filter__chips--items {
+  @apply flex flex-wrap gap-1 overflow-hidden;
+  width: calc(100% - 200px);
 }
