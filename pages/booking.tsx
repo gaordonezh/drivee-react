@@ -24,7 +24,7 @@ const Booking = () => {
   }, [fields]);
 
   const handleContinue = (code: string) => {
-    const query = { code, location: fields.location, startAt: fields.startAt, endAt: fields.endAt };
+    const query = objectCleaner({ code, location: fields.location, startAt: fields.startAt, endAt: fields.endAt });
     router.push({ pathname: '/details', query });
   };
 

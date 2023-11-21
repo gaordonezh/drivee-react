@@ -19,3 +19,5 @@ export const objectCleaner = (params: any, onlyNull = false) => {
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const combineClassnames = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
+
+export const formatMoney = (value: number) => parseFloat(String(value)).toFixed(2);

@@ -59,3 +59,15 @@
   @apply flex flex-wrap gap-1 overflow-hidden;
   width: calc(100% - 200px);
 }
+
+/* INPUT DATE PICKER */
+.react-datepicker-wrapper {
+  @apply w-full;
+}
+.react-datepicker-picker {
+  @apply w-full border-2 border-gray-200 rounded-md shadow-sm !py-2 !pl-10 outline-none;
+}
+.react-datepicker-picker-icon {
+  height: 25px;
+  width: 25px;
+}

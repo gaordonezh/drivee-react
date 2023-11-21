@@ -123,7 +123,7 @@ const BookingFilters = ({ fields, setFields }: BookingFiltersProps) => {
                 setFields={(newParams) => setFields({ ...fields, ...newParams })}
               />
             ) : null}
-            <Select data={items} value={fields.type} setValue={(type) => setFields({ ...fields, type })} />
+            <Select label="Tipo de vehículo" data={items} value={fields.type} setValue={(type) => setFields({ ...fields, type })} />
             <RangePrice priceFrom={fields.priceFrom} priceTo={fields.priceTo} setFields={(newParams) => setFields({ ...fields, ...newParams })} />
             <Button size="large" className="mt-5" onClick={handleClose}>
               Aplicar filtros

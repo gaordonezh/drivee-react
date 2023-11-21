@@ -10,12 +10,14 @@ interface SelectProps {
   keyToShow: string;
   keyToGey: string;
   value: string;
+  label?: string;
   setValue: (value: string, record: Record<string, any>) => void;
+  placeholder: string;
 }
 
-const iconProps = { className: 'absolute top-9 right-2', size: 20 };
+const iconProps = { className: 'absolute right-2 bottom-3', size: 20 };
 
-const Select = ({ data, keyToShow, keyToGey, value, setValue }: SelectProps) => {
+const Select = ({ data, keyToShow, keyToGey, label, placeholder, value, setValue }: SelectProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState<DataType>([]);
@@ -25,10 +27,9 @@ const Select = ({ data, keyToShow, keyToGey, value, setValue }: SelectProps) => 
   }, [data]);
 
   useEffect(() => {
-    if (!value) return;
     const finder = data.find((item) => item[keyToGey] === value);
-    if (!finder) return;
-    setSearch(finder[keyToShow]);
+    const newSearch = finder?.[keyToShow] || '';
+    setSearch(newSearch);
   }, [value]);
 
   const handleSearch = (valueToSearch: string) => {
@@ -55,12 +56,11 @@ const Select = ({ data, keyToShow, keyToGey, value, setValue }: SelectProps) => 
 
   return (
     <div className="relative w-full">
-      <label className="font-semibold">Tipo de vehículo</label>
-
       <Input
+        label={label}
         autoComplete="off"
         value={search}
-        placeholder="Seleccione"
+        placeholder={placeholder}
         onFocus={() => handleClose(true)}
         onBlur={() => handleClose(false)}
         onChange={(event) => handleChange(event.target.value)}
@@ -69,7 +69,7 @@ const Select = ({ data, keyToShow, keyToGey, value, setValue }: SelectProps) => 
       {open ? <IoIosArrowUp {...iconProps} /> : <IoIosArrowDown {...iconProps} />}
 
       {open && (
-        <div className="absolute bg-white border-none max-h-[200px] overflow-y-auto shadow-md w-full">
+        <div className="absolute bg-white border-none max-h-[200px] overflow-y-auto shadow-md w-full z-10">
           {filtered.length ? (
             filtered.map((item) => (
               <Item key={item[keyToGey]} value={item[keyToShow]} onClick={() => handleSelect(item)} className="cursor-pointer hover:bg-slate-100" />
@@ -87,6 +87,7 @@ Select.defaultProps = {
   data: [],
   keyToShow: 'name',
   keyToGey: '_id',
+  placeholder: 'Seleccione',
 };
 
 export default Select;

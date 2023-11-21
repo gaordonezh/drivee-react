@@ -1,10 +1,7 @@
-import LayoutEnum from '@/enums/layout.enum';
-import { useRouter } from 'next/router';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
+import { useRouter } from 'next/router';
 
-interface ContextProps {
-  layoutKey: LayoutEnum;
-}
+interface ContextProps {}
 
 interface AppProviderProps {
   children: ReactNode;
@@ -17,14 +14,7 @@ export const useAppContext = () => useContext(AppContext);
 const AppProvider = ({ children }: AppProviderProps) => {
   const { asPath } = useRouter();
 
-  const values: ContextProps = useMemo(
-    () => ({
-      layoutKey: ([LayoutEnum.AUTH, LayoutEnum.DASHBOARD].includes(asPath.split('/')[1] as LayoutEnum)
-        ? asPath.split('/')[1]
-        : LayoutEnum.PUBLIC) as LayoutEnum,
-    }),
-    [asPath]
-  );
+  const values: ContextProps = useMemo(() => ({}), [asPath]);
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };

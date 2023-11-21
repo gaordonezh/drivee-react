@@ -1,5 +1,4 @@
-import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
-import es from 'date-fns/locale/es';
+import DatePicker from 'react-datepicker';
 import moment from 'moment-timezone';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 
@@ -10,8 +9,6 @@ interface DateRangePickerProps {
   setDates: (dates: RangePickerStateType) => void;
 }
 
-registerLocale('es', es);
-setDefaultLocale('es');
 const DateRangePicker = ({ dates, setDates }: DateRangePickerProps) => {
   const { width } = useWindowDimensions();
   const [startDate, endDate] = dates;

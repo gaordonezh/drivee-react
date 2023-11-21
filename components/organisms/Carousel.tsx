@@ -1,18 +1,10 @@
 // src/components/Carousel.js
 import useWindowDimensions from '@/hooks/useWindowDimensions';
+import { IMAGE_LIST } from '@/utils/constants';
 import React, { useState } from 'react';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
-const images = [
-  '/images/person1.jpg',
-  '/images/person2.jpg',
-  '/images/person3.jpg',
-  '/images/person4.jpg',
-  '/images/person1.jpg',
-  '/images/person2.jpg',
-  '/images/person3.jpg',
-  '/images/person4.jpg',
-];
+const images = [...IMAGE_LIST, ...IMAGE_LIST];
 
 const Carousel = () => {
   const { width } = useWindowDimensions();

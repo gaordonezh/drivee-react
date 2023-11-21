@@ -5,20 +5,22 @@ import type { AppContext, AppProps } from 'next/app';
 import App from 'next/app';
 import { Provider } from 'react-redux';
 import AppProvider from '@/context';
-import LayoutSwitch from '@/components/templates';
 import store from '@/store';
 import { SessionProvider } from 'next-auth/react';
+import { registerLocale, setDefaultLocale } from 'react-datepicker';
+import es from 'date-fns/locale/es';
 
 interface MyAppProps extends AppProps {}
 
-function MyApp({ Component, ...rest }: MyAppProps) {
+registerLocale('es', es);
+setDefaultLocale('es');
+
+function MyApp({ Component, pageProps, ...contextProps }: MyAppProps) {
   return (
     <Provider store={store}>
       <SessionProvider>
-        <AppProvider>
-          <LayoutSwitch>
-            <Component />
-          </LayoutSwitch>
+        <AppProvider {...contextProps}>
+          <Component {...pageProps} />
         </AppProvider>
       </SessionProvider>
     </Provider>

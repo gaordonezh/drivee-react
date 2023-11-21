@@ -64,7 +64,9 @@
   @apply !bg-gray-300;
 }
 .react-datepicker__day--range-start,
-.react-datepicker__day--range-end {
+.react-datepicker__day--range-end,
+.react-datepicker__day--selected,
+.react-datepicker__time-list-item--selected {
   @apply !bg-gray-900 !text-white;
 }
 .react-datepicker__day--outside-month,

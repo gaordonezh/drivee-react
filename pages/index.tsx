@@ -7,6 +7,9 @@ import Carousel from '@/components/organisms/Carousel';
 import { useRouter } from 'next/router';
 import { objectCleaner } from '@/utils/functions';
 import GeneralInputFilters from '@/components/organisms/GeneralInputFilters';
+import Layout from '@/components/templates';
+import LayoutEnum from '@/enums/layout.enum';
+import { IMAGE_LIST } from '@/utils/constants';
 
 const Home = () => {
   const router = useRouter();
@@ -15,7 +18,7 @@ const Home = () => {
   const handleRedirect = () => router.push({ pathname: '/booking', query: objectCleaner(fields) });
 
   return (
-    <>
+    <Layout layout={LayoutEnum.PUBLIC}>
       <div className="hero__image">
         <div className="hero__height">
           <Container className="w-full">
@@ -125,7 +128,7 @@ const Home = () => {
             <h3 className="text-xl md:text-3xl lg:text-5xl font-bold">Lo que dicen nuestros clientes...</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-20">
-            {['/images/person1.jpg', '/images/person2.jpg', '/images/person3.jpg', '/images/person4.jpg'].map((item) => (
+            {IMAGE_LIST.map((item) => (
               <div
                 key={item}
                 className="rounded-xl shadow-md shadow-gray-500 bg-no-repeat bg-cover bg-top sm:bg-center overflow-hidden flex flex-col items-end justify-end"
@@ -150,7 +153,7 @@ const Home = () => {
           </div>
         </Container>
       </div>
-    </>
+    </Layout>
   );
 };
 
