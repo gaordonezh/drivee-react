@@ -1,76 +1,42 @@
 import React, { useState } from 'react';
-import Input from '../atoms/Input';
-import DatePicker from './DatePicker';
-import TimePicker from './TimePicker';
-import moment, { Moment } from 'moment-timezone';
-import Chip from '../atoms/Chip';
-import Button from '../atoms/Button';
-import { formatMoney } from '@/utils/functions';
+import Step1 from './checkout/Step1';
+import Step2 from './checkout/Step2';
+import { Moment } from 'moment-timezone';
+import Step3 from './checkout/Step3';
+import Stepper from '../molecules/Stepper';
 
-type FieldsStateType = {
+interface DetailsFormProps {
+  price: number;
+}
+
+export type FieldsStateType = {
+  location: string;
   dateStart: null | Moment;
   timeStart: null | Moment;
   dateEnd: null | Moment;
   timeEnd: null | Moment;
 };
-
-interface DetailsFormProps {
-  price: { value: number; kind: string };
-}
+export type RangeStateType = {
+  quantity: number;
+  total: number;
+};
 
 const DetailsForm = ({ price }: DetailsFormProps) => {
-  const [fields, setFields] = useState<FieldsStateType>({ dateStart: null, timeStart: null, dateEnd: null, timeEnd: null });
-  const [variant, setVariant] = useState({ quantity: 0, total: 0 });
-  const plural = variant.quantity > 1 ? 's' : '';
+  const [fields, setFields] = useState<FieldsStateType>({ location: '', dateStart: null, timeStart: null, dateEnd: null, timeEnd: null });
+  const [range, setRange] = useState<RangeStateType>({ quantity: 0, total: 0 });
+  const [step, setStep] = useState<0 | 1 | 2>(1);
 
-  const handleChange = (newParams: Record<string, any>) => {
-    const combined = { ...fields, ...newParams };
-    setFields(combined);
-    console.log(combined);
+  const steps = {
+    0: <Step1 fields={fields} setFields={setFields} range={range} setRange={setRange} price={price} handleNext={() => setStep(1)} />,
+    1: <Step2 />,
+    2: <Step3 />,
   };
 
-  const kind = price.kind === 'day' ? `día${plural}` : `hora${plural}`;
-
   return (
-    <form className="flex flex-col gap-5">
-      <Input label="Ubicación" name="location" placeholder="Ej.: Lima" />
-      <div>
-        <p className="font-semibold">Fecha y hora de recojo</p>
-        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3">
-          <DatePicker
-            selected={fields.dateStart ? moment(fields.dateStart).toDate() : null}
-            onChange={(update) => handleChange({ dateStart: moment(update) })}
-            minDate={moment().toDate()}
-            maxDate={moment().add(2, 'months').subtract(1, 'day').toDate()}
-          />
-          <TimePicker time={fields.timeStart} setTime={(timeStart) => handleChange({ timeStart })} />
-        </div>
-      </div>
-      <div>
-        <p className="font-semibold">Fecha y hora de devolución</p>
-        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3">
-          <DatePicker
-            selected={fields.dateEnd ? moment(fields.dateEnd).toDate() : null}
-            onChange={(update) => handleChange({ dateEnd: moment(update) })}
-            minDate={fields.dateStart ? moment(fields.dateStart).toDate() : null}
-            maxDate={fields.dateStart ? moment(fields.dateStart).add(2, 'weeks').toDate() : null}
-          />
-          <TimePicker time={fields.timeEnd} setTime={(timeEnd) => handleChange({ timeEnd })} />
-        </div>
-      </div>
-      <div>
-        <p className="font-semibold mb-2">Duración</p>
-        <p className="text-sm text-slate-500">{`— S/ ${formatMoney(price.value)} por ${kind}`}</p>
-        <p className="text-sm text-slate-500">— {`${variant.quantity} ${kind}`}</p>
-      </div>
-      <div className="flex flex-row justify-between items-center">
-        <p className="font-semibold text-slate-700">Total</p>
-        <Chip label={`S/ ${formatMoney(variant.total)}`} />
-      </div>
-      <Button fullWidth size="large" className="mt-5">
-        RESERVAR AHORA
-      </Button>
-    </form>
+    <div className="">
+      <Stepper steps={Array.from(Array(step + 1).keys())} />
+      {steps[step]}
+    </div>
   );
 };
 

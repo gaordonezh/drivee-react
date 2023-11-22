@@ -5,11 +5,12 @@ import { CiTimer } from 'react-icons/ci';
 
 interface TimePickerProps {
   label?: string;
+  minTime?: Date;
   time: null | Moment;
   setTime: (time: null | Moment) => void;
 }
 
-const TimePicker = ({ label, time, setTime }: TimePickerProps) => (
+const TimePicker = ({ label, time, minTime, setTime }: TimePickerProps) => (
   <div className="w-full">
     {label && <label className="font-semibold">{label}</label>}
     <ReactDatePicker
@@ -25,6 +26,8 @@ const TimePicker = ({ label, time, setTime }: TimePickerProps) => (
       icon={(<CiTimer />) as any}
       selected={time ? moment(time).toDate() : null}
       onChange={(update) => setTime(moment(update))}
+      minTime={minTime}
+      maxTime={minTime ? moment({ hours: 23, minutes: 59, seconds: 59 }).toDate() : undefined}
     />
   </div>
 );

@@ -15,7 +15,7 @@ interface DetailsPageProps {
   id: string;
   image: string;
   images: Array<string>;
-  price: { value: number; kind: string };
+  price: number;
 }
 
 const DetailsPage = ({ name, description, details, id, images, image, price }: DetailsPageProps) => {
@@ -53,7 +53,7 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
               ))}
             </div>
           </div>
-          <div className="w-full md:w-[50%] lg:w-[40%] rounded-xl bg-slate-200 p-5 xl:p-10">
+          <div className="w-full md:w-[50%] lg:w-[40%] rounded-xl bg-white p-5 xl:p-10 border border-gray-300">
             <DetailsForm price={price} />
           </div>
         </div>
@@ -82,10 +82,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const data = {
     id: code,
-    price: {
-      value: 36.65,
-      kind: 'day',
-    },
+    price: 36.65,
     name: 'BMW M2 2020',
     description:
       'EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado.',
