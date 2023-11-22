@@ -19,7 +19,7 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    signIn({ account, profile }) {
+    signIn({ account, profile }: any) {
       if (!account || !profile) return false;
 
       if (account.provider === 'google') {
