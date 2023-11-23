@@ -24,7 +24,7 @@ export type RangeStateType = {
 const DetailsForm = ({ price }: DetailsFormProps) => {
   const [fields, setFields] = useState<FieldsStateType>({ location: '', dateStart: null, timeStart: null, dateEnd: null, timeEnd: null });
   const [range, setRange] = useState<RangeStateType>({ quantity: 0, total: 0 });
-  const [step, setStep] = useState<0 | 1 | 2>(1);
+  const [step, setStep] = useState<0 | 1 | 2>(0);
 
   const steps = {
     0: <Step1 fields={fields} setFields={setFields} range={range} setRange={setRange} price={price} handleNext={() => setStep(1)} />,

@@ -9,9 +9,21 @@ import { combineClassnames } from '@/utils/functions';
 const HeaderPublic = () => {
   const { push } = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [fixed, setFixed] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) setFixed(true);
+      else setFixed(false);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <header className="bg-black px-10 py-5">
+    <header className={combineClassnames('bg-black px-10 py-5', fixed ? 'sticky top-0 z-20' : '')}>
       <Container>
         <nav className="flex gap-5">
           <h1 className="font-black text-3xl text-white cursor-pointer" onClick={() => push('/')}>

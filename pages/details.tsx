@@ -7,6 +7,7 @@ import { IMAGE_LIST } from '@/utils/constants';
 import Fab from '@/components/atoms/Fab';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 import DetailsForm from '@/components/organisms/DetailsForm';
+import Comments from '@/components/organisms/comments/Comments';
 
 interface DetailsPageProps {
   name: string;
@@ -31,8 +32,11 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
 
   return (
     <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={image} key={id}>
-      <Container className="flex flex-col gap-10 py-5 px-10 md:gap-20 md:py-10 md:px-20 ">
-        <h1 className="font-bold text-2xl md:text-4xl">{name}</h1>
+      <Container className="flex flex-col gap-10 py-5 px-10 md:gap-20 md:py-10 md:px-20">
+        <div className="flex flex-col gap-3">
+          <h1 className="font-bold text-2xl md:text-4xl">{name}</h1>
+          <p className="text-gray-700">{description}</p>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-5">
           <div className="w-full md:w-[50%] lg:w-[60%] flex flex-col gap-5">
@@ -58,19 +62,19 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
           </div>
         </div>
 
-        <p className="text-gray-700">{description}</p>
-
         <div>
           <p className="font-bold text-2xl mb-5">Especificaciones</p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-16 gap-y-2">
+          <ul className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-2">
             {details.map((item) => (
-              <li key={item.key} className="flex justify-between border-b">
-                <p className="text-gray-500">{item.key}</p>
-                <p className="text-gray-500">{item.value}</p>
+              <li key={item.key} className="border-b">
+                <p className="text-gray-600 text-sm">{item.key}</p>
+                <p className="text-gray-400 text-xs">{item.value}</p>
               </li>
             ))}
           </ul>
         </div>
+
+        <Comments />
       </Container>
     </Layout>
   );
@@ -95,6 +99,8 @@ export async function getServerSideProps(context: NextPageContext) {
       { key: 'Año', value: '2020' },
       { key: 'Combustible', value: 'Híbrido' },
       { key: 'Caballos de fuerza', value: '400' },
+      { key: 'Dimensiones', value: '2mt. ancho x 4mt. largo x 1.5mt. altura' },
+      { key: 'Llantas', value: '4' },
     ],
   };
 

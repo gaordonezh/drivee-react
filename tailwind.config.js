@@ -14,6 +14,7 @@ module.exports = {
         auth: 'url(/images/auth-bg.jpg)',
         hero: 'url(/images/hero-bg.jpg)',
         booking: 'url(/images/booking-bg.jpg)',
+        'dashboard-hero': 'url(/images/dashboard-hero.jpg)',
       },
       backgroundColor: {
         'people-say': 'rgba(0, 0, 0, 0.5)',

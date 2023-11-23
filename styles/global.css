@@ -6,6 +6,28 @@
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
 }
+body::-webkit-scrollbar-button {
+  @apply bg-black cursor-pointer;
+}
+body::-webkit-scrollbar {
+  @apply h-[5px] w-[5px] absolute;
+}
+body::-webkit-scrollbar-thumb {
+  @apply bg-black;
+}
+body::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600 shadow shadow-gray-500;
+}
+body::-webkit-scrollbar-thumb:active {
+  @apply bg-gray-700;
+}
+body::-webkit-scrollbar-track {
+  @apply bg-gray-300;
+}
+body::-webkit-scrollbar-track:hover,
+body::-webkit-scrollbar-track:active {
+  @apply bg-gray-400;
+}
 
 @import url(./custom.css);
 @import url(./date-picker.css);
