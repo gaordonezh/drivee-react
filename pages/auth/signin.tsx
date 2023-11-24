@@ -9,9 +9,12 @@ import Input from '@/components/atoms/Input';
 import Divider from '@/components/protons/Divider';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
+import { useRouter } from 'next/router';
 
 const Signin = () => {
   // const res2 = useSession();
+
+  const router = useRouter();
 
   useEffect(() => {
     getInitialData();
@@ -36,7 +39,7 @@ const Signin = () => {
         <form autoComplete="on" className="flex flex-col gap-4">
           <Input label="Usuario" type="text" autoComplete="user" required placeholder="Ingresa tu usuario" />
           <Input label="Contraseña" type="password" autoComplete="new-password" required placeholder="Ingresa tu contraseña" />
-          <Button fullWidth size="large" type="submit" className="mt-4">
+          <Button fullWidth size="large" type="submit" className="mt-4" onClick={() => router.push('/dashboard')}>
             Iniciar sesión
           </Button>
         </form>
