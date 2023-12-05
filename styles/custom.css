@@ -71,3 +71,16 @@
   height: 25px;
   width: 25px;
 }
+
+/* DASHBOARD SCROLL - START */
+.dashboard-dynamic-container-desktop {
+  height: calc((100vh) - 340px);
+  overflow: auto;
+  flex: 1;
+}
+
+.dashboard-dynamic-container-mobile {
+  height: calc((100vh) - 200px);
+  overflow: auto;
+}
+/* DASHBOARD SCROLL - END */
