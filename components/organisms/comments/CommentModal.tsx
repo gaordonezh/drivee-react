@@ -4,7 +4,7 @@ import PortalCreator from '@/components/molecules/PortalCreator';
 import { IoStar } from 'react-icons/io5';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
-import Textarea from '@/components/atoms/TextArea';
+import Textarea from '@/components/atoms/Textarea';
 
 interface CommentModalProps {
   handleClose: VoidFunction;
