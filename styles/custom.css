@@ -39,7 +39,12 @@
 .drawer__container {
   @apply fixed z-50 top-0 left-0 right-0 bottom-0;
   display: flex;
+}
+.drawer__container.left {
   flex-direction: row;
+}
+.drawer__container.right {
+  flex-direction: row-reverse;
 }
 .drawer__item--left {
   @apply bg-white w-[80%] sm:w-[400px] overflow-auto p-5;

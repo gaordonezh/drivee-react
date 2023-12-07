@@ -6,7 +6,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = ({ children, className, ...rest }: CardProps) => (
-  <div className={combineClassnames('border-2 border-gray-300 p-2 rounded-md md:p-3 lg:p-4', className)} {...rest}>
+  <div className={combineClassnames('border border-gray-300 p-2 rounded-md md:p-3 lg:p-4', className)} {...rest}>
     {children}
   </div>
 );

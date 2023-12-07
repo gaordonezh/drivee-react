@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import moment, { Moment } from 'moment-timezone';
 import { formatMoney, mergeDateTime } from '@/utils/functions';
 import { FaLongArrowAltRight } from 'react-icons/fa';
@@ -20,6 +20,10 @@ interface Step1Props {
 
 const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1Props) => {
   const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    handleChange({});
+  }, []);
 
   const handleChange = (newParams: Record<string, any>) => {
     const combined = { ...fields, ...newParams };

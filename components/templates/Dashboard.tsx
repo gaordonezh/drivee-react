@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
+import { IoBackspace } from 'react-icons/io5';
 
 interface PrivateLayoutProps {
   children: React.ReactNode;
@@ -34,18 +35,49 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                 <p className="font-semibold text-sm text-gray-500">gaordonezh@gmail.com</p>
               </div>
               <ul className="flex flex-row lg:flex-col gap-2 lg:w-full">
-                <Item label={isSmall ? '' : 'Principal'} path="/dashboard" current={pathname} icon={<MdHome size={20} />} />
-                <Item label={isSmall ? '' : 'Rentas'} path="/dashboard/orders" current={pathname} icon={<FaListAlt size={18} />} />
-                <Item label={isSmall ? '' : 'Automóviles'} path="/dashboard/cars" current={pathname} icon={<FaCar size={20} />} />
-                <Item label={isSmall ? '' : 'Perfil'} path="/dashboard/profile" current={pathname} icon={<FaUserAlt size={18} />} />
-                <Item label={isSmall ? '' : 'Salir'} path="/auth/logout" current={pathname} icon={<MdLogout size={20} />} />
+                <Item
+                  label={isSmall ? '' : 'Principal'}
+                  path="/dashboard"
+                  current={pathname}
+                  icon={<MdHome size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
+                  label={isSmall ? '' : 'Rentas'}
+                  path="/dashboard/orders"
+                  current={pathname}
+                  icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
+                  label={isSmall ? '' : 'Automóviles'}
+                  path="/dashboard/cars"
+                  current={pathname}
+                  icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
+                  label={isSmall ? '' : 'Perfil'}
+                  path="/dashboard/profile"
+                  current={pathname}
+                  icon={<FaUserAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
+                  label={isSmall ? '' : 'Vista pública'}
+                  path="/"
+                  current={pathname}
+                  icon={<IoBackspace size={25} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
+                  label={isSmall ? '' : 'Salir'}
+                  path="/auth/logout"
+                  current={pathname}
+                  icon={<MdLogout size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
               </ul>
             </Card>
           </div>
           <div className="flex-1">
-            <Card className={combineClassnames(isSmall ? 'dashboard-dynamic-container-mobile' : 'dashboard-dynamic-container-desktop')}>
+            <div className={combineClassnames(isSmall ? 'dashboard-dynamic-container-mobile' : 'dashboard-dynamic-container-desktop')}>
               {children}
-            </Card>
+            </div>
           </div>
         </div>
       </Container>

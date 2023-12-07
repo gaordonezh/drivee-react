@@ -9,11 +9,14 @@ import store from '@/store';
 import { SessionProvider } from 'next-auth/react';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import es from 'date-fns/locale/es';
+import moment from "moment-timezone";
+import "moment/locale/es";
 
 interface MyAppProps extends AppProps {}
 
 registerLocale('es', es);
 setDefaultLocale('es');
+moment.tz.setDefault("America/Lima");
 
 function MyApp({ Component, pageProps, ...contextProps }: MyAppProps) {
   return (

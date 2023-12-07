@@ -28,8 +28,8 @@ const DetailsForm = ({ price }: DetailsFormProps) => {
 
   const steps = {
     0: <Step1 fields={fields} setFields={setFields} range={range} setRange={setRange} price={price} handleNext={() => setStep(1)} />,
-    1: <Step2 />,
-    2: <Step3 />,
+    1: <Step2 fields={{ ...fields, ...range }} handleNext={() => setStep(2)} handleBack={() => setStep(0)} />,
+    2: <Step3 fields={{ ...fields, ...range }} handleBack={() => setStep(1)} />,
   };
 
   return (
