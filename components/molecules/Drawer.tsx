@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 export interface DrawerProps {
   children: ReactNode;
   onClose: VoidFunction;
-  position: 'left' | 'right';
+  position?: 'left' | 'right';
 }
 
 const Drawer = ({ children, onClose, position }: DrawerProps) => (

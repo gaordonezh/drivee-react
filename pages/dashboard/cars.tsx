@@ -13,90 +13,13 @@ import { ModalStateEnum } from '@/interfaces/global.enum';
 import Input from '@/components/atoms/Input';
 import List from '@/components/molecules/List';
 import Button from '@/components/atoms/Button';
-import GoogleMapReact from 'google-map-react';
-
-const getGeoAddress: any = (location: any) => {
-  return new google.maps.Geocoder().geocode(
-    {
-      location,
-    },
-    (predictions) => (predictions?.length > 0 ? predictions[0] : [])
-  );
-};
+import GoogleMaps from '@/components/organisms/GoogleMaps';
 
 const Cars = () => {
   const [modal, setModal] = useState<{ mode: null | ModalStateEnum; data: null }>({ mode: null, data: null });
   const [files, setFiles] = useState<Array<File>>([]);
   const [details, setDetails] = useState<Array<{ title: string; value: string }>>([]);
   const [values, setValues] = useState<{ title: string; value: string }>({ title: '', value: '' });
-  const [currentLocation, setCurrentLocation] = useState({ lat: 4.626233, lng: -74.080653 });
-  const [currentZoom, setCurrentZoom] = useState(13);
-
-  const loadMap = (map: any, maps: any) => {
-    const myRangeCircle = new google.maps.Circle({
-      map,
-      strokeColor: '#ec0091',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#ec0091',
-      fillOpacity: 0.35,
-      radius: 0,
-      center: { lat: 0, lng: 0 },
-    });
-
-    const myMarker = new maps.Marker({
-      map,
-      draggable: true,
-      icon: '/icons/marker.svg',
-      position: { lat: 0, lng: 0 },
-    });
-
-    myMarker.addListener('dragend', async () => {
-      myRangeCircle?.setCenter(myMarker.getPosition());
-
-      const locationAddress = await getGeoAddress(myMarker.getPosition());
-      console.log(1, {
-        commercialAddress: locationAddress?.results[0]?.formatted_address ?? '',
-        autocomplete: locationAddress?.results[0]?.formatted_address ?? '',
-        location: JSON.stringify({
-          lat: myMarker.getPosition().lat(),
-          lng: myMarker.getPosition().lng(),
-        }),
-      });
-      setCurrentLocation({
-        lat: myMarker.getPosition().lat(),
-        lng: myMarker.getPosition().lng(),
-      });
-    });
-    map.addListener('click', async (e) => {
-      myMarker?.setPosition(e.latLng);
-      myRangeCircle?.setCenter(e.latLng);
-
-      const locationAddress = await getGeoAddress(e.latLng);
-      console.log(2, {
-        commercialAddress: locationAddress?.results[0]?.formatted_address ?? '',
-        autocomplete: locationAddress?.results[0]?.formatted_address ?? '',
-        location: JSON.stringify({
-          lat: e.latLng.lat(),
-          lng: e.latLng.lng(),
-        }),
-      });
-      setCurrentLocation({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      });
-    });
-    map.addListener('zoom_changed', () => setCurrentZoom(map.getZoom()));
-    // if (form.getFieldValue('location')) {
-    //   myMarker?.setPosition(JSON.parse(form.getFieldValue('location')));
-    //   myRangeCircle?.setCenter(JSON.parse(form.getFieldValue('location')));
-    //   myRangeCircle?.setRadius(form.getFieldValue('attendanceRatio') || 0);
-    //   setCurrentLocation(JSON.parse(form.getFieldValue('location')));
-    //   setUpdateZoom(true);
-    // }
-    // setMarker(myMarker);
-    // setRangeCircle(myRangeCircle);
-  };
 
   const handleClose = () => setModal({ mode: null, data: null });
   const handleClear = () => setValues({ title: '', value: '' });
@@ -163,12 +86,7 @@ const Cars = () => {
             <Input label="Precio por horas S/ (*)" type="number" placeholder="Ej.: 12.50" />
             <Input label="Ubicación" placeholder="Ej.: Av. Los heroes 434" />
             <div className="border" style={{ height: '300px', width: '100%', borderRadius: '10px', overflow: 'hidden' }}>
-              <GoogleMapReact
-                yesIWantToUseGoogleMapApiInternals
-                center={currentLocation}
-                zoom={currentZoom}
-                onGoogleApiLoaded={({ map, maps }) => loadMap(map, maps)}
-              />
+              <GoogleMaps />
             </div>
             <div>
               <p className="font-semibold">Adjunte imágenes de tu coche (*)</p>
