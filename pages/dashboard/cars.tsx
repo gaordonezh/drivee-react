@@ -14,6 +14,9 @@ import Input from '@/components/atoms/Input';
 import List from '@/components/molecules/List';
 import Button from '@/components/atoms/Button';
 import GoogleMaps from '@/components/organisms/GoogleMaps';
+import { IoDocumentTextSharp } from 'react-icons/io5';
+import Modal from '@/components/molecules/Modal';
+import Spinner from '@/components/molecules/Spinner';
 
 const Cars = () => {
   const [modal, setModal] = useState<{ mode: null | ModalStateEnum; data: null }>({ mode: null, data: null });
@@ -62,13 +65,18 @@ const Cars = () => {
                   onClick={() => setModal({ mode: ModalStateEnum.BOX, data: null })}
                 />
                 <Fab icon={<MdCarCrash size={20} />} size="large" title="Desactivar vehículo" />
-                {/* <Fab icon={<CgDetailsMore size={20} />} size="large" title="Ver historial" /> */}
+                <Fab
+                  icon={<IoDocumentTextSharp size={20} />}
+                  size="large"
+                  title="Documentos"
+                  onClick={() => setModal({ mode: ModalStateEnum.DETAIL, data: null })}
+                />
               </div>
             </div>
           </Card>
         ))}
         <Card
-          className="cursor-pointer flex items-center justify-center hover:opacity-75 hover:shadow-lg"
+          className="cursor-pointer flex items-center justify-center hover:opacity-75 hover:shadow-lg min-h-[150px]"
           onClick={() => setModal({ mode: ModalStateEnum.BOX, data: null })}
         >
           <IoMdAdd size={50} className="hover:scale-105 hover:transition-all" />
@@ -76,7 +84,7 @@ const Cars = () => {
       </div>
 
       {modal.mode === ModalStateEnum.BOX && (
-        <Drawer position="right" onClose={handleClose}>
+        <Drawer position="right">
           <div className="flex flex-col gap-5">
             <div>
               <h1 className="font-bold text-xl">AGREGAR VEHÍCULO</h1>
@@ -86,12 +94,12 @@ const Cars = () => {
             <Input label="Precio por horas S/ (*)" type="number" placeholder="Ej.: 12.50" />
             <Input label="Ubicación" placeholder="Ej.: Av. Los heroes 434" />
             <div className="border" style={{ height: '300px', width: '100%', borderRadius: '10px', overflow: 'hidden' }}>
-              <GoogleMaps />
+              {/* <GoogleMaps /> */}
             </div>
             <div>
               <p className="font-semibold">Adjunte imágenes de tu coche (*)</p>
               <p className="text-gray-500 text-sm">Tiene que adjuntar 4 imágenes como mínimo.</p>
-              <CustomDropZone files={files} setFiles={setFiles} max={7} maxFiles={5} />
+              <CustomDropZone files={files} setFiles={setFiles} max={10} />
             </div>
             <div className="">
               <List
@@ -125,8 +133,36 @@ const Cars = () => {
                 </form>
               </Card>
             </div>
+            <div className="flex flex-row gap-5 justify-end mt-5">
+              <Button size="large" variant="white" onClick={handleClose}>
+                Cancelar
+              </Button>
+              <Button size="large">Guardar</Button>
+            </div>
           </div>
         </Drawer>
+      )}
+
+      {modal.mode === ModalStateEnum.DETAIL && (
+        <Modal>
+          <Spinner loading={false} text="..:: CARGANDO ::..">
+            <div className="max-w-2xl bg-gray-200 p-5 flex flex-col gap-5 text-left">
+              <h1 className="font-bold text-lg">Adjuntar documentos de vehículo</h1>
+              {['Documento de circulación', 'SOAT', 'Permiso de conducir', 'Certificado de propiedad'].map((item) => (
+                <div className="bg-white p-5" key={item}>
+                  <p className="text-sm font-semibold text-gray-600 mb-1">{item}</p>
+                  <CustomDropZone files={files} setFiles={setFiles} max={1} />
+                </div>
+              ))}
+              <div className="flex flex-row gap-5 justify-end">
+                <Button size="large" variant="white" onClick={handleClose}>
+                  Cancelar
+                </Button>
+                <Button size="large">Guardar</Button>
+              </div>
+            </div>
+          </Spinner>
+        </Modal>
       )}
     </Layout>
   );

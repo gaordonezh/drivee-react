@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 export interface DrawerProps {
   children: ReactNode;
-  onClose: VoidFunction;
+  onClose?: VoidFunction;
   position?: 'left' | 'right';
 }
 

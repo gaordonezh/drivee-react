@@ -26,7 +26,7 @@ const Button = (props: ButtonProps) => {
     sizeClasses[size],
     variantClasses[variant],
     rest.disabled ? 'opacity-10 cursor-not-allowed pointer-events-none' : 'opacity-100',
-    'rounded font-semibold leading-6 hover:opacity-90 flex flex-row justify-center items-center gap-3',
+    'rounded font-semibold leading-6 hover:opacity-80 flex flex-row justify-center items-center gap-3',
     fullWidth ? 'w-full' : '',
     className
   );

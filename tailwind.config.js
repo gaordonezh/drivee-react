@@ -20,7 +20,7 @@ module.exports = {
         'people-say': 'rgba(0, 0, 0, 0.5)',
       },
       width: {
-        'drawer-right': 'calc(100vw - 400px)',
+        'drawer-right': 'calc(100vw - 500px)',
       },
     },
   },

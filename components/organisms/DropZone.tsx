@@ -2,14 +2,16 @@ import { useCallback, useState } from 'react';
 import { DropEvent, DropzoneProps, FileRejection, useDropzone } from 'react-dropzone';
 import Button from '../atoms/Button';
 import { IoClose } from 'react-icons/io5';
+import { combineClassnames } from '@/utils/functions';
 
 export interface CustomDropZoneProps extends DropzoneProps {
   files: Array<File>;
   setFiles: (files: Array<File>) => void;
   max?: number;
+  className?: string;
 }
 
-const CustomDropZone = ({ files, setFiles, max = 2, ...props }: CustomDropZoneProps) => {
+const CustomDropZone = ({ files, setFiles, max = 2, className, ...props }: CustomDropZoneProps) => {
   const staticSize = 3;
   const [sizeFiles, setSizeFiles] = useState(3);
   const [message, setMessage] = useState('');
@@ -45,7 +47,10 @@ const CustomDropZone = ({ files, setFiles, max = 2, ...props }: CustomDropZonePr
 
   return (
     <div style={{ position: 'relative' }}>
-      <div className="border border-dashed border-gray-300 bg-gray-100 cursor-pointer w-full px-5 h-[50px]" {...getRootProps()}>
+      <div
+        className={combineClassnames('border border-dashed border-gray-300 bg-gray-100 cursor-pointer w-full px-5 h-[50px]', className)}
+        {...getRootProps()}
+      >
         <div className="flex flex-col items-center justify-center h-full">
           <input {...getInputProps()} />
           <p className="text-xs text-center text-gray-400">Arrastre y suelte archivos aquí, o haga clic para seleccionar tus archivos.</p>

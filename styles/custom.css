@@ -47,7 +47,7 @@
   flex-direction: row-reverse;
 }
 .drawer__item--left {
-  @apply bg-white w-[80%] sm:w-[400px] overflow-auto p-5;
+  @apply bg-white w-[80%] sm:w-[500px] overflow-auto p-5;
 }
 .drawer__item--right {
   @apply bg-people-say w-[20%] sm:w-drawer-right;
@@ -89,3 +89,19 @@
   overflow: auto;
 }
 /* DASHBOARD SCROLL - END */
+
+/* LOADER - START */
+.loader_content {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 10px solid;
+  border-color: #000 #fff;
+  animation: l1 1s infinite;
+}
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
+/* LOADER - END */
