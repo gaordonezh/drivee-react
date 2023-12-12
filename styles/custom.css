@@ -20,6 +20,7 @@
 }
 .hero__height {
   height: calc(100vh - 84px);
+  max-height: 991px;
   @apply flex flex-col lg:flex-row items-center justify-center relative;
 }
 .booking__filters {
@@ -79,13 +80,13 @@
 
 /* DASHBOARD SCROLL - START */
 .dashboard-dynamic-container-desktop {
-  height: calc((100vh) - 340px);
+  height: calc((100vh) - 425px);
   overflow: auto;
   flex: 1;
 }
 
 .dashboard-dynamic-container-mobile {
-  height: calc((100vh) - 200px);
+  height: calc((100vh) - 265px);
   overflow: auto;
 }
 /* DASHBOARD SCROLL - END */
