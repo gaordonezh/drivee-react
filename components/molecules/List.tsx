@@ -6,6 +6,7 @@ interface ListProps {
   title?: string;
   subtitle?: string;
   data: Array<ListItemProps>;
+  action?: React.ReactNode;
 }
 
 interface ListItemProps {
@@ -15,12 +16,15 @@ interface ListItemProps {
   iconNode?: React.ReactNode;
 }
 
-const List = ({ title, subtitle, data }: ListProps) => (
+const List = ({ title, subtitle, data, action }: ListProps) => (
   <div className="w-full">
     {title || subtitle ? (
-      <div className="px-4 sm:px-0">
-        {title && <h3 className="text-base font-semibold leading-7 text-gray-900">{title}</h3>}
-        {subtitle && <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{subtitle}</p>}
+      <div className="px-4 sm:px-0 flex flex-row justify-between">
+        <div>
+          {title && <h3 className="text-base font-semibold leading-7 text-gray-900">{title}</h3>}
+          {subtitle && <p className="max-w-2xl text-sm leading-6 text-gray-500">{subtitle}</p>}
+        </div>
+        {action}
       </div>
     ) : null}
     <div className="mt-6 border-t border-gray-100">

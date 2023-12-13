@@ -1,9 +1,11 @@
+import React from 'react';
 import Card from '@/components/atoms/Card';
+import Fab from '@/components/atoms/Fab';
 import List from '@/components/molecules/List';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import { IMAGE_LIST } from '@/utils/constants';
-import React from 'react';
+import { MdEdit } from 'react-icons/md';
 
 const Profile = () => {
   return (
@@ -16,6 +18,7 @@ const Profile = () => {
           />
           <List
             title="Datos personales"
+            action={<Fab icon={<MdEdit size={20} />} size="medium" />}
             data={[
               { title: 'Nombres', value: 'Aldo' },
               { title: 'Apellidos', value: 'Ordoñez Hilario' },
