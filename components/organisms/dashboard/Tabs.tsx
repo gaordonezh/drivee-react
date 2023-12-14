@@ -4,7 +4,7 @@ import { combineClassnames } from '@/utils/functions';
 interface TabsProps {
   labels: Array<string>;
   active: string;
-  onChange: (tab: string) => void;
+  onChange?: (tab: string) => void;
 }
 
 const Tabs = ({ labels, active, onChange }: TabsProps) => (
@@ -20,7 +20,7 @@ const Tabs = ({ labels, active, onChange }: TabsProps) => (
               : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300 bg-gray-100 cursor-pointer'
           )}
           key={item}
-          onClick={() => (isActive ? undefined : onChange(item))}
+          onClick={() => (isActive ? undefined : onChange?.(item))}
         >
           {item}
         </li>
