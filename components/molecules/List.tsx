@@ -11,7 +11,7 @@ interface ListProps {
 
 interface ListItemProps {
   title: string;
-  value: string;
+  value: React.ReactNode;
   bold?: boolean;
   iconNode?: React.ReactNode;
 }
@@ -44,9 +44,9 @@ const Item = ({ title, value, bold, iconNode }: ListItemProps) => (
         bold ? 'font-bold' : ''
       )}
     >
-      <p className="text-inherit" style={{ width: iconNode ? 'calc((100%) - 20px)' : '100%' }}>
+      <div className="text-inherit" style={{ width: iconNode ? 'calc((100%) - 20px)' : '100%' }}>
         {value}
-      </p>
+      </div>
       {iconNode ? <span className="w-[20px] h-[20px]">{iconNode}</span> : null}
     </dd>
   </div>

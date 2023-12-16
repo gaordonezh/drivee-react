@@ -1,11 +1,17 @@
+import React, { useId, InputHTMLAttributes } from 'react';
 import { combineClassnames } from '@/utils/functions';
-import React, { InputHTMLAttributes, useId } from 'react';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  sizes: keyof typeof sizeClasses;
+}
+
+const sizeClasses = {
+  medium: 'p-2',
+  small: 'p-1',
 };
 
-const Input = ({ label, className, ...rest }: InputProps) => {
+const Input = ({ label, className, sizes, ...rest }: InputProps) => {
   const id = useId();
 
   return (
@@ -15,9 +21,17 @@ const Input = ({ label, className, ...rest }: InputProps) => {
           {`${label} ${rest.required ? '*' : ''}`}
         </label>
       ) : null}
-      <input id={id} className={combineClassnames('border-2 border-gray-200 rounded-md shadow-sm w-full p-2 outline-none', className)} {...rest} />
+      <input
+        id={id}
+        className={combineClassnames('border-2 border-gray-200 rounded-md shadow-sm w-full outline-none', sizeClasses[sizes], className)}
+        {...rest}
+      />
     </div>
   );
+};
+
+Input.defaultProps = {
+  sizes: 'medium',
 };
 
 export default Input;

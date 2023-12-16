@@ -15,9 +15,7 @@ const Tabs = ({ labels, active, onChange }: TabsProps) => (
         <li
           className={combineClassnames(
             'me-2 inline-block p-4 rounded-t-lg',
-            isActive
-              ? 'text-gray-200 bg-gray-700 cursor-not-allowed'
-              : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300 bg-gray-100 cursor-pointer'
+            isActive ? 'text-gray-200 bg-black cursor-not-allowed' : 'hover:text-gray-900 hover:bg-gray-300 bg-gray-200 cursor-pointer'
           )}
           key={item}
           onClick={() => (isActive ? undefined : onChange?.(item))}

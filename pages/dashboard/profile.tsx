@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Card from '@/components/atoms/Card';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import Tabs from '@/components/organisms/dashboard/Tabs';
@@ -18,10 +17,8 @@ const Profile = () => {
 
   return (
     <Layout layout={LayoutEnum.DASHBOARD}>
-      <Card className="flex flex-col items-center">
-        <Tabs labels={labels} active={tab} onChange={setTab} />
-        {tabs[tab]}
-      </Card>
+      <Tabs labels={labels} active={tab} onChange={setTab} />
+      {tabs[tab]}
     </Layout>
   );
 };

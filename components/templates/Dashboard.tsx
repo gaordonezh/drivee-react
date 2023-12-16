@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '../molecules/Container';
 import Card from '../atoms/Card';
-import { MdHome, MdLogout } from 'react-icons/md';
+import { MdHome, MdLogout, MdChecklist } from 'react-icons/md';
 import { FaUserAlt, FaListAlt, FaCar } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -56,6 +56,12 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                   icon={<FaUserAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                 />
                 <Item
+                  label={isSmall ? '' : 'Revisión'}
+                  path="/dashboard/review"
+                  current={pathname}
+                  icon={<MdChecklist size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
+                <Item
                   label={isSmall ? '' : 'Salir'}
                   current={pathname}
                   icon={<MdLogout size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
@@ -64,7 +70,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
               </ul>
             </Card>
           </div>
-          <div className="flex-1">
+          <div style={{ width: 'calc((100%) - 300px)' }}>
             <div className={combineClassnames(isSmall ? 'dashboard-dynamic-container-mobile' : 'dashboard-dynamic-container-desktop')}>
               {children}
             </div>
