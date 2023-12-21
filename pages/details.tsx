@@ -14,12 +14,17 @@ interface DetailsPageProps {
   description: string;
   details: [{ key: string; value: string }];
   id: string;
-  image: string;
   images: Array<string>;
   price: number;
+  location: VehicleLocationProps;
 }
 
-const DetailsPage = ({ name, description, details, id, images, image, price }: DetailsPageProps) => {
+export interface VehicleLocationProps {
+  address: string;
+  position: { lat: number; lng: number };
+}
+
+const DetailsPage = ({ name, description, details, id, images, price, location }: DetailsPageProps) => {
   const [index, setIndex] = useState(0);
 
   const handleChange = (action: 'next' | 'prev') => {
@@ -31,8 +36,8 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
   const selected = images[index];
 
   return (
-    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={image} key={id}>
-      <Container className="flex flex-col gap-10 py-5 px-10 md:gap-20 md:py-10 md:px-20">
+    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={images[0]} key={id}>
+      <Container className="flex flex-col gap-10 p-5 md:gap-20 md:p-10">
         <div className="flex flex-col gap-3">
           <h1 className="font-bold text-2xl md:text-4xl">{name}</h1>
           <p className="text-gray-700">{description}</p>
@@ -44,7 +49,7 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
               <div className="z-10 absolute top-0 left-0 bottom-0 flex items-center px-5">
                 <Fab icon={<FaArrowLeft size={30} color="#757575" />} size="large" className="bg-white" onClick={() => handleChange('prev')} />
               </div>
-              <Image img={selected} />
+              <ItemImage img={selected} />
               <div className="z-10 absolute top-0 right-0 bottom-0 flex items-center px-5">
                 <Fab icon={<FaArrowRight size={30} color="#757575" />} size="large" className="bg-white" onClick={() => handleChange('next')} />
               </div>
@@ -52,13 +57,13 @@ const DetailsPage = ({ name, description, details, id, images, image, price }: D
             <div className="grid grid-cols-3 gap-5">
               {images.slice(index, index + 3).map((item) => (
                 <div className="bg-slate-200 flex-1 rounded-lg h-[100px] md:h-[150px] lg:h-[200px] overflow-hidden" key={item}>
-                  <Image img={item} />
+                  <ItemImage img={item} />
                 </div>
               ))}
             </div>
           </div>
           <div className="w-full md:w-[50%] lg:w-[40%] rounded-xl bg-white p-5 xl:p-10 border border-gray-300">
-            <DetailsForm price={price} />
+            <DetailsForm price={price} location={location} />
           </div>
         </div>
 
@@ -90,7 +95,6 @@ export async function getServerSideProps(context: NextPageContext) {
     name: 'BMW M2 2020',
     description:
       'EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado.',
-    image: IMAGE_LIST[3],
     images: IMAGE_LIST,
     details: [
       { key: 'Asientos', value: '4' },
@@ -102,6 +106,7 @@ export async function getServerSideProps(context: NextPageContext) {
       { key: 'Dimensiones', value: '2mt. ancho x 4mt. largo x 1.5mt. altura' },
       { key: 'Llantas', value: '4' },
     ],
+    location: { address: 'Av. General Salaverry nro 3450, Jesús Maria', position: { lat: -12.094747804481793, lng: -77.05400206050557 } },
   };
 
   return { props: { ...data } };
@@ -109,6 +114,6 @@ export async function getServerSideProps(context: NextPageContext) {
 
 export default DetailsPage;
 
-const Image = ({ img }: { img: string }) => (
+const ItemImage = ({ img }: { img: string }) => (
   <div className="h-full w-full bg-no-repeat bg-contain bg-center" style={{ backgroundImage: `url(${img})` }} />
 );

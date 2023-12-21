@@ -8,7 +8,7 @@ import AuthLayout from './Auth';
 
 const inter = Inter({ subsets: ['latin', 'latin-ext'] });
 
-interface LayoutSwitchProps {
+interface LayoutProps {
   children: React.ReactNode;
   layout: LayoutEnum;
   title?: string;
@@ -16,7 +16,7 @@ interface LayoutSwitchProps {
   image?: string;
 }
 
-const Layout = ({ children, layout, ...rest }: LayoutSwitchProps) => {
+const Layout = ({ children, layout, ...rest }: LayoutProps) => {
   const params = {
     [LayoutEnum.PUBLIC]: {
       element: <PublicLayout>{children}</PublicLayout>,

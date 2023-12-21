@@ -20,7 +20,7 @@
 }
 .hero__height {
   height: calc(100vh - 84px);
-  max-height: 991px;
+  max-height: 800px;
   @apply flex flex-col lg:flex-row items-center justify-center relative;
 }
 .booking__filters {

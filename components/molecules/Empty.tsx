@@ -1,10 +1,12 @@
+import Image from 'next/image';
+
 interface EmptyProps {
   title: string;
 }
 
 const Empty = ({ title }: EmptyProps) => (
   <div className="flex flex-col justify-center items-center gap-2">
-    <img src="/images/empty.png" alt="Empty image" width="184px" height="152px" />
+    <Image src="/images/empty.png" width={184} height={152} alt="Empty" />
     <p className="text-sm text-center text-gray-500">{title}</p>
   </div>
 );

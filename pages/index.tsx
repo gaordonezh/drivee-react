@@ -6,16 +6,19 @@ import DescriptionPublicItem from '@/components/organisms/DescriptionPublicItem'
 import Carousel from '@/components/organisms/Carousel';
 import { useRouter } from 'next/router';
 import { objectCleaner } from '@/utils/functions';
-import GeneralInputFilters from '@/components/organisms/GeneralInputFilters';
+import GeneralInputFilters, { FieldsFiltersType } from '@/components/organisms/GeneralInputFilters';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import { IMAGE_LIST } from '@/utils/constants';
 
 const Home = () => {
   const router = useRouter();
-  const [fields, setFields] = useState({ location: '', startAt: '', endAt: '' });
+  const [fields, setFields] = useState<FieldsFiltersType>({ location: null, startAt: '', endAt: '' });
 
-  const handleRedirect = () => router.push({ pathname: '/booking', query: objectCleaner(fields) });
+  const handleRedirect = () => {
+    const queryParams = { ...fields, location: fields.location ? JSON.stringify(fields.location) : null };
+    router.push({ pathname: '/booking', query: objectCleaner(queryParams) });
+  };
 
   return (
     <Layout layout={LayoutEnum.PUBLIC}>

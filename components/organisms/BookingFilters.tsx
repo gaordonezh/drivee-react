@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from '@/components/atoms/Input';
 import Button from '../atoms/Button';
 import { LuSettings2 } from 'react-icons/lu';
@@ -12,7 +12,7 @@ import Chip from '../atoms/Chip';
 import moment from 'moment-timezone';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
-interface FieldsType extends FieldsFiltersType {
+export interface BookingFiltersStateType extends FieldsFiltersType {
   type: string;
   willcard: string;
   priceFrom: string;
@@ -20,8 +20,8 @@ interface FieldsType extends FieldsFiltersType {
 }
 
 interface BookingFiltersProps {
-  fields: FieldsType;
-  setFields: (params: FieldsType) => void;
+  fields: BookingFiltersStateType;
+  setFields: (params: BookingFiltersStateType) => void;
 }
 
 const itemsTranslate = {
@@ -39,19 +39,26 @@ type FieldValueType = { keys: Array<string>; value: string };
 const BookingFilters = ({ fields, setFields }: BookingFiltersProps) => {
   const { width } = useWindowDimensions();
   const [showDrawer, setShowDrawer] = useState(false);
+  const [auxFields, setAuxFields] = useState<BookingFiltersStateType>({ ...fields });
+
+  useEffect(() => {
+    setAuxFields({ ...fields });
+  }, [fields]);
 
   const handleClose = () => setShowDrawer(false);
 
   const handleRemove = (items: Array<keyof typeof fields>) => {
     items.forEach((item) => {
-      fields[item] = '';
+      if (item === 'location') fields.location = null;
+      else fields[item] = '';
     });
     setFields({ ...fields });
   };
 
   const fieldsValues = Object.entries(fields).reduce((acum, [key, value]) => {
     if (!value) return acum;
-    if (['location', 'willcard'].includes(key)) acum.push({ keys: [key], value });
+    if (['willcard'].includes(key)) acum.push({ keys: [key], value });
+    if (['location'].includes(key)) acum.push({ keys: [key], value: fields.location?.text || '' });
     if (key === 'startAt')
       acum.push({
         keys: ['startAt', 'endAt'],
@@ -112,23 +119,41 @@ const BookingFilters = ({ fields, setFields }: BookingFiltersProps) => {
             <Input
               label="Buscar"
               placeholder="Buscar"
-              value={fields.willcard}
-              onChange={(event) => setFields({ ...fields, willcard: event.target.value })}
+              value={auxFields.willcard}
+              onChange={(event) => setAuxFields({ ...auxFields, willcard: event.target.value })}
             />
             {width < 768 ? (
               <GeneralInputFilters
-                location={fields.location}
-                startAt={fields.startAt}
-                endAt={fields.endAt}
-                setFields={(newParams) => setFields({ ...fields, ...newParams })}
+                location={auxFields.location}
+                startAt={auxFields.startAt}
+                endAt={auxFields.endAt}
+                setFields={(newParams) => setAuxFields({ ...auxFields, ...newParams })}
               />
             ) : null}
-            <Select label="Tipo de vehículo" data={items} value={fields.type} setValue={(type) => setFields({ ...fields, type })} />
-            <RangePrice priceFrom={fields.priceFrom} priceTo={fields.priceTo} setFields={(newParams) => setFields({ ...fields, ...newParams })} />
-            <Button size="large" className="mt-5" onClick={handleClose}>
+            <Select label="Tipo de vehículo" data={items} value={auxFields.type} setValue={(type) => setAuxFields({ ...auxFields, type })} />
+            <RangePrice
+              priceFrom={auxFields.priceFrom}
+              priceTo={auxFields.priceTo}
+              setFields={(newParams) => setAuxFields({ ...auxFields, ...newParams })}
+            />
+            <Button
+              size="large"
+              className="mt-5"
+              onClick={() => {
+                setFields({ ...auxFields });
+                handleClose();
+              }}
+            >
               Aplicar filtros
             </Button>
-            <Button size="large" variant="white" onClick={handleClose}>
+            <Button
+              size="large"
+              variant="white"
+              onClick={() => {
+                setAuxFields({ ...fields });
+                handleClose();
+              }}
+            >
               Cancelar
             </Button>
           </div>

@@ -2,7 +2,6 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import moment, { Moment } from 'moment-timezone';
 import { formatMoney, mergeDateTime } from '@/utils/functions';
 import { FaLongArrowAltRight } from 'react-icons/fa';
-import Input from '@/components/atoms/Input';
 import DatePicker from '../DatePicker';
 import TimePicker from '../TimePicker';
 import Chip from '@/components/atoms/Chip';
@@ -40,14 +39,17 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1P
     if (hoursDiff < 0) return setRange({ quantity: 0, total: 0 });
 
     const total = Number(formatMoney(hoursDiff * price));
-    setRange({ quantity: hoursDiff, total });
+    setRange({ quantity: Number(formatMoney(hoursDiff)), total });
   };
 
   const isDisabled = disabled || !(range.quantity && range.total);
 
   return (
     <div className="flex flex-col gap-5">
-      <Input label="Ubicación" placeholder="Ej.: Lima" value={fields.location} onChange={(event) => handleChange({ location: event.target.value })} />
+      <div>
+        <p className="font-semibold">Dirección:</p>
+        <p>{fields.location?.address}</p>
+      </div>
       <div>
         <p className="font-semibold">Fecha y hora de recojo</p>
         <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3">

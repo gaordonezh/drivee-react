@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@/components/atoms/Button';
 import Container from '@/components/molecules/Container';
-import BookingFilters from '@/components/organisms/BookingFilters';
+import BookingFilters, { BookingFiltersStateType } from '@/components/organisms/BookingFilters';
 import { useRouter } from 'next/router';
 import { objectCleaner } from '@/utils/functions';
 import Pagination from '@/components/molecules/Pagination';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
+import Image from 'next/image';
 
 const Booking = () => {
   const router = useRouter();
-  const [fields, setFields] = useState({
-    location: '',
+  const [fields, setFields] = useState<BookingFiltersStateType>({
     startAt: '',
     endAt: '',
     type: '',
@@ -19,14 +19,15 @@ const Booking = () => {
     priceFrom: '',
     priceTo: '',
     ...router.query,
+    location: router.query.location ? JSON.parse(router.query.location as string) : null,
   });
 
   useEffect(() => {
-    router.replace({ query: objectCleaner(fields) });
+    router.replace({ query: objectCleaner({ ...fields, location: fields.location ? JSON.stringify(fields.location) : '' }) });
   }, [fields]);
 
   const handleContinue = (code: string) => {
-    const query = objectCleaner({ code, location: fields.location, startAt: fields.startAt, endAt: fields.endAt });
+    const query = objectCleaner({ code, startAt: fields.startAt, endAt: fields.endAt });
     router.push({ pathname: '/details', query });
   };
 
@@ -43,7 +44,7 @@ const Booking = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {Array.from(Array(4).keys()).map((item) => (
               <div key={item} className="bg-white rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg hover:shadow-xl">
-                <img src="/images/auth-bg.jpg" alt="Card" />
+                <Image src="/images/auth-bg.jpg" width={400} height={100} alt="Card" className="w-full" />
                 <div className="px-5 py-3">
                   <p className="font-bold text-2xl mb-2">Corola</p>
                   <ul className="mb-5">

@@ -9,18 +9,21 @@ interface SelectProps {
   data: DataType;
   keyToShow: string;
   keyToGey: string;
-  value: string;
+  value?: string;
   label?: string;
   setValue: (value: string, record: Record<string, any>) => void;
   placeholder: string;
+  onSearch?: (value: string) => void;
+  initialSearch?: string;
 }
 
-const iconProps = { className: 'absolute right-2 bottom-3', size: 20 };
+const iconProps = { className: 'absolute right-2 bottom-3 bg-white', size: 20 };
 
-const Select = ({ data, keyToShow, keyToGey, label, placeholder, value, setValue }: SelectProps) => {
+const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, value, setValue, onSearch }: SelectProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState<DataType>([]);
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
     setFiltered([...data]);
@@ -31,6 +34,21 @@ const Select = ({ data, keyToShow, keyToGey, label, placeholder, value, setValue
     const newSearch = finder?.[keyToShow] || '';
     setSearch(newSearch);
   }, [value]);
+
+  useEffect(() => {
+    if (initialSearch !== undefined) {
+      setSearch(initialSearch);
+    }
+  }, [initialSearch]);
+
+  useEffect(() => {
+    if (!onSearch) return;
+    clearTimeout(searchTimeout);
+    const timeoutAux = setTimeout(() => {
+      onSearch(search);
+    }, 1000);
+    setSearchTimeout(timeoutAux);
+  }, [search]);
 
   const handleSearch = (valueToSearch: string) => {
     const searched = data.filter((item) => item[keyToShow].toLowerCase().includes(valueToSearch.toLowerCase()));
@@ -68,7 +86,7 @@ const Select = ({ data, keyToShow, keyToGey, label, placeholder, value, setValue
 
       {open ? <IoIosArrowUp {...iconProps} /> : <IoIosArrowDown {...iconProps} />}
 
-      {open && (
+      {open ? (
         <div className="absolute bg-white border-none max-h-[200px] overflow-y-auto shadow-md w-full z-10">
           {filtered.length ? (
             filtered.map((item) => (
@@ -78,7 +96,7 @@ const Select = ({ data, keyToShow, keyToGey, label, placeholder, value, setValue
             <Item value="No hay información" className="text-gray-400 font-light" />
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

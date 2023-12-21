@@ -3,6 +3,7 @@ import Button from '../atoms/Button';
 import Chip from '../atoms/Chip';
 import { combineClassnames } from '@/utils/functions';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface DescriptionPublicItemProps {
   className: string;
@@ -28,7 +29,7 @@ const DescriptionPublicItem = ({ className, reverse, title, tags, description, b
   return (
     <div className={combineClassnames('flex gap-5 lg:gap-20', classList, className)}>
       <div className="flex-1">
-        <img src={imageProps.src} alt={imageProps.alt} width="100%" />
+        <Image src={imageProps.src} width={650} height={100} alt={imageProps.alt} className="w-full" loading="lazy" />
       </div>
       <div className="flex-1 flex flex-col gap-5 items-start justify-center">
         <h2 className="text-3xl font-semibold capitalize">{title}</h2>

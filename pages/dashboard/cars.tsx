@@ -13,7 +13,6 @@ import { ModalStateEnum } from '@/interfaces/global.enum';
 import Input from '@/components/atoms/Input';
 import List from '@/components/molecules/List';
 import Button from '@/components/atoms/Button';
-import GoogleMaps from '@/components/organisms/GoogleMaps';
 import { IoDocumentTextSharp } from 'react-icons/io5';
 import Modal from '@/components/molecules/Modal';
 import Spinner from '@/components/molecules/Spinner';
@@ -93,9 +92,7 @@ const Cars = () => {
             <Input label="Nombre del vehículo (*)" placeholder="Ej.: BMW M2 2020" />
             <Input label="Precio por horas S/ (*)" type="number" placeholder="Ej.: 12.50" />
             <Input label="Ubicación" placeholder="Ej.: Av. Los heroes 434" />
-            <div className="border" style={{ height: '300px', width: '100%', borderRadius: '10px', overflow: 'hidden' }}>
-              {/* <GoogleMaps /> */}
-            </div>
+            <div className="border" style={{ height: '300px', width: '100%', borderRadius: '10px', overflow: 'hidden' }}></div>
             <div>
               <p className="font-semibold">Adjunte imágenes de tu coche (*)</p>
               <p className="text-gray-500 text-sm">Tiene que adjuntar 4 imágenes como mínimo.</p>

@@ -2,8 +2,9 @@ import React from 'react';
 import Input from '../atoms/Input';
 import RangePickerModal from './RangePickerModal';
 import moment from 'moment-timezone';
+import InputMaps, { InputMapsStateType } from '../molecules/InputMaps';
 
-export type FieldsFiltersType = { location: string; startAt: string; endAt: string };
+export type FieldsFiltersType = { location: InputMapsStateType; startAt: string; endAt: string };
 
 interface GeneralInputFiltersProps extends FieldsFiltersType {
   setFields: (params: FieldsFiltersType) => void;
@@ -15,13 +16,7 @@ const GeneralInputFilters = (props: GeneralInputFiltersProps) => {
 
   return (
     <React.Fragment>
-      <Input
-        label="Ubicación"
-        autoComplete="off"
-        placeholder="Selecciona una ubicación"
-        value={rest.location}
-        onChange={(event) => setFields({ ...rest, location: event.target.value })}
-      />
+      <InputMaps label="Ubicación" value={rest.location} setValue={(location) => setFields({ ...rest, location })} />
       <Input
         label="Fecha de recogida"
         autoComplete="off"
