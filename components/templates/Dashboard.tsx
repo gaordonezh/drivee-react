@@ -70,7 +70,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
               </ul>
             </Card>
           </div>
-          <div style={{ width: 'calc((100%) - 300px)' }}>
+          <div style={{ width: isSmall ? '100%' : 'calc((100%) - 300px)' }}>
             <div className={combineClassnames(isSmall ? 'dashboard-dynamic-container-mobile' : 'dashboard-dynamic-container-desktop')}>
               {children}
             </div>
