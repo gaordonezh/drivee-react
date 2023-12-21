@@ -1,9 +1,12 @@
-import React, { useId, InputHTMLAttributes } from 'react';
+import React, { useId, InputHTMLAttributes, forwardRef, LegacyRef, ReactNode } from 'react';
 import { combineClassnames } from '@/utils/functions';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  sizes: keyof typeof sizeClasses;
+  sizes?: keyof typeof sizeClasses;
+  error?: boolean;
+  errorMessage?: string;
+  iconRight?: ReactNode;
 }
 
 const sizeClasses = {
@@ -11,27 +14,39 @@ const sizeClasses = {
   small: 'p-1',
 };
 
-const Input = ({ label, className, sizes, ...rest }: InputProps) => {
-  const id = useId();
+const Input = forwardRef(
+  ({ label, className, sizes = 'medium', error, errorMessage, iconRight, ...rest }: InputProps, ref: LegacyRef<HTMLInputElement>) => {
+    const id = useId();
 
-  return (
-    <div className="w-full">
-      {label ? (
-        <label htmlFor={id} className="font-semibold">
-          {`${label} ${rest.required ? '*' : ''}`}
-        </label>
-      ) : null}
-      <input
-        id={id}
-        className={combineClassnames('border-2 border-gray-200 rounded-md shadow-sm w-full outline-none', sizeClasses[sizes], className)}
-        {...rest}
-      />
-    </div>
-  );
-};
+    return (
+      <div className="w-full relative">
+        {label ? (
+          <label htmlFor={id} className="font-semibold">
+            {`${label} ${rest.required ? '*' : ''}`}
+          </label>
+        ) : null}
+        <input
+          ref={ref}
+          id={id}
+          className={combineClassnames(
+            'border-2 rounded-md shadow-sm w-full outline-none',
+            sizeClasses[sizes],
+            error ? 'border-red-500 placeholder:text-red-400' : 'border-gray-200',
+            className
+          )}
+          {...rest}
+        />
 
-Input.defaultProps = {
-  sizes: 'medium',
-};
+        {iconRight ? (
+          <span className={combineClassnames('w-[25px] h-[25px] absolute right-2 bg-white', error ? 'bottom-6' : 'bottom-2')}>{iconRight}</span>
+        ) : null}
+
+        {errorMessage && <p className="text-sm text-red-500 leading-3 mt-1">{errorMessage}</p>}
+      </div>
+    );
+  }
+);
+
+Input.displayName = 'Input';
 
 export default Input;

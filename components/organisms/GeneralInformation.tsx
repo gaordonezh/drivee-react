@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Container from '../molecules/Container';
 import { IconType } from 'react-icons/lib';
 import { combineClassnames } from '@/utils/functions';
@@ -8,6 +7,9 @@ import DatePicker from '@/components/organisms/DatePicker';
 import moment from 'moment-timezone';
 import Button from '@/components/atoms/Button';
 import { BsArrowRight } from 'react-icons/bs';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import InputPassword from '../molecules/InputPassword';
+import Spinner from '../molecules/Spinner';
 
 interface GeneralInformationProps {
   steps: Array<{ title: string; detail: string; icon: IconType }>;
@@ -17,11 +19,35 @@ interface GeneralInformationProps {
   extraDescription: string;
 }
 
+type Inputs = {
+  f_name: string;
+  l_name: string;
+  email: string;
+  dateBorn: null | Date;
+  phone: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 const GeneralInformation = ({ steps, title, description, extraTitle, extraDescription }: GeneralInformationProps) => {
-  const [form, setForm] = useState<any>({ dateBorn: null });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    control,
+    setValue,
+    setError,
+    clearErrors,
+  } = useForm<Inputs>({ mode: 'onChange', defaultValues: { dateBorn: null } });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    alert(JSON.stringify(data, null, 5));
+  };
 
   return (
-    <>
+    <div>
       <div className="bg-information bg-cover bg-no-repeat bg-center">
         <Container>
           <div className="h-60 lg:h-80 flex flex-col items-center justify-center gap-3">
@@ -57,35 +83,141 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                 <p className="text-sm text-gray-500 mt-3 text-justify">Te notificaremos por correo y whatsapp sobre el estado de tus documentos.</p>
               </Card>
             </div>
-            <Card className="bg-white flex-1">
-              <div className="p-2 lg:p-10">
-                <div className="mb-5">
-                  <h2 className="font-semibold text-lg">¡Comencemos!</h2>
-                  <p className="text-sm">Completa el formulario para comenzar</p>
+            <Spinner className="rounded-lg" loading={false}>
+              <Card className="bg-white flex-1">
+                <div className="p-2 lg:p-10">
+                  <div className="mb-5">
+                    <h2 className="font-semibold text-lg">¡Comencemos!</h2>
+                    <p className="text-sm">Completa el formulario para comenzar</p>
+                  </div>
+                  <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                    <Input
+                      placeholder="Ingresa tus nombres"
+                      label="Ingresa tus nombres"
+                      error={Boolean(errors.f_name)}
+                      errorMessage={errors.f_name?.message || ''}
+                      {...register('f_name', {
+                        validate: {
+                          required: (value) => {
+                            if (!value.trim()) return 'El nombre es requerido';
+                          },
+                        },
+                        pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ]+$/i },
+                        minLength: { value: 3, message: 'Son 3 caracteres alfanuméricos como mínimo' },
+                        maxLength: { value: 50, message: 'Son 50 caracteres alfanuméricos como máximo' },
+                      })}
+                    />
+                    <Input
+                      placeholder="Ingresa tus apellidos"
+                      label="Apellidos"
+                      error={Boolean(errors.l_name)}
+                      errorMessage={errors.l_name?.message || ''}
+                      {...register('l_name', {
+                        validate: {
+                          required: (value) => {
+                            if (!value.trim()) return 'El apellido es requerido';
+                          },
+                        },
+                        pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ]+$/i },
+                        minLength: { value: 3, message: 'Son 3 caracteres alfanuméricos como mínimo' },
+                        maxLength: { value: 50, message: 'Son 50 caracteres alfanuméricos como máximo' },
+                      })}
+                    />
+                    <Input
+                      placeholder="Ingresa tu correo"
+                      type="email"
+                      label="Correo"
+                      error={Boolean(errors.email)}
+                      errorMessage={errors.email?.message || ''}
+                      {...register('email', {
+                        validate: {
+                          required: (value) => {
+                            if (!value.trim()) return 'El correo es requerido';
+                          },
+                        },
+                        pattern: { message: 'Ingresa un correo válido', value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i },
+                      })}
+                    />
+                    <Controller
+                      name="dateBorn"
+                      rules={{ required: { value: true, message: 'La fecha de nacimiento es requerida' } }}
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <DatePicker
+                            label="Fecha de nacimiento"
+                            selected={field.value}
+                            onChange={(update) => {
+                              if (!update) setError('dateBorn', { type: 'required', message: 'La fecha de nacimiento es requerida' });
+                              else clearErrors('dateBorn');
+                              setValue('dateBorn', update);
+                            }}
+                            maxDate={moment().subtract(18, 'years').toDate()}
+                            className={combineClassnames(errors.dateBorn ? 'border-red-500 placeholder:text-red-400' : '')}
+                          />
+                          {errors.dateBorn && <p className="text-sm text-red-500 leading-3 -mt-2">{errors.dateBorn.message}</p>}
+                        </>
+                      )}
+                    />
+                    <Input
+                      placeholder="Ingresa tu n° celular"
+                      type="tel"
+                      label="Celular"
+                      error={Boolean(errors.phone)}
+                      errorMessage={errors.phone?.message || ''}
+                      {...register('phone', {
+                        validate: {
+                          required: (value) => {
+                            if (!value.trim()) return 'El número de teléfono es requerido';
+                          },
+                          length: (value) => {
+                            if (!value.trim() || value.trim().length !== 9) return 'Ingrese un número de teléfono válido';
+                          },
+                        },
+                        pattern: { value: /^[0-9]+$/i, message: 'Solo se aceptan números' },
+                      })}
+                    />
+                    <InputPassword
+                      placeholder="Ingresa tu contraseña"
+                      label="Contraseña"
+                      error={Boolean(errors.password)}
+                      errorMessage={errors.password?.message || ''}
+                      {...register('password', {
+                        validate: {
+                          required: (value) => {
+                            if (!value.trim()) return 'La contraseña es requerida';
+                          },
+                        },
+                        minLength: { value: 8, message: 'Son 8 caracteres como mínimo' },
+                        maxLength: { value: 20, message: 'Son 20 caracteres como máximo' },
+                      })}
+                    />
+
+                    <InputPassword
+                      placeholder="Confirma tu contraseña"
+                      label="Confirma contraseña"
+                      error={Boolean(errors.passwordConfirm)}
+                      errorMessage={errors.passwordConfirm?.message || ''}
+                      {...register('passwordConfirm', {
+                        validate: {
+                          equalPassword: (value) => {
+                            if (!value.trim()) return 'La contraseña es requerida';
+                            if (watch('password') !== value) return 'Las contraseñas no coinciden';
+                          },
+                        },
+                      })}
+                    />
+                    <Button size="large" className="mt-5" type="submit">
+                      Continuar <BsArrowRight />
+                    </Button>
+                  </form>
                 </div>
-                <form className="flex flex-col gap-3">
-                  <Input label="Nombres" />
-                  <Input label="Apellidos" />
-                  <Input label="Correo" />
-                  <DatePicker
-                    label="Fecha de nacimiento"
-                    selected={form.dateBorn ? moment(form.dateBorn).toDate() : null}
-                    onChange={(update) => setForm({ ...form, dateBorn: moment(update) })}
-                    maxDate={moment().subtract(18, 'years').toDate()}
-                  />
-                  <Input label="Celular" />
-                  <Input label="Contraseña" />
-                  <Input label="Confirma contraseña" />
-                  <Button size="large" className="mt-5">
-                    Continuar <BsArrowRight />
-                  </Button>
-                </form>
-              </div>
-            </Card>
+              </Card>
+            </Spinner>
           </div>
         </Container>
       </div>
-    </>
+    </div>
   );
 };
 
