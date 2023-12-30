@@ -1,14 +1,12 @@
 import React from 'react';
 import Container from '../molecules/Container';
 import Card from '../atoms/Card';
-import { MdHome, MdLogout, MdChecklist } from 'react-icons/md';
-import { FaUserAlt, FaListAlt, FaCar } from 'react-icons/fa';
+import { MdHome, MdChecklist } from 'react-icons/md';
+import { FaListAlt, FaCar } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-import Button from '../atoms/Button';
-import { signOut } from 'next-auth/react';
 import HeaderPublic from '../organisms/HeaderPublic';
 
 interface PrivateLayoutProps {
@@ -19,8 +17,6 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
   const { pathname } = useRouter();
   const { width } = useWindowDimensions();
   const isSmall = width < 1024;
-
-  const handleClose = () => signOut({ callbackUrl: '/', redirect: true });
 
   return (
     <>
@@ -50,22 +46,10 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                   icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                 />
                 <Item
-                  label={isSmall ? '' : 'Perfil'}
-                  path="/dashboard/profile"
-                  current={pathname}
-                  icon={<FaUserAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
-                <Item
                   label={isSmall ? '' : 'Revisión'}
                   path="/dashboard/review"
                   current={pathname}
                   icon={<MdChecklist size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
-                <Item
-                  label={isSmall ? '' : 'Salir'}
-                  current={pathname}
-                  icon={<MdLogout size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                  onClick={handleClose}
                 />
               </ul>
             </Card>
@@ -85,34 +69,14 @@ export default PrivateLayout;
 
 const active = { li: 'bg-black', a: 'text-white' };
 const inactive = { li: 'bg-white', a: 'text-black' };
-const Item = ({
-  path,
-  label,
-  current,
-  icon,
-  onClick,
-}: {
-  path?: string;
-  label: string;
-  current: string;
-  icon: JSX.Element;
-  onClick?: VoidFunction;
-}) => {
+const Item = ({ path, label, current, icon }: { path: string; label: string; current: string; icon: JSX.Element }) => {
   const isActive = path === current;
-
   return (
     <li className={combineClassnames('rounded overflow-hidden', isActive ? active.li : inactive.li)}>
-      {path ? (
-        <Link className={combineClassnames('px-5 py-2 font-bold items-center gap-2 flex flex-row', isActive ? active.a : inactive.a)} href={path}>
-          {icon}
-          {label}
-        </Link>
-      ) : (
-        <Button fullWidth className="!justify-start !px-5 !py-2 !font-bold" variant="white" onClick={onClick}>
-          {icon}
-          {label}
-        </Button>
-      )}
+      <Link className={combineClassnames('px-5 py-2 font-bold items-center gap-2 flex flex-row', isActive ? active.a : inactive.a)} href={path}>
+        {icon}
+        {label}
+      </Link>
     </li>
   );
 };

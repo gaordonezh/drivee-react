@@ -7,9 +7,10 @@ interface ChipProps {
   onClick?: VoidFunction;
   size: 'large' | 'small';
   className?: string;
+  disabled?: boolean;
 }
 
-const Chip = ({ iconLeft, iconRight, label, onClick, size, className }: ChipProps) => {
+const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled }: ChipProps) => {
   const sizeClass = {
     large: 'px-5 py-2',
     small: 'px-3 py-1',
@@ -20,6 +21,7 @@ const Chip = ({ iconLeft, iconRight, label, onClick, size, className }: ChipProp
       className={combineClassnames(
         'bg-slate-100 rounded-full flex flex-row gap-3 justify-center items-center',
         Boolean(onClick) ? 'hover:bg-slate-200 cursor-pointer active:shadow selection:no-underline' : '',
+        disabled ? 'pointer-events-none opacity-75' : '',
         sizeClass[size],
         className
       )}

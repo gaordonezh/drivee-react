@@ -5,6 +5,7 @@ import { FaFlag } from 'react-icons/fa';
 import { MdOutlineFormatAlignRight } from 'react-icons/md';
 import { LuFileStack } from 'react-icons/lu';
 import { IoCarSportSharp } from 'react-icons/io5';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 const steps = [
   {
@@ -38,6 +39,7 @@ const Share = () => {
   return (
     <Layout layout={LayoutEnum.PUBLIC}>
       <GeneralInformation
+        roles={[UserRolesEnum.USER, UserRolesEnum.OWNER]}
         steps={steps}
         title="Convierte tu vehículo en dinero extra"
         description="Cuando pones en alquiler tu vehículo, estas ganando dinero mientras ayudas a otras personas explorar tu ciudad. Es ganar-ganar y tu siguiente gran oportunidad."

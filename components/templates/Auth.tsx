@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 interface AuthLayoutProps {
@@ -10,7 +11,10 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       <div className="auth__image">
         <div className="flex flex-col items-center gap-1 max-w-sm text-center">
           <h1 className="text-white font-normal text-4xl">
-            Bienvenido a <span className="font-extrabold">Drivee</span>
+            Bienvenido a{' '}
+            <Link href="/" className="font-extrabold">
+              Drivee
+            </Link>
           </h1>
           <p className="text-white text-xl mt-5 font-medium">El mejor mercado de vehículos compartidos</p>
           <p className="text-white text-sm mt-10 font-light">

@@ -6,10 +6,21 @@ import Input from '@/components/atoms/Input';
 import DatePicker from '@/components/organisms/DatePicker';
 import moment from 'moment-timezone';
 import Button from '@/components/atoms/Button';
-import { BsArrowRight } from 'react-icons/bs';
+import { BsArrowRight, BsGithub } from 'react-icons/bs';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import InputPassword from '../molecules/InputPassword';
 import Spinner from '../molecules/Spinner';
+import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
+import { createUser, validateUser } from '@/store/user/user.slice';
+import { CreateUserBodyProps, ValidateUserBodyProps } from '@/store/user/user';
+import { EMAIL_PATTERN, PHONE_PATTERN } from '@/utils/constants';
+import { useState } from 'react';
+import { RequestStatusEnum } from '@/interfaces/global.enum';
+import { UserRolesEnum } from '@/store/user/user.enum';
+import Alert from '../atoms/Alert';
+import Chip from '../atoms/Chip';
+import { signIn } from 'next-auth/react';
+import Divider from '../protons/Divider';
+import { FcGoogle } from 'react-icons/fc';
 
 interface GeneralInformationProps {
   steps: Array<{ title: string; detail: string; icon: IconType }>;
@@ -17,6 +28,7 @@ interface GeneralInformationProps {
   description: string;
   extraTitle: string;
   extraDescription: string;
+  roles: Array<UserRolesEnum>;
 }
 
 type Inputs = {
@@ -25,25 +37,54 @@ type Inputs = {
   email: string;
   dateBorn: null | Date;
   phone: string;
-  password: string;
-  passwordConfirm: string;
 };
 
-const GeneralInformation = ({ steps, title, description, extraTitle, extraDescription }: GeneralInformationProps) => {
+const GeneralInformation = ({ steps, title, description, extraTitle, extraDescription, roles }: GeneralInformationProps) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     control,
+    getValues,
     setValue,
     setError,
     clearErrors,
+    reset,
   } = useForm<Inputs>({ mode: 'onChange', defaultValues: { dateBorn: null } });
+  const dispatch = useAppDispatch();
+  const { validateUserState, createUserState } = useAppSelector((state) => state.user);
+  const [writeTimeout, setWriteTimeout] = useState<NodeJS.Timeout>();
+  const [email, setEmail] = useState('');
+  const isLoading = createUserState === RequestStatusEnum.PENDING || validateUserState === RequestStatusEnum.PENDING;
+  const disabledForm = createUserState === RequestStatusEnum.ERROR || validateUserState === RequestStatusEnum.ERROR || Boolean(email);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    alert(JSON.stringify(data, null, 5));
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (disabledForm) return;
+    setEmail(data.email);
+    const body: CreateUserBodyProps = {
+      f_name: data.f_name,
+      l_name: data.l_name,
+      email: data.email,
+      phone: data.phone,
+      roles,
+      date_birth: data.dateBorn?.toISOString()!,
+    };
+    const res = await dispatch(createUser(body));
+    // @ts-ignore
+    if (res.error) return;
+    reset();
+  };
+
+  const validateUserFields = async (fields: ValidateUserBodyProps): Promise<Record<'email' | 'phone', boolean>> => {
+    const result: Record<'email' | 'phone', boolean> = await new Promise((resolve) => {
+      clearTimeout(writeTimeout);
+      const timeoutAux = setTimeout(async () => {
+        const res = await dispatch(validateUser(fields));
+        resolve(res.payload);
+      }, 700);
+      setWriteTimeout(timeoutAux);
+    });
+    return result;
   };
 
   return (
@@ -83,13 +124,31 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                 <p className="text-sm text-gray-500 mt-3 text-justify">Te notificaremos por correo y whatsapp sobre el estado de tus documentos.</p>
               </Card>
             </div>
-            <Spinner className="rounded-lg" loading={false}>
+            <Spinner loading={isLoading}>
               <Card className="bg-white flex-1">
                 <div className="p-2 lg:p-10">
                   <div className="mb-5">
                     <h2 className="font-semibold text-lg">¡Comencemos!</h2>
-                    <p className="text-sm">Completa el formulario para comenzar</p>
+                    <p className="text-sm">Selecciona alguna cuenta para iniciar con tu registro</p>
                   </div>
+
+                  <div className="flex flex-col gap-2">
+                    <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} />
+                    <Chip label="Continuar con GitHub" iconLeft={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} />
+                  </div>
+                  <Divider className="my-5" />
+
+                  <p className="text-sm mb-5">O completa el formulario para comenzar</p>
+
+                  {createUserState === RequestStatusEnum.SUCCESS && (
+                    <Alert title="Revisa tu bandeja de entrada!" description={`Se envió un correo a ${email}`} />
+                  )}
+                  {createUserState === RequestStatusEnum.ERROR && (
+                    <Alert title="No se logró realizar tu registro." description="Disculpe las molestias, intente mas tarde." variant="error" />
+                  )}
+                  {validateUserState === RequestStatusEnum.ERROR && (
+                    <Alert title="No se logró validar tus datos." description="Intente otra vez" variant="error" />
+                  )}
                   <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                     <Input
                       placeholder="Ingresa tus nombres"
@@ -129,13 +188,19 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       label="Correo"
                       error={Boolean(errors.email)}
                       errorMessage={errors.email?.message || ''}
+                      autoComplete="email"
                       {...register('email', {
+                        pattern: { message: 'Ingresa un correo válido', value: EMAIL_PATTERN },
                         validate: {
                           required: (value) => {
                             if (!value.trim()) return 'El correo es requerido';
                           },
+                          emailExist: async (value) => {
+                            if (!EMAIL_PATTERN.test(value)) return '';
+                            const res = await validateUserFields({ email: value });
+                            if (res.email) return 'El correo no se encuentra disponible';
+                          },
                         },
-                        pattern: { message: 'Ingresa un correo válido', value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i },
                       })}
                     />
                     <Controller
@@ -166,48 +231,18 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       error={Boolean(errors.phone)}
                       errorMessage={errors.phone?.message || ''}
                       {...register('phone', {
+                        required: { value: true, message: 'El número de teléfono es requerido' },
+                        pattern: { value: PHONE_PATTERN, message: 'Ingrese un número de teléfono válido' },
                         validate: {
-                          required: (value) => {
-                            if (!value.trim()) return 'El número de teléfono es requerido';
-                          },
-                          length: (value) => {
-                            if (!value.trim() || value.trim().length !== 9) return 'Ingrese un número de teléfono válido';
-                          },
-                        },
-                        pattern: { value: /^[0-9]+$/i, message: 'Solo se aceptan números' },
-                      })}
-                    />
-                    <InputPassword
-                      placeholder="Ingresa tu contraseña"
-                      label="Contraseña"
-                      error={Boolean(errors.password)}
-                      errorMessage={errors.password?.message || ''}
-                      {...register('password', {
-                        validate: {
-                          required: (value) => {
-                            if (!value.trim()) return 'La contraseña es requerida';
-                          },
-                        },
-                        minLength: { value: 8, message: 'Son 8 caracteres como mínimo' },
-                        maxLength: { value: 20, message: 'Son 20 caracteres como máximo' },
-                      })}
-                    />
-
-                    <InputPassword
-                      placeholder="Confirma tu contraseña"
-                      label="Confirma contraseña"
-                      error={Boolean(errors.passwordConfirm)}
-                      errorMessage={errors.passwordConfirm?.message || ''}
-                      {...register('passwordConfirm', {
-                        validate: {
-                          equalPassword: (value) => {
-                            if (!value.trim()) return 'La contraseña es requerida';
-                            if (watch('password') !== value) return 'Las contraseñas no coinciden';
+                          phoneExist: async (value) => {
+                            if (!PHONE_PATTERN.test(value)) return;
+                            const res = await validateUserFields({ phone: value });
+                            if (res.phone) return 'El n° celular no se encuentra disponible';
                           },
                         },
                       })}
                     />
-                    <Button size="large" className="mt-5" type="submit">
+                    <Button size="large" className="mt-5" type="submit" disabled={disabledForm}>
                       Continuar <BsArrowRight />
                     </Button>
                   </form>

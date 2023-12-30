@@ -1,10 +1,13 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import FacebookProvider from 'next-auth/providers/facebook';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import server from '@/server';
 
 export default NextAuth({
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
     GithubProvider({
       clientId: String(process.env.GITHUB_CLIENT_ID),
@@ -14,42 +17,35 @@ export default NextAuth({
       clientId: String(process.env.GOOGLE_CLIENT_ID),
       clientSecret: String(process.env.GOOGLE_CLIENT_SECRET),
     }),
-    FacebookProvider({
-      clientId: String(process.env.FACEBOOK_CLIENT_ID),
-      clientSecret: String(process.env.FACEBOOK_CLIENT_SECRET),
-    }),
     CredentialsProvider({
-      name: 'Sign in',
-      credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'example@example.com',
-        },
-        password: {
-          label: 'Password',
-          type: 'password',
-        },
-      },
-      async authorize(credentials, req) {
-        console.log(credentials, req);
-        const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
+      type: 'credentials',
+      credentials: {},
+      async authorize(credentials) {
+        const { email, password } = credentials as { email: string; password: string };
+        const response = await server.post('auth', { user: email, password });
+        if (!response.data) throw new Error('Invalid credentials');
+        return response.data;
       },
     }),
   ],
+  pages: {
+    signIn: '/auth/signin',
+    // error: '/auth/error',
+    // signOut: '/auth/signout',
+  },
   callbacks: {
-    signIn({ account, profile }: any) {
-      if (!account || !profile) return false;
-
-      if (account.provider === 'google') {
-        return profile.email_verified && profile.email?.endsWith('@gmail.com');
-      }
-      return true;
+    jwt({ token, user }) {
+      // @ts-ignore
+      if (user?._id) token = { ...user };
+      return token;
+    },
+    session({ session, token }) {
+      const newObject = { ...token };
+      delete newObject.exp;
+      delete newObject.iat;
+      delete newObject.jti;
+      session.user = newObject;
+      return session;
     },
   },
 });

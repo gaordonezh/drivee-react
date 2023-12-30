@@ -4,3 +4,10 @@ export enum ModalStateEnum {
   DELETE = 'delete',
   DISABLE = 'disable',
 }
+
+export enum RequestStatusEnum {
+  IDLE = 'idle',
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}

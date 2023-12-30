@@ -4,6 +4,7 @@ import GeneralInformation from '@/components/organisms/GeneralInformation';
 import { FaFlag } from 'react-icons/fa';
 import { MdOutlineFormatAlignRight } from 'react-icons/md';
 import { LuFileStack } from 'react-icons/lu';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 const steps = [
   {
@@ -27,6 +28,7 @@ const Rent = () => {
   return (
     <Layout layout={LayoutEnum.PUBLIC}>
       <GeneralInformation
+        roles={[UserRolesEnum.USER]}
         steps={steps}
         title="Alquila el vehículo de tus sueños"
         description="Únete a nosotros y alquila el vehículos de tus sueños mientras realices la actividad que gustes mientras ayudas a otras personas a percibir ingresos."

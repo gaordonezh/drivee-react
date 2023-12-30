@@ -17,8 +17,6 @@ server.interceptors.request.use(
       Accept: 'application/json',
     });
 
-    if (config.params) config.params.isActive = true;
-
     return config;
   },
   (error) => Promise.reject(error)
