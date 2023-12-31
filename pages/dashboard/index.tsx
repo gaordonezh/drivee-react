@@ -8,7 +8,7 @@ import { IconType } from 'react-icons/lib';
 const Dashboard = () => {
   return (
     <Layout layout={LayoutEnum.DASHBOARD}>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 border border-red-500">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           <ResumeItem icon={AiOutlineUnorderedList} title="03" subtitle="Total servicios" />
           <ResumeItem icon={AiOutlineUnorderedList} title="12" subtitle="Servicios cancelados" />

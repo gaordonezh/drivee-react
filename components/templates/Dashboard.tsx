@@ -1,8 +1,8 @@
 import React from 'react';
 import Container from '../molecules/Container';
 import Card from '../atoms/Card';
-import { MdHome, MdChecklist } from 'react-icons/md';
-import { FaListAlt, FaCar } from 'react-icons/fa';
+import { MdHome, MdFactCheck } from 'react-icons/md';
+import { FaListAlt, FaCar, FaThList } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
@@ -10,6 +10,7 @@ import useWindowDimensions from '@/hooks/useWindowDimensions';
 import HeaderPublic from '../organisms/HeaderPublic';
 import { useAppContext } from '@/context';
 import { UserRolesEnum } from '@/store/user/user.enum';
+import { IoDocumentsSharp } from 'react-icons/io5';
 
 interface PrivateLayoutProps {
   children: React.ReactNode;
@@ -31,17 +32,17 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
             <Card className="h-full">
               <ul className="flex flex-row lg:flex-col gap-2 lg:w-full justify-center">
                 <Item
-                  label={isSmall ? '' : 'Principal'}
+                  label={isSmall ? '' : 'Inicio'}
                   path="/dashboard"
                   current={pathname}
-                  icon={<MdHome size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  icon={<MdHome size={25} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                 />
                 {user?.roles.includes(UserRolesEnum.USER) && (
                   <Item
                     label={isSmall ? '' : 'Mis Rentas'}
                     path="/dashboard/orders"
                     current={pathname}
-                    icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<FaThList size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                   />
                 )}
                 {user?.roles.includes(UserRolesEnum.OWNER) && (
@@ -60,12 +61,18 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                     icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                   />
                 )}
+                <Item
+                  label={isSmall ? '' : 'Mis documentos'}
+                  path="/dashboard/documents"
+                  current={pathname}
+                  icon={<IoDocumentsSharp size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                />
                 {user?.roles.includes(UserRolesEnum.ADMIN) && (
                   <Item
                     label={isSmall ? '' : 'Revisión'}
                     path="/dashboard/review"
                     current={pathname}
-                    icon={<MdChecklist size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<MdFactCheck size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                   />
                 )}
               </ul>

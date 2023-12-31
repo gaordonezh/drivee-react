@@ -1,10 +1,12 @@
 import Alert from '@/components/atoms/Alert';
 import List from '@/components/molecules/List';
+import Layout from '@/components/templates';
+import LayoutEnum from '@/enums/layout.enum';
 import { MdOutlineClose, MdOutlineCheck, MdInfoOutline } from 'react-icons/md';
 
-const PersonalDocuments = () => {
+const Documents = () => {
   return (
-    <div className="mt-5">
+    <Layout layout={LayoutEnum.DASHBOARD}>
       <List
         title="Documentos personales"
         subtitle="Adjunte los documentos que se mencionan a continuación."
@@ -32,8 +34,8 @@ const PersonalDocuments = () => {
         title="¡Recuerde!"
         description="Después de adjuntar los documentos mencionados, estos ingresarán a revisión."
       />
-    </div>
+    </Layout>
   );
 };
 
-export default PersonalDocuments;
+export default Documents;
