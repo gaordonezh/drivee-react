@@ -20,8 +20,6 @@ export const useAppContext = () => useContext(AppContext);
 const AppProvider = ({ children, user }: AppProviderProps) => {
   const values: ContextProps = useMemo(() => ({ user }), [user]);
 
-  console.log(values.user);
-
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };
 

@@ -52,12 +52,15 @@ const Signin = () => {
     <Layout layout={LayoutEnum.AUTH}>
       <div className="mt-5">
         <h2 className="font-bold text-2xl">Iniciar Sesión</h2>
-        <p className="text-sm">Selecciona alguna cuenta para iniciar sesión</p>
+        <p className="text-sm">Selecciona una cuenta para continuar</p>
         <div className="flex flex-col gap-2 mt-5">
           <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} disabled={loading} />
           <Chip label="Continuar con GitHub" iconLeft={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} disabled={loading} />
         </div>
         <Divider className="my-5" />
+
+        <p className="text-sm mb-5">O completa el formulario para iniciar sesión</p>
+
         <Spinner loading={loading}>
           <form autoComplete="on" className="flex flex-col gap-4" onSubmit={handleSubmit(handleLogin)}>
             <Input

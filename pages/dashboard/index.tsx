@@ -4,7 +4,6 @@ import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
-// import { getSession, signIn, useSession } from 'next-auth/react';
 
 const Dashboard = () => {
   return (

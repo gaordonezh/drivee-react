@@ -15,8 +15,6 @@ const PersonalData = () => {
   const [edit, setEdit] = useState(false);
   const [fields, setFields] = useState<UserProps>({ ...user! });
 
-  console.log(fields);
-
   return (
     <div className="flex flex-col items-center gap-5">
       <div

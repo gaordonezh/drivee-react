@@ -32,7 +32,7 @@ const HeaderPublic = () => {
   }, []);
 
   const handleClose = () => {
-    signOut({ callbackUrl: '/', redirect: true });
+    signOut({ callbackUrl: '/auth/signin', redirect: true });
     deleteCookie(USER_SESSION_KEY);
   };
 

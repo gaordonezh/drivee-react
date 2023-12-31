@@ -6,7 +6,7 @@ import Input from '@/components/atoms/Input';
 import DatePicker from '@/components/organisms/DatePicker';
 import moment from 'moment-timezone';
 import Button from '@/components/atoms/Button';
-import { BsArrowRight, BsGithub } from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import Spinner from '../molecules/Spinner';
 import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
@@ -17,10 +17,6 @@ import { useState } from 'react';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import { UserRolesEnum } from '@/store/user/user.enum';
 import Alert from '../atoms/Alert';
-import Chip from '../atoms/Chip';
-import { signIn } from 'next-auth/react';
-import Divider from '../protons/Divider';
-import { FcGoogle } from 'react-icons/fc';
 
 interface GeneralInformationProps {
   steps: Array<{ title: string; detail: string; icon: IconType }>;
@@ -129,16 +125,8 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                 <div className="p-2 lg:p-10">
                   <div className="mb-5">
                     <h2 className="font-semibold text-lg">¡Comencemos!</h2>
-                    <p className="text-sm">Selecciona alguna cuenta para iniciar con tu registro</p>
+                    <p className="text-sm">Completa el formulario para comenzar</p>
                   </div>
-
-                  <div className="flex flex-col gap-2">
-                    <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} />
-                    <Chip label="Continuar con GitHub" iconLeft={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} />
-                  </div>
-                  <Divider className="my-5" />
-
-                  <p className="text-sm mb-5">O completa el formulario para comenzar</p>
 
                   {createUserState === RequestStatusEnum.SUCCESS && (
                     <Alert title="Revisa tu bandeja de entrada!" description={`Se envió un correo a ${email}`} />

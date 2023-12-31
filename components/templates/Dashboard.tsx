@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import HeaderPublic from '../organisms/HeaderPublic';
+import { useAppContext } from '@/context';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 interface PrivateLayoutProps {
   children: React.ReactNode;
@@ -16,6 +18,7 @@ interface PrivateLayoutProps {
 const PrivateLayout = ({ children }: PrivateLayoutProps) => {
   const { pathname } = useRouter();
   const { width } = useWindowDimensions();
+  const { user } = useAppContext();
   const isSmall = width < 1024;
 
   return (
@@ -33,24 +36,38 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                   current={pathname}
                   icon={<MdHome size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
                 />
-                <Item
-                  label={isSmall ? '' : 'Rentas'}
-                  path="/dashboard/orders"
-                  current={pathname}
-                  icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
-                <Item
-                  label={isSmall ? '' : 'Automóviles'}
-                  path="/dashboard/cars"
-                  current={pathname}
-                  icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
-                <Item
-                  label={isSmall ? '' : 'Revisión'}
-                  path="/dashboard/review"
-                  current={pathname}
-                  icon={<MdChecklist size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
+                {user?.roles.includes(UserRolesEnum.USER) && (
+                  <Item
+                    label={isSmall ? '' : 'Mis Rentas'}
+                    path="/dashboard/orders"
+                    current={pathname}
+                    icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  />
+                )}
+                {user?.roles.includes(UserRolesEnum.OWNER) && (
+                  <Item
+                    label={isSmall ? '' : 'Mis Alquileres'}
+                    path="/dashboard/rentals"
+                    current={pathname}
+                    icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  />
+                )}
+                {user?.roles.includes(UserRolesEnum.OWNER) && (
+                  <Item
+                    label={isSmall ? '' : 'Automóviles'}
+                    path="/dashboard/cars"
+                    current={pathname}
+                    icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  />
+                )}
+                {user?.roles.includes(UserRolesEnum.ADMIN) && (
+                  <Item
+                    label={isSmall ? '' : 'Revisión'}
+                    path="/dashboard/review"
+                    current={pathname}
+                    icon={<MdChecklist size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  />
+                )}
               </ul>
             </Card>
           </div>

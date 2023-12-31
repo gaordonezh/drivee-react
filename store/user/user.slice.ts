@@ -41,9 +41,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    resetPasswordState(state, action: PayloadAction<number>) {
-      console.log(state, action);
-    },
+    resetPasswordState(state, action: PayloadAction<number>) {},
   },
   extraReducers: (builder) => {
     builder

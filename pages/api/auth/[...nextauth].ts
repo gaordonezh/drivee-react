@@ -3,6 +3,14 @@ import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import server from '@/server';
+import { UserRolesEnum } from '@/store/user/user.enum';
+import { JWT_SECRET_SEED } from '@/utils/constants';
+
+const staticData = {
+  roles: [UserRolesEnum.USER],
+  secret: JWT_SECRET_SEED,
+  provider: 'Google',
+};
 
 export default NextAuth({
   session: {
@@ -30,13 +38,18 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/auth/signin',
-    // error: '/auth/error',
+    error: '/auth/error',
     // signOut: '/auth/signout',
   },
   callbacks: {
-    jwt({ token, user }) {
-      // @ts-ignore
-      if (user?._id) token = { ...user };
+    async jwt({ token, user, account }) {
+      if (account?.provider === 'google') {
+        const response = await server.post('auth/google', { email: token.email, f_name: token.name, ...staticData });
+        token = { ...response.data };
+      }
+      if (account?.provider === 'credentials') {
+        token = { ...user };
+      }
       return token;
     },
     session({ session, token }) {
