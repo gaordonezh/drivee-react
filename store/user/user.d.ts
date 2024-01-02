@@ -30,7 +30,7 @@ export interface UpdateUserBodyProps {
   // n_doc: string;
   sex: UserSexEnum;
   date_birth: Date | null;
-  address: AddressProps;
+  address: AddressProps | null;
   photo: string;
   files?: Array<File>;
 }
@@ -58,9 +58,10 @@ export interface AddressProps {
   ubigeo?: string;
   address: string;
   location: LocationProps;
+  id: string;
 }
 
 export interface LocationProps {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
 }

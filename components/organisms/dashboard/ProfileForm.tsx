@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
 import { EMAIL_PATTERN, PHONE_PATTERN } from '@/utils/constants';
 import DatePicker from '../DatePicker';
 import moment from 'moment-timezone';
-import { combineClassnames } from '@/utils/functions';
+import { combineClassnames, objectCleaner } from '@/utils/functions';
 import Button from '@/components/atoms/Button';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import Spinner from '@/components/molecules/Spinner';
@@ -18,6 +18,7 @@ import { USER_SEX_TRANSLATE } from '@/utils/translate';
 import Alert from '@/components/atoms/Alert';
 import CustomDropZone from '../DropZone';
 import { uploadFile } from '@/store/files/files.slice';
+import SearchLocationWithMaps from '@/components/molecules/SearchLocationWithMaps';
 
 interface ProfileFormProps {
   handleClose: VoidFunction;
@@ -75,7 +76,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
       if (result.payload.url) data.photo = result.payload.url;
     }
 
-    const res = await dispatch(updateUser({ body: data, user_id: user?._id! }));
+    const res = await dispatch(updateUser({ body: objectCleaner(data), user_id: user?._id! }));
     // @ts-ignore
     if (res.error) return;
     handleClose();
@@ -92,7 +93,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
           <Alert title="No se logró actualizar tus datos." description="Disculpe las molestias, intente mas tarde." variant="error" />
         )}
         <Input
-          label="Nombres"
+          label="Nombres *"
           placeholder="Ingresa tu nombre"
           error={Boolean(errors.f_name)}
           errorMessage={errors.f_name?.message ?? ''}
@@ -109,7 +110,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
         />
 
         <Input
-          label="Apellidos"
+          label="Apellidos *"
           placeholder="Ingresa tus apellidos"
           error={Boolean(errors.l_name)}
           errorMessage={errors.l_name?.message ?? ''}
@@ -126,7 +127,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
         />
 
         <Input
-          label="Correo"
+          label="Correo *"
           placeholder="Ingresa tu correo"
           type="email"
           error={Boolean(errors.email)}
@@ -153,7 +154,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
           control={control}
           render={({ field }) => (
             <div>
-              <p className="font-semibold">Fecha de nacimiento</p>
+              <p className="font-semibold">Fecha de nacimiento *</p>
               <DatePicker
                 selected={field.value}
                 onChange={(update) => {
@@ -170,7 +171,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
         />
 
         <Input
-          label="Celular"
+          label="Celular *"
           placeholder="Ingresa tu n° celular"
           type="tel"
           error={Boolean(errors.phone)}
@@ -230,7 +231,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
           render={({ field }) => (
             <Select
               value={field.value}
-              label="Sexo"
+              label="Sexo *"
               setValue={(newValue) => setValue('sex', newValue as UserSexEnum, { shouldValidate: true })}
               data={Object.values(UserSexEnum).map((item) => ({ _id: item, name: USER_SEX_TRANSLATE[item] }))}
               error={Boolean(errors.sex)}
@@ -244,12 +245,31 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
           control={control}
           render={({ field }) => (
             <div>
-              <p className="font-semibold">Foto de perfil</p>
+              <p className="font-semibold">Foto de perfil (opcional)</p>
               <CustomDropZone
                 files={field.value!}
                 setFiles={(newFiles) => setValue('files', newFiles)}
                 accept={{ 'image/jpeg': ['.jpeg', '.png', 'jpg', '.webp'] }}
                 max={1}
+              />
+            </div>
+          )}
+        />
+
+        <Controller
+          name="address"
+          control={control}
+          render={({ field }) => (
+            <div>
+              <p className="font-semibold">Ubicación (opcional)</p>
+              <SearchLocationWithMaps
+                auxValue={field.value ? { location: field.value.location, text: field.value.address, value: field.value.id } : null}
+                setAuxValue={(newParams) =>
+                  setValue('address', newParams ? { location: newParams.location, address: newParams.text, id: newParams.value } : null, {
+                    shouldValidate: true,
+                  })
+                }
+                className="w-full h-[300px] mt-1"
               />
             </div>
           )}
