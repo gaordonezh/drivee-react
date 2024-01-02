@@ -9,6 +9,7 @@ export interface ValidateUserBodyProps {
   n_doc?: string;
   email?: string;
   phone?: string;
+  user?: string;
 }
 
 export interface CreateUserBodyProps {
@@ -18,6 +19,20 @@ export interface CreateUserBodyProps {
   phone: string;
   roles: Array<UserRolesEnum>;
   date_birth: string;
+}
+
+export interface UpdateUserBodyProps {
+  f_name: string;
+  l_name: string;
+  email: string;
+  phone: string;
+  // t_doc: UserTypeDocumentEnum;
+  // n_doc: string;
+  sex: UserSexEnum;
+  date_birth: Date | null;
+  address: AddressProps;
+  photo: string;
+  files?: Array<File>;
 }
 
 export interface UserProps {
@@ -37,10 +52,10 @@ export interface UserProps {
 }
 
 export interface AddressProps {
-  region: string;
-  province: string;
-  district: string;
-  ubigeo: string;
+  region?: string;
+  province?: string;
+  district?: string;
+  ubigeo?: string;
   address: string;
   location: LocationProps;
 }

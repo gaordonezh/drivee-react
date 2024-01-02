@@ -1,32 +1,36 @@
-import Card from '@/components/atoms/Card';
-import TableResume from '@/components/organisms/dashboard/TableResume';
+import Alert from '@/components/atoms/Alert';
+import Divider from '@/components/protons/Divider';
 import Layout from '@/components/templates';
+import { useAppContext } from '@/context';
 import LayoutEnum from '@/enums/layout.enum';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { IconType } from 'react-icons/lib';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 const Dashboard = () => {
-  return (
-    <Layout layout={LayoutEnum.DASHBOARD}>
-      <div className="flex flex-col gap-5 border border-red-500">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          <ResumeItem icon={AiOutlineUnorderedList} title="03" subtitle="Total servicios" />
-          <ResumeItem icon={AiOutlineUnorderedList} title="12" subtitle="Servicios cancelados" />
-          <ResumeItem icon={AiOutlineUnorderedList} title="02" subtitle="Solicitudes nuevas" />
-        </div>
+  const { user } = useAppContext();
 
-        <TableResume />
+  return (
+    <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.USER, UserRolesEnum.OWNER, UserRolesEnum.ADMIN]}>
+      <div className="flex flex-col gap-5">
+        <div>
+          <h1 className="text-3xl font-bold">Hola {user?.f_name}</h1>
+          <p className="font-normal text-slate-500">
+            Bienvenido de nuevo a <b>Drivee</b>. Aquí podrás gestionar todas tus transacciones.
+          </p>
+        </div>
+        <Divider />
+        <Alert
+          title="Documentos personales"
+          description="Te queda pendiente adjuntar tus documentos personales. Puedes realizarlo en el apartado de 'Mis documentos'."
+          variant="warning"
+        />
+        <Alert
+          title="Documentos vehículares"
+          description="Te queda pendiente adjuntar algunos documentos de tu vehículo. Puedes realizarlo en el apartado de 'Automóviles'."
+          variant="warning"
+        />
       </div>
     </Layout>
   );
 };
 
 export default Dashboard;
-
-const ResumeItem = ({ icon: Icon, title, subtitle }: { icon: IconType; title: string; subtitle: string }) => (
-  <Card className="flex flex-col gap-3">
-    <Icon size={40} color="#2F2F2F" />
-    <p className="font-bold text-4xl">{title}</p>
-    <p className="text-gray-500">{subtitle}</p>
-  </Card>
-);

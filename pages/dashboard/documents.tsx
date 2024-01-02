@@ -2,11 +2,12 @@ import Alert from '@/components/atoms/Alert';
 import List from '@/components/molecules/List';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
+import { UserRolesEnum } from '@/store/user/user.enum';
 import { MdOutlineClose, MdOutlineCheck, MdInfoOutline } from 'react-icons/md';
 
 const Documents = () => {
   return (
-    <Layout layout={LayoutEnum.DASHBOARD}>
+    <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.USER, UserRolesEnum.OWNER, UserRolesEnum.ADMIN]}>
       <List
         title="Documentos personales"
         subtitle="Adjunte los documentos que se mencionan a continuación."

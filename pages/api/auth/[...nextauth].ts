@@ -1,5 +1,4 @@
 import NextAuth from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import server from '@/server';
@@ -17,10 +16,6 @@ export default NextAuth({
     strategy: 'jwt',
   },
   providers: [
-    GithubProvider({
-      clientId: String(process.env.GITHUB_CLIENT_ID),
-      clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
-    }),
     GoogleProvider({
       clientId: String(process.env.GOOGLE_CLIENT_ID),
       clientSecret: String(process.env.GOOGLE_CLIENT_SECRET),

@@ -57,7 +57,10 @@ const HeaderPublic = () => {
 
           {user ? (
             <div className="dropdown__avatar hidden lg:block">
-              <div className="h-[33px] w-[33px] rounded-full bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url(${IMAGE_LIST[0]})` }} />
+              <div
+                className="h-[33px] w-[33px] rounded-full bg-no-repeat bg-cover bg-center"
+                style={{ backgroundImage: `url(${user.photo ?? '/images/profile.png'})` }}
+              />
               <div className="dropdown__avatar--content">
                 <div className="flex flex-col gap-5">
                   <p className="text-slate-800 font-semibold">
@@ -94,7 +97,7 @@ const HeaderPublic = () => {
                 <div className="flex flex-row gap-5 items-center">
                   <div
                     className="h-[50px] w-[50px] rounded-full bg-no-repeat bg-cover bg-center"
-                    style={{ backgroundImage: `url(${IMAGE_LIST[0]})` }}
+                    style={{ backgroundImage: `url(${user.phone ?? '/images/profile.png'})` }}
                   />
                   <div>
                     <p className="text-white font-semibold text-lg">Hola {user.f_name}</p>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getSession, signIn } from 'next-auth/react';
-import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '@/components/atoms/Button';
 import Chip from '@/components/atoms/Chip';
@@ -55,7 +54,6 @@ const Signin = () => {
         <p className="text-sm">Selecciona una cuenta para continuar</p>
         <div className="flex flex-col gap-2 mt-5">
           <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} disabled={loading} />
-          <Chip label="Continuar con GitHub" iconLeft={<BsGithub size={20} color="111111" />} onClick={() => signIn('github')} disabled={loading} />
         </div>
         <Divider className="my-5" />
 

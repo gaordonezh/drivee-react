@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import server from '@/server';
-import { CreatePasswordBodyProps, CreateUserBodyProps, ValidateUserBodyProps } from './user';
+import { CreatePasswordBodyProps, CreateUserBodyProps, UpdateUserBodyProps, ValidateUserBodyProps } from './user';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 
 const initialState = {
   createPasswordState: RequestStatusEnum.IDLE,
   validateUserState: RequestStatusEnum.IDLE,
   createUserState: RequestStatusEnum.IDLE,
+  updateUserState: RequestStatusEnum.IDLE,
 };
 
 export const createPassword = createAsyncThunk('user/createPassword', async (body: CreatePasswordBodyProps, thunkAPI) => {
@@ -37,11 +38,23 @@ export const createUser = createAsyncThunk('user/createUser', async (body: Creat
   }
 });
 
+export const updateUser = createAsyncThunk('user/updateUser', async ({ body, user_id }: { body: UpdateUserBodyProps; user_id: string }, thunkAPI) => {
+  try {
+    const response = await server.put(`users/${user_id}`, body);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     resetPasswordState(state, action: PayloadAction<number>) {},
+    resetUpdateUserState(state) {
+      state.updateUserState = RequestStatusEnum.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -76,9 +89,19 @@ const userSlice = createSlice({
       })
       .addCase(String(createUser.rejected), (state) => {
         state.createUserState = RequestStatusEnum.ERROR;
+      })
+
+      .addCase(String(updateUser.pending), (state) => {
+        state.updateUserState = RequestStatusEnum.PENDING;
+      })
+      .addCase(String(updateUser.fulfilled), (state) => {
+        state.updateUserState = RequestStatusEnum.SUCCESS;
+      })
+      .addCase(String(updateUser.rejected), (state) => {
+        state.updateUserState = RequestStatusEnum.ERROR;
       });
   },
 });
 
-export const {} = userSlice.actions;
+export const { resetUpdateUserState } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,11 +2,12 @@ import React from 'react';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import TableReview from '@/components/organisms/dashboard/TableReview';
+import { UserRolesEnum } from '@/store/user/user.enum';
 // import ConfirmAction from '@/components/molecules/ConfirmAction';
 
 const ReviewDocuments = () => {
   return (
-    <Layout layout={LayoutEnum.DASHBOARD}>
+    <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.ADMIN]}>
       <TableReview />
 
       {/* <ConfirmAction

@@ -16,6 +16,7 @@ import Button from '@/components/atoms/Button';
 import { IoDocumentTextSharp } from 'react-icons/io5';
 import Modal from '@/components/molecules/Modal';
 import Spinner from '@/components/molecules/Spinner';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 const Cars = () => {
   const [modal, setModal] = useState<{ mode: null | ModalStateEnum; data: null }>({ mode: null, data: null });
@@ -39,7 +40,7 @@ const Cars = () => {
   };
 
   return (
-    <Layout layout={LayoutEnum.DASHBOARD}>
+    <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.OWNER, UserRolesEnum.ADMIN]}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-10">
         {Array.from(Array(5).keys()).map((item) => (
           <Card key={item}>

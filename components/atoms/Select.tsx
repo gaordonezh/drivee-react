@@ -15,11 +15,11 @@ interface SelectProps {
   placeholder: string;
   onSearch?: (value: string) => void;
   initialSearch?: string;
+  error?: boolean;
+  errorMessage?: string;
 }
 
-const iconProps = { className: 'absolute right-2 bottom-3 bg-white', size: 20 };
-
-const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, value, setValue, onSearch }: SelectProps) => {
+const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, error, errorMessage, value, setValue, onSearch }: SelectProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState<DataType>([]);
@@ -72,6 +72,8 @@ const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, 
     setOpen(newState);
   };
 
+  const iconProps = { className: combineClassnames('absolute right-2 bg-white', errorMessage ? 'bottom-7' : 'bottom-3'), size: 20 };
+
   return (
     <div className="relative w-full">
       <Input
@@ -82,6 +84,8 @@ const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, 
         onFocus={() => handleClose(true)}
         onBlur={() => handleClose(false)}
         onChange={(event) => handleChange(event.target.value)}
+        error={error}
+        errorMessage={errorMessage}
       />
 
       {open ? <IoIosArrowUp {...iconProps} /> : <IoIosArrowDown {...iconProps} />}

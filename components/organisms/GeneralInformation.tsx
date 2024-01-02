@@ -41,7 +41,6 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
     setValue,
     setError,
     clearErrors,
@@ -142,7 +141,7 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       placeholder="Ingresa tus nombres"
                       label="Ingresa tus nombres"
                       error={Boolean(errors.f_name)}
-                      errorMessage={errors.f_name?.message || ''}
+                      errorMessage={errors.f_name?.message ?? ''}
                       {...register('f_name', {
                         validate: {
                           required: (value) => {
@@ -158,7 +157,7 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       placeholder="Ingresa tus apellidos"
                       label="Apellidos"
                       error={Boolean(errors.l_name)}
-                      errorMessage={errors.l_name?.message || ''}
+                      errorMessage={errors.l_name?.message ?? ''}
                       {...register('l_name', {
                         validate: {
                           required: (value) => {
@@ -175,7 +174,7 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       type="email"
                       label="Correo"
                       error={Boolean(errors.email)}
-                      errorMessage={errors.email?.message || ''}
+                      errorMessage={errors.email?.message ?? ''}
                       autoComplete="email"
                       {...register('email', {
                         pattern: { message: 'Ingresa un correo válido', value: EMAIL_PATTERN },
@@ -217,7 +216,7 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
                       type="tel"
                       label="Celular"
                       error={Boolean(errors.phone)}
-                      errorMessage={errors.phone?.message || ''}
+                      errorMessage={errors.phone?.message ?? ''}
                       {...register('phone', {
                         required: { value: true, message: 'El número de teléfono es requerido' },
                         pattern: { value: PHONE_PATTERN, message: 'Ingrese un número de teléfono válido' },

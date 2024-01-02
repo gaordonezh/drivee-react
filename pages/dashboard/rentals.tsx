@@ -3,6 +3,7 @@ import TableOrders from '@/components/organisms/dashboard/TableOrders';
 import Tabs from '@/components/organisms/dashboard/Tabs';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
+import { UserRolesEnum } from '@/store/user/user.enum';
 
 const labels = ['Pendientes', 'Completados', 'Cancelados'];
 
@@ -16,7 +17,7 @@ const Rentals = () => {
   };
 
   return (
-    <Layout layout={LayoutEnum.DASHBOARD}>
+    <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.OWNER, UserRolesEnum.ADMIN]}>
       <Tabs labels={labels} active={tab} onChange={setTab} />
       <div className="border border-gray-200 border-t-0 p-2">{tabs[tab]}</div>
     </Layout>
