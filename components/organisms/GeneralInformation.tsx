@@ -10,13 +10,14 @@ import { BsArrowRight } from 'react-icons/bs';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import Spinner from '../molecules/Spinner';
 import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
-import { createUser, validateUser } from '@/store/user/user.slice';
-import { CreateUserBodyProps, ValidateUserBodyProps } from '@/store/user/user';
+import { createUser } from '@/store/user/user.slice';
+import { CreateUserBodyProps } from '@/store/user/user';
 import { EMAIL_PATTERN, PHONE_PATTERN } from '@/utils/constants';
 import { useState } from 'react';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import { UserRolesEnum } from '@/store/user/user.enum';
 import Alert from '../atoms/Alert';
+import useUserDataValidations from '@/hooks/useUserDataValidations';
 
 interface GeneralInformationProps {
   steps: Array<{ title: string; detail: string; icon: IconType }>;
@@ -47,8 +48,8 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
     reset,
   } = useForm<Inputs>({ mode: 'onChange', defaultValues: { dateBorn: null } });
   const dispatch = useAppDispatch();
+  const validateUserFields = useUserDataValidations();
   const { validateUserState, createUserState } = useAppSelector((state) => state.user);
-  const [writeTimeout, setWriteTimeout] = useState<NodeJS.Timeout>();
   const [email, setEmail] = useState('');
   const isLoading = createUserState === RequestStatusEnum.PENDING || validateUserState === RequestStatusEnum.PENDING;
   const disabledForm = createUserState === RequestStatusEnum.ERROR || validateUserState === RequestStatusEnum.ERROR || Boolean(email);
@@ -68,18 +69,6 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
     // @ts-ignore
     if (res.error) return;
     reset();
-  };
-
-  const validateUserFields = async (fields: ValidateUserBodyProps): Promise<Record<'email' | 'phone', boolean>> => {
-    const result: Record<'email' | 'phone', boolean> = await new Promise((resolve) => {
-      clearTimeout(writeTimeout);
-      const timeoutAux = setTimeout(async () => {
-        const res = await dispatch(validateUser(fields));
-        resolve(res.payload);
-      }, 700);
-      setWriteTimeout(timeoutAux);
-    });
-    return result;
   };
 
   return (

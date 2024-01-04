@@ -1,8 +1,8 @@
 import React from 'react';
 import Container from '../molecules/Container';
 import Card from '../atoms/Card';
-import { MdHome, MdFactCheck } from 'react-icons/md';
-import { FaListAlt, FaCar, FaThList } from 'react-icons/fa';
+import { MdFactCheck } from 'react-icons/md';
+import { FaListAlt, FaCar, FaThList, FaHome } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
@@ -31,18 +31,13 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
           <div className="w-full lg:w-[300px]">
             <Card className="h-full">
               <ul className="flex flex-row lg:flex-col gap-2 lg:w-full justify-center">
-                <Item
-                  label={isSmall ? '' : 'Inicio'}
-                  path="/dashboard"
-                  current={pathname}
-                  icon={<MdHome size={25} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
-                />
+                <Item label={isSmall ? '' : 'Inicio'} path="/dashboard" current={pathname} icon={<FaHome className="w-[20px] h-[20px]" />} />
                 {user?.roles.includes(UserRolesEnum.USER) && (
                   <Item
                     label={isSmall ? '' : 'Mis Rentas'}
                     path="/dashboard/orders"
                     current={pathname}
-                    icon={<FaThList size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<FaThList className="w-[20px] h-[20px]" />}
                   />
                 )}
                 {user?.roles.includes(UserRolesEnum.OWNER) && (
@@ -50,7 +45,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                     label={isSmall ? '' : 'Mis Alquileres'}
                     path="/dashboard/rentals"
                     current={pathname}
-                    icon={<FaListAlt size={18} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<FaListAlt className="w-[20px] h-[20px]" />}
                   />
                 )}
                 {user?.roles.includes(UserRolesEnum.OWNER) && (
@@ -58,21 +53,21 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                     label={isSmall ? '' : 'Automóviles'}
                     path="/dashboard/cars"
                     current={pathname}
-                    icon={<FaCar size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<FaCar className="w-[20px] h-[20px]" />}
                   />
                 )}
                 <Item
                   label={isSmall ? '' : 'Mis documentos'}
                   path="/dashboard/documents"
                   current={pathname}
-                  icon={<IoDocumentsSharp size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                  icon={<IoDocumentsSharp className="w-[20px] h-[20px]" />}
                 />
                 {user?.roles.includes(UserRolesEnum.ADMIN) && (
                   <Item
                     label={isSmall ? '' : 'Revisión'}
                     path="/dashboard/review"
                     current={pathname}
-                    icon={<MdFactCheck size={20} className={combineClassnames(isSmall ? '' : 'w-[30px]')} />}
+                    icon={<MdFactCheck className="w-[20px] h-[20px]" />}
                   />
                 )}
               </ul>
@@ -97,8 +92,11 @@ const Item = ({ path, label, current, icon }: { path: string; label: string; cur
   const isActive = path === current;
   return (
     <li className={combineClassnames('rounded overflow-hidden', isActive ? active.li : inactive.li)}>
-      <Link className={combineClassnames('px-5 py-2 font-bold items-center gap-2 flex flex-row', isActive ? active.a : inactive.a)} href={path}>
-        {icon}
+      <Link
+        className={combineClassnames('p-2 sm:px-5 sm:py-2 font-bold items-center gap-2 flex flex-row', isActive ? active.a : inactive.a)}
+        href={path}
+      >
+        <div className="w-[20px] h-[20px]">{icon}</div>
         {label}
       </Link>
     </li>

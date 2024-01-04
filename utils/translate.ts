@@ -1,3 +1,4 @@
+import { CombinedDocumentEnum } from '@/store/documents/documents.enum';
 import { UserSexEnum, UserTypeDocumentEnum } from '@/store/user/user.enum';
 
 export const USER_SEX_TRANSLATE = {
@@ -8,8 +9,12 @@ export const USER_SEX_TRANSLATE = {
 
 export const USER_TDOC_TRANSLATE = {
   [UserTypeDocumentEnum.DNI]: 'DNI',
-  [UserTypeDocumentEnum.RUC]: 'RUC',
   [UserTypeDocumentEnum.PTP]: 'Permiso Temporal de Permanencia (PTP)',
   [UserTypeDocumentEnum.CNT_EXT]: 'Carné de extranjería',
   [UserTypeDocumentEnum.PASSPORT]: 'Pasaporte',
+};
+
+export const DOCUMENT_TYPES_TRANSLATE = {
+  [CombinedDocumentEnum.IDENTIFICATION_CARD]: 'Documento de identificación',
+  [CombinedDocumentEnum.SOAT]: 'SOAT',
 };

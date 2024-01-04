@@ -17,9 +17,23 @@ interface SelectProps {
   initialSearch?: string;
   error?: boolean;
   errorMessage?: string;
+  disabled?: boolean;
 }
 
-const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, error, errorMessage, value, setValue, onSearch }: SelectProps) => {
+const Select = ({
+  data,
+  initialSearch,
+  keyToShow,
+  keyToGey,
+  label,
+  placeholder,
+  error,
+  errorMessage,
+  value,
+  setValue,
+  onSearch,
+  disabled,
+}: SelectProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState<DataType>([]);
@@ -86,6 +100,7 @@ const Select = ({ data, initialSearch, keyToShow, keyToGey, label, placeholder, 
         onChange={(event) => handleChange(event.target.value)}
         error={error}
         errorMessage={errorMessage}
+        disabled={disabled}
       />
 
       {open ? <IoIosArrowUp {...iconProps} /> : <IoIosArrowDown {...iconProps} />}

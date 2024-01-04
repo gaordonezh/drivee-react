@@ -9,7 +9,7 @@ interface ListProps {
   action?: React.ReactNode;
 }
 
-interface ListItemProps {
+export interface ListItemProps {
   title: string;
   value: React.ReactNode;
   bold?: boolean;

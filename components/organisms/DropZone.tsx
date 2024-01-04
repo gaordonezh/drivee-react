@@ -9,9 +9,10 @@ export interface CustomDropZoneProps extends DropzoneProps {
   setFiles: (files: Array<File>) => void;
   max?: number;
   className?: string;
+  containerClassName?: string;
 }
 
-const CustomDropZone = ({ files, setFiles, max = 2, className, ...props }: CustomDropZoneProps) => {
+const CustomDropZone = ({ files, setFiles, max = 2, className, containerClassName, ...props }: CustomDropZoneProps) => {
   const staticSize = 3;
   const [sizeFiles, setSizeFiles] = useState(3);
   const [message, setMessage] = useState('');
@@ -46,7 +47,7 @@ const CustomDropZone = ({ files, setFiles, max = 2, className, ...props }: Custo
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className={combineClassnames('relative', containerClassName)}>
       <div
         className={combineClassnames('border border-dashed border-gray-300 bg-gray-100 cursor-pointer w-full px-5 h-[50px]', className)}
         {...getRootProps()}
