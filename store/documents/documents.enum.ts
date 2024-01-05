@@ -10,6 +10,10 @@ export enum PersonalDocumentTypesEnum {
 }
 export enum VehicleDocumentTypesEnum {
   SOAT = 'SOAT',
+  DRIVER_LICENSE = 'DRIVER_LICENSE',
+  OWNERSHIP_CARD = 'OWNERSHIP_CARD',
+  POLARIZED_GLASS = 'POLARIZED_GLASS',
+  TECHNICAL_INSPECTION = 'TECHNICAL_INSPECTION',
 }
 export const CombinedDocumentEnum = {
   ...PersonalDocumentTypesEnum,

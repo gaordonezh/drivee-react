@@ -56,7 +56,8 @@ const userSlice = createSlice({
       })
       .addCase(String(getDocuments.fulfilled), (state, action) => {
         // @ts-ignore
-        const documentList = Object.values(action.meta.arg.kind === 'personal' ? PersonalDocumentTypesEnum : VehicleDocumentTypesEnum);
+        const kind = action.meta.arg.kind;
+        const documentList = kind ? Object.values(kind === 'personal' ? PersonalDocumentTypesEnum : VehicleDocumentTypesEnum) : [];
         // @ts-ignore
         const existDocs: Array<DocumentProps> = action.payload.docs;
         const aux = documentList.map((type: DocumentTypesEnum) => {
@@ -66,6 +67,7 @@ const userSlice = createSlice({
             title: DOCUMENT_TYPES_TRANSLATE[type],
             status: finder?.status ?? DocumentStatusEnum.PENDING,
             _id: finder?._id,
+            comment: finder?.comment,
           });
         });
         state.auxDocuments = aux;

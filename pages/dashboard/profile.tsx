@@ -10,6 +10,7 @@ import ProfileForm from '@/components/organisms/dashboard/ProfileForm';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import Alert from '@/components/atoms/Alert';
 import { useAppSelector } from '@/hooks/useStore';
+import { USER_SEX_TRANSLATE, USER_TDOC_TRANSLATE } from '@/utils/translate';
 
 const defaultText = '—';
 
@@ -45,9 +46,9 @@ const Profile = () => {
                 { title: 'Correo', value: user?.email ?? defaultText },
                 { title: 'Fecha de nacimiento', value: user?.date_birth ?? defaultText },
                 { title: 'Celular', value: user?.phone ?? defaultText },
-                { title: 'Tipo documento', value: user?.t_doc ?? defaultText },
+                { title: 'Tipo documento', value: user?.t_doc ? USER_TDOC_TRANSLATE[user.t_doc] : defaultText },
                 { title: 'Nro documento', value: user?.n_doc ?? defaultText },
-                { title: 'Sexo', value: user?.sex ?? defaultText },
+                { title: 'Sexo', value: user?.sex ? USER_SEX_TRANSLATE[user.sex] : defaultText },
                 { title: 'Dirección', value: user?.address?.address ?? defaultText },
               ]}
             />

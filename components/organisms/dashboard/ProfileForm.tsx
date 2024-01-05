@@ -1,11 +1,11 @@
 import Input from '@/components/atoms/Input';
 import { useAppContext } from '@/context';
 import { UpdateUserBodyProps } from '@/store/user/user';
-import { UserSexEnum } from '@/store/user/user.enum';
+import { UserSexEnum, UserTypeDocumentEnum } from '@/store/user/user.enum';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { resetUpdateUserState, updateUser } from '@/store/user/user.slice';
 import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
-import { EMAIL_PATTERN, PHONE_PATTERN } from '@/utils/constants';
+import { EMAIL_PATTERN, N_DOC_PATTERN, PHONE_PATTERN } from '@/utils/constants';
 import DatePicker from '../DatePicker';
 import moment from 'moment-timezone';
 import { combineClassnames, objectCleaner } from '@/utils/functions';
@@ -13,7 +13,7 @@ import Button from '@/components/atoms/Button';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import Spinner from '@/components/molecules/Spinner';
 import Select from '@/components/atoms/Select';
-import { USER_SEX_TRANSLATE } from '@/utils/translate';
+import { USER_SEX_TRANSLATE, USER_TDOC_TRANSLATE } from '@/utils/translate';
 import Alert from '@/components/atoms/Alert';
 import CustomDropZone from '../DropZone';
 import { uploadFile } from '@/store/files/files.slice';
@@ -47,6 +47,8 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
       f_name: user?.f_name,
       l_name: user?.l_name,
       email: user?.email,
+      t_doc: user?.t_doc,
+      n_doc: user?.n_doc,
       phone: user?.phone,
       sex: user?.sex,
       date_birth: user?.date_birth ? new Date(user.date_birth) : null,
@@ -129,6 +131,41 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
                 if (!EMAIL_PATTERN.test(value)) return '';
                 const res = await validateUserFields({ email: value, user: user?._id });
                 if (res.email) return 'El correo no se encuentra disponible';
+              },
+            },
+          })}
+        />
+
+        <Controller
+          name="t_doc"
+          rules={{ required: { value: true, message: 'El tipo de documento es requerido' } }}
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              label="Tipo Documento"
+              setValue={(newValue) => setValue('t_doc', newValue as UserTypeDocumentEnum, { shouldValidate: true })}
+              data={Object.values(UserTypeDocumentEnum).map((item) => ({ _id: item, name: USER_TDOC_TRANSLATE[item] }))}
+              error={Boolean(errors.t_doc)}
+              errorMessage={errors.t_doc?.message ?? ''}
+            />
+          )}
+        />
+
+        <Input
+          label="Nro Documento"
+          placeholder="Ingresa tu nro documento"
+          type="tel"
+          error={Boolean(errors.n_doc)}
+          errorMessage={errors.n_doc?.message ?? ''}
+          {...register('n_doc', {
+            required: { value: true, message: 'El número de documento es requerido' },
+            pattern: { value: N_DOC_PATTERN, message: 'Ingrese un número de documento válido' },
+            validate: {
+              phoneExist: async (value) => {
+                if (!N_DOC_PATTERN.test(value)) return;
+                const res = await validateUserFields({ n_doc: value, user: user?._id });
+                if (res.n_doc) return 'No se encuentra disponible';
               },
             },
           })}

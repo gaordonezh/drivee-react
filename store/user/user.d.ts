@@ -25,6 +25,8 @@ export interface UpdateUserBodyProps {
   f_name: string;
   l_name: string;
   email: string;
+  t_doc: UserTypeDocumentEnum;
+  n_doc: string;
   phone: string;
   sex: UserSexEnum;
   date_birth: Date | null;

@@ -17,4 +17,8 @@ export const USER_TDOC_TRANSLATE = {
 export const DOCUMENT_TYPES_TRANSLATE = {
   [CombinedDocumentEnum.IDENTIFICATION_CARD]: 'Documento de identificación',
   [CombinedDocumentEnum.SOAT]: 'SOAT',
+  [CombinedDocumentEnum.DRIVER_LICENSE]: 'Licencia de conducir',
+  [CombinedDocumentEnum.OWNERSHIP_CARD]: 'Tarjeta de propiedad',
+  [CombinedDocumentEnum.TECHNICAL_INSPECTION]: 'Inspección técnica',
+  [CombinedDocumentEnum.POLARIZED_GLASS]: 'Autorización para vidrio polarizado',
 };

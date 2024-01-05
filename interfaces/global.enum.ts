@@ -3,6 +3,8 @@ export enum ModalStateEnum {
   DETAIL = 'detail',
   DELETE = 'delete',
   DISABLE = 'disable',
+  APPROVE = 'approve',
+  REJECTED = 'rejected',
 }
 
 export enum RequestStatusEnum {
