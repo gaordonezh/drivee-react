@@ -10,9 +10,11 @@ export interface CustomDropZoneProps extends DropzoneProps {
   max?: number;
   className?: string;
   containerClassName?: string;
+  error?: boolean;
+  errorMessage?: string;
 }
 
-const CustomDropZone = ({ files, setFiles, max = 2, className, containerClassName, ...props }: CustomDropZoneProps) => {
+const CustomDropZone = ({ files, setFiles, max = 2, error, errorMessage, className, containerClassName, ...props }: CustomDropZoneProps) => {
   const staticSize = 3;
   const [sizeFiles, setSizeFiles] = useState(3);
   const [message, setMessage] = useState('');
@@ -49,17 +51,29 @@ const CustomDropZone = ({ files, setFiles, max = 2, className, containerClassNam
   return (
     <div className={combineClassnames('relative', containerClassName)}>
       <div
-        className={combineClassnames('border border-dashed border-gray-300 bg-gray-100 cursor-pointer w-full px-5 h-[50px]', className)}
+        className={combineClassnames(
+          'border-2 border-dashed bg-gray-100 cursor-pointer w-full px-5 h-[50px]',
+          error ? 'border-red-500' : 'border-gray-300',
+          className
+        )}
         {...getRootProps()}
       >
         <div className="flex flex-col items-center justify-center h-full">
           <input {...getInputProps()} />
-          <p className="text-xs text-center text-gray-400">Arrastre y suelte archivos aquí, o haga clic para seleccionar tus archivos.</p>
+          <p className={combineClassnames('text-xs text-center', error ? 'text-red-500' : 'text-gray-400')}>
+            {errorMessage || 'Arrastre y suelte archivos aquí, o haga clic para seleccionar tus archivos'}
+          </p>
           {message ? <p className="text-red-500 text-xs font-semibold">{message}</p> : null}
         </div>
       </div>
       {files.length ? (
-        <Button onClick={removeAll} variant="white" size="small" className="absolute top-[-15px] right-[-8px] !border-none !bg-transparent !text-xs">
+        <Button
+          onClick={removeAll}
+          type="button"
+          variant="white"
+          size="small"
+          className="absolute top-[-15px] right-[-8px] !border-none !bg-transparent !text-xs"
+        >
           Borrar todo
         </Button>
       ) : null}
@@ -83,6 +97,7 @@ const CustomDropZone = ({ files, setFiles, max = 2, className, containerClassNam
             variant="white"
             size="small"
             className="!border-none !bg-transparent !text-xs"
+            type="button"
           >
             {sizeFiles === staticSize ? 'Mostrar todo' : 'Ocultar'}
           </Button>

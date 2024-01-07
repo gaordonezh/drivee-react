@@ -1,11 +1,13 @@
 import { combineClassnames } from '@/utils/functions';
-import React, { InputHTMLAttributes, useId } from 'react';
+import React, { InputHTMLAttributes, LegacyRef, forwardRef, useId } from 'react';
 
 type TextareaProps = InputHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
+  error?: boolean;
+  errorMessage?: string;
 };
 
-const Textarea = ({ label, className, ...rest }: TextareaProps) => {
+const Textarea = forwardRef(({ label, className, error, errorMessage, ...rest }: TextareaProps, ref: LegacyRef<HTMLTextAreaElement>) => {
   const id = useId();
 
   return (
@@ -15,9 +17,21 @@ const Textarea = ({ label, className, ...rest }: TextareaProps) => {
           {`${label} ${rest.required ? '*' : ''}`}
         </label>
       ) : null}
-      <textarea id={id} className={combineClassnames('border-2 border-gray-200 rounded-md shadow-sm w-full p-2 outline-none', className)} {...rest} />
+      <textarea
+        id={id}
+        ref={ref}
+        className={combineClassnames(
+          'border-2 rounded-md shadow-sm w-full p-2 outline-none',
+          error ? 'border-red-500 placeholder:text-red-400' : 'border-gray-200',
+          className
+        )}
+        {...rest}
+      />
+      {errorMessage && <p className="text-sm text-red-500 leading-3">{errorMessage}</p>}
     </div>
   );
-};
+});
+
+Textarea.displayName = 'Textarea';
 
 export default Textarea;

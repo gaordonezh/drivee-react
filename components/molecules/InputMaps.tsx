@@ -31,8 +31,6 @@ const InputMaps = ({ label, className, sizes, value, setValue, required, disable
   const [open, setOpen] = useState(false);
   const [auxValue, setAuxValue] = useState<InputMapsStateType>(null);
 
-  console.log(auxValue);
-
   useEffect(() => {
     if (!value) return;
     setAuxValue(value);

@@ -35,6 +35,14 @@ export interface UpdateUserBodyProps {
   files?: Array<File>;
 }
 
+export interface SimpleUserProps {
+  f_name: string;
+  l_name: string;
+  email: string;
+  phone: string;
+  id: string;
+}
+
 export interface UserProps {
   _id: string;
   f_name: string;

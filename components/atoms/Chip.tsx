@@ -3,7 +3,7 @@ import { combineClassnames } from '@/utils/functions';
 interface ChipProps {
   iconLeft?: JSX.Element;
   iconRight?: JSX.Element;
-  label: string;
+  label?: string;
   onClick?: VoidFunction;
   size: 'large' | 'small';
   className?: string;
@@ -28,7 +28,7 @@ const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled }
       onClick={onClick}
     >
       {iconLeft}
-      <p className="text-sm font-semibold whitespace-nowrap">{label}</p>
+      {label && <p className="text-sm font-semibold whitespace-nowrap">{label}</p>}
       {iconRight}
     </div>
   );

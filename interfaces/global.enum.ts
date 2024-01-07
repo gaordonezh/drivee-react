@@ -5,6 +5,8 @@ export enum ModalStateEnum {
   DISABLE = 'disable',
   APPROVE = 'approve',
   REJECTED = 'rejected',
+  DOCUMENTS = 'documents',
+  ENABLE = 'enable',
 }
 
 export enum RequestStatusEnum {

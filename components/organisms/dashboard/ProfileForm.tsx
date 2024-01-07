@@ -237,7 +237,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
               <CustomDropZone
                 files={field.value!}
                 setFiles={(newFiles) => setValue('files', newFiles)}
-                accept={{ 'image/jpeg': ['.jpeg', '.png', 'jpg', '.webp'] }}
+                accept={{ 'image/*': ['.jpeg', '.jpg', '.png', '.gif'] }}
                 max={1}
               />
             </div>

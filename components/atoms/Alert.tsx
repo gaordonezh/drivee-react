@@ -1,10 +1,12 @@
 import { combineClassnames } from '@/utils/functions';
+import Link from 'next/link';
 import React from 'react';
 
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   description?: string;
   variant: keyof typeof variantClasses;
+  link?: { text: string; path: string };
 }
 
 const variantClasses = {
@@ -15,12 +17,17 @@ const variantClasses = {
   initial: 'text-gray-600 bg-gray-100',
 };
 
-const Alert = ({ title, description, variant, className, ...rest }: AlertProps) => {
+const Alert = ({ title, description, variant, className, link, ...rest }: AlertProps) => {
   const classes = combineClassnames(variantClasses[variant], 'p-4 text-sm rounded-lg', className);
 
   return (
     <div className={classes} role="alert" {...rest}>
       {title && <p className="font-semibold">{title}</p>} {description}
+      {link && (
+        <Link className="underline" href={link.path}>
+          {link.text}
+        </Link>
+      )}
     </div>
   );
 };

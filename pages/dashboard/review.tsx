@@ -11,10 +11,11 @@ import { DocumentProps } from '@/store/documents/documents';
 import { DocumentStatusEnum } from '@/store/documents/documents.enum';
 import Input from '@/components/atoms/Input';
 import Drawer from '@/components/molecules/Drawer';
-import { DOCUMENT_TYPES_TRANSLATE, USER_TDOC_TRANSLATE } from '@/utils/translate';
+import { DOCUMENT_TYPES_TRANSLATE } from '@/utils/translate';
 import { FILE_STATUS_TAGS } from './documents';
 import List from '@/components/molecules/List';
 import Button from '@/components/atoms/Button';
+import { VehicleStatusEnum } from '@/store/vehicle/vehicle.enum';
 
 export type ReviewSelectStateType = {
   mode: null | ModalStateEnum;
@@ -37,6 +38,8 @@ const ReviewDocuments = () => {
     setComment('');
   };
 
+  const user = selected.data?.user ?? selected.data?.vehicle?.user;
+
   return (
     <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.ADMIN]}>
       <TableReview setSelected={setSelected} />
@@ -47,7 +50,7 @@ const ReviewDocuments = () => {
           subtitle="¿Seguro que desea APROBAR este documento?"
           method="put"
           endpoint={`/documents/${selected.data?._id}`}
-          body={{ status: DocumentStatusEnum.APPROVED, comment, username: selected.data?.user?.f_name, email: selected.data?.user?.email }}
+          body={{ status: DocumentStatusEnum.APPROVED, comment, username: user?.f_name, email: user?.email }}
           handleClose={handleClose}
           content={
             <Input
@@ -67,7 +70,7 @@ const ReviewDocuments = () => {
           subtitle="¿Seguro que desea RECHAZAR este documento?"
           method="put"
           endpoint={`/documents/${selected.data?._id}`}
-          body={{ status: DocumentStatusEnum.REJECTED, comment, username: selected.data?.user?.f_name, email: selected.data?.user?.email }}
+          body={{ status: DocumentStatusEnum.REJECTED, comment, username: user?.f_name, email: user?.email }}
           handleClose={handleClose}
           content={
             <Input
@@ -78,6 +81,18 @@ const ReviewDocuments = () => {
             />
           }
           handleResponse={(result) => obtainDocuments()}
+        />
+      )}
+
+      {selected.mode === ModalStateEnum.ENABLE && (
+        <ConfirmAction
+          title="Activar vehículo"
+          subtitle="¿Seguro que desea ACTIVAR este vehiculo?"
+          method="put"
+          endpoint={`/vehicles/${selected.data?.vehicle?._id}`}
+          body={{ status: VehicleStatusEnum.AVAILABLE }}
+          handleClose={handleClose}
+          handleResponse={(result) => console.clear()}
         />
       )}
 
@@ -99,19 +114,15 @@ const ReviewDocuments = () => {
             data={[
               {
                 title: 'Nombre completo',
-                value: `${selected.data.user?.f_name} ${selected.data.user?.l_name}`,
-              },
-              {
-                title: 'Documento',
-                value: `${USER_TDOC_TRANSLATE[selected.data.user?.t_doc!]}: ${selected.data.user?.n_doc}`,
+                value: `${user?.f_name} ${user?.l_name}`,
               },
               {
                 title: 'Celular',
-                value: selected.data.user?.phone,
+                value: user?.phone,
               },
               {
                 title: 'Correo',
-                value: selected.data.user?.email,
+                value: user?.email,
               },
               {
                 title: 'Tipo de documento',

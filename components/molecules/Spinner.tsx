@@ -17,7 +17,7 @@ const Spinner = ({ loading, text, children, className }: SpinProps) => (
         style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
       >
         <Loader />
-        {text ? <p className="text-white text-center text-sm font-semibold">{text}</p> : null}
+        {text ? <p className="text-slate-900 text-center text-sm font-semibold">{text}</p> : null}
       </div>
     ) : null}
     {children}

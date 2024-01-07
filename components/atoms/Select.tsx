@@ -5,7 +5,7 @@ import { combineClassnames } from '@/utils/functions';
 
 type DataType = Array<Record<string, any>>;
 
-interface SelectProps {
+export interface SelectProps {
   data: DataType;
   keyToShow: string;
   keyToGey: string;

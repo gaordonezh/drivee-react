@@ -9,6 +9,8 @@ interface SearchLocationWithMapsProps {
   setAuxValue: (params: InputMapsStateType) => void;
   auxValue: InputMapsStateType;
   className?: string;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 const getGeoAddress: any = (location: any) => {
@@ -21,7 +23,7 @@ const getGeoCode: any = (placeId: string) => {
   return new window.google.maps.Geocoder().geocode({ placeId }, (predictions: any) => (predictions?.length > 0 ? predictions[0] : []));
 };
 
-const SearchLocationWithMaps = ({ setAuxValue, auxValue, className }: SearchLocationWithMapsProps) => {
+const SearchLocationWithMaps = ({ setAuxValue, auxValue, className, error, errorMessage }: SearchLocationWithMapsProps) => {
   const [marker, setMarker] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState({ lat: -12.044062386030685, lng: -77.04334164909426 });
   const [currentZoom, setCurrentZoom] = useState(13);
@@ -37,26 +39,27 @@ const SearchLocationWithMaps = ({ setAuxValue, auxValue, className }: SearchLoca
       position: { lat: 0, lng: 0 },
     });
 
-    myMarker.addListener('dragend', async (e: any) => {
-      const locationAddress = await getGeoAddress(e.latLng);
+    myMarker.addListener('dragend', async () => {
+      const locationAddress = await getGeoAddress(myMarker.getPosition());
+      const location = { lat: myMarker.getPosition().lat(), lng: myMarker.getPosition().lng() };
       setAuxValue({
-        location: { lat: e.latLng.lat(), lng: e.latLng.lng() },
+        location,
         text: locationAddress.results[0].formatted_address,
         value: locationAddress.results[0].place_id,
       });
-
-      setCurrentLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+      setCurrentLocation(location);
     });
     map.addListener('click', async (e: any) => {
       myMarker?.setPosition(e.latLng);
 
       const locationAddress = await getGeoAddress(e.latLng);
+      const location = { lat: e.latLng.lat(), lng: e.latLng.lng() };
       setAuxValue({
-        location: { lat: e.latLng.lat(), lng: e.latLng.lng() },
+        location,
         text: locationAddress.results[0].formatted_address,
         value: locationAddress.results[0].place_id,
       });
-      setCurrentLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+      setCurrentLocation(location);
     });
     map.addListener('zoom_changed', () => setCurrentZoom(map.getZoom()));
 
@@ -112,6 +115,8 @@ const SearchLocationWithMaps = ({ setAuxValue, auxValue, className }: SearchLoca
         keyToShow="text"
         placeholder="Buscar dirección"
         onSearch={onSearch}
+        error={error}
+        errorMessage={errorMessage}
       />
 
       <Spinner loading={loading}>

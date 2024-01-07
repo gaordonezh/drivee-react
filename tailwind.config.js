@@ -16,13 +16,18 @@ module.exports = {
         booking: 'url(/images/booking-bg.jpg)',
         'dashboard-hero': 'url(/images/dashboard-hero.jpg)',
         'share-texture': 'url(/images/earth-map.jpg)',
-        'information': 'url(/images/information.jpg)',
+        information: 'url(/images/information.jpg)',
       },
       backgroundColor: {
         'people-say': 'rgba(0, 0, 0, 0.5)',
       },
       width: {
         'drawer-right': 'calc(100vw - 500px)',
+      },
+      flex: {
+        uno: '1',
+        dos: '2',
+        tres: '3',
       },
     },
   },

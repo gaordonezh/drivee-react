@@ -7,16 +7,17 @@ interface ListProps {
   subtitle?: string;
   data: Array<ListItemProps>;
   action?: React.ReactNode;
+  showDivider?: boolean;
 }
 
 export interface ListItemProps {
-  title: string;
+  title: React.ReactNode;
   value: React.ReactNode;
   bold?: boolean;
   iconNode?: React.ReactNode;
 }
 
-const List = ({ title, subtitle, data, action }: ListProps) => (
+const List = ({ title, subtitle, data, action, showDivider = true }: ListProps) => (
   <div className="w-full">
     {title || subtitle ? (
       <div className="px-4 sm:px-0 flex flex-row justify-between">
@@ -27,8 +28,10 @@ const List = ({ title, subtitle, data, action }: ListProps) => (
         {action}
       </div>
     ) : null}
-    <div className="mt-6 border-t border-gray-100">
-      <dl className="divide-y divide-gray-100">{data.length ? data.map((item, index) => <Item key={index} {...item} />) : <Empty />}</dl>
+    <div className={combineClassnames(showDivider ? 'mt-6 border-t border-gray-100' : '')}>
+      <dl className={combineClassnames(showDivider ? 'divide-y divide-gray-100' : '')}>
+        {data.length ? data.map((item, index) => <Item key={index} {...item} />) : <Empty />}
+      </dl>
     </div>
   </div>
 );

@@ -1,4 +1,5 @@
 import { UserProps } from '../user/user';
+import { VehicleProps } from '../vehicle/vehicle';
 import { DocumentStatusEnum, DocumentTypesEnum } from './documents.enum';
 
 export interface CreateDocumentProps {
@@ -8,6 +9,8 @@ export interface CreateDocumentProps {
   url: string;
   username: string;
   email: string;
+  documents?: Array<DocumentTypesEnum>;
+  skip?: boolean;
 }
 
 export interface UpdateDocumentProps {
@@ -26,14 +29,14 @@ export interface GetDocumentsFilterProps {
   vehicle?: string;
   type?: DocumentTypesEnum;
   status?: DocumentStatusEnum;
-  kind?: 'personal' | 'vehicle';
+  kind?: 'user' | 'vehicle';
   populate?: Array<'user' | 'vehicle'>;
 }
 
 export interface DocumentProps {
   _id: string;
   user?: UserProps;
-  vehicle?: string;
+  vehicle?: VehicleProps;
   type: DocumentTypesEnum;
   url: string;
   status: DocumentStatusEnum;
@@ -47,4 +50,5 @@ export interface AuxDocumentProps {
   type: DocumentTypesEnum;
   comment?: string;
   _id?: string;
+  url?: string;
 }

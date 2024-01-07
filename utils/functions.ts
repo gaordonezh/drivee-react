@@ -22,7 +22,7 @@ export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 export const combineClassnames = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
 
-export const formatMoney = (value: number) => parseFloat(String(value)).toFixed(2);
+export const formatMoney = (value: number): string => parseFloat(String(value)).toFixed(2);
 
 export const mergeDateTime = (date: Moment, dateTime: Moment) =>
   date.clone().set('hours', dateTime.get('hours')).set('minutes', dateTime.get('minutes')).set('seconds', dateTime.get('seconds'));

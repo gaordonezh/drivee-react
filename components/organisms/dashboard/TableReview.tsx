@@ -10,8 +10,9 @@ import { DOCUMENT_TYPES_TRANSLATE, USER_TDOC_TRANSLATE } from '@/utils/translate
 import Image from 'next/image';
 import { BiCheck } from 'react-icons/bi';
 import { BsEye } from 'react-icons/bs';
-import { IoClose } from 'react-icons/io5';
+import { IoCarSportSharp, IoClose } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
+import { DocumentStatusEnum } from '@/store/documents/documents.enum';
 
 interface TableReviewProps {
   setSelected: Dispatch<SetStateAction<ReviewSelectStateType>>;
@@ -32,9 +33,9 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
             <table className="min-w-full text-center text-sm font-light">
               <thead className="font-medium">
                 <tr>
-                  <th></th>
+                  <th scope="col" className="px-6 py-4 whitespace-nowrap"></th>
                   <th scope="col" className="px-6 py-4 whitespace-nowrap">
-                    Usuario
+                    Usuario / Vehículo
                   </th>
                   <th scope="col" className="px-6 py-4 whitespace-nowrap">
                     Tipo documento
@@ -52,16 +53,36 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
                   docs.map((item) => (
                     <tr key={item._id}>
                       <td>
-                        <Image src={item.user?.photo ?? '/images/profile.png'} alt="User picture" width={50} height={50} className="rounded-md" />
+                        <Image
+                          src={item.user?.photo ?? item.vehicle?.images[0] ?? '/images/profile.png'}
+                          alt="User picture"
+                          width={50}
+                          height={50}
+                          className="rounded-md"
+                        />
                       </td>
                       <td className="whitespace-nowrap px-6 py-4" align="left">
-                        {`${item.user?.f_name} ${item.user?.l_name}`}
-                        <br />
-                        {USER_TDOC_TRANSLATE[item.user?.t_doc!]}: {item.user?.n_doc}
-                        <br />
-                        {item.user?.phone}
-                        <br />
-                        {item.user?.email}
+                        {item.user ? (
+                          <>
+                            {`${item.user?.f_name} ${item.user?.l_name}`}
+                            <br />
+                            {USER_TDOC_TRANSLATE[item.user?.t_doc!]}: {item.user?.n_doc}
+                            <br />
+                            {item.user?.phone}
+                            <br />
+                            {item.user?.email}
+                          </>
+                        ) : (
+                          <>
+                            <b>{item.vehicle?.name}</b>
+                            <br />
+                            {`${item.vehicle?.user?.f_name} ${item.vehicle?.user?.l_name}`}
+                            <br />
+                            {item.vehicle?.user?.phone}
+                            <br />
+                            {item.vehicle?.user?.email}
+                          </>
+                        )}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">{DOCUMENT_TYPES_TRANSLATE[item.type]}</td>
                       <td className="whitespace-nowrap px-6 py-4">{FILE_STATUS_TAGS[item.status].value}</td>
@@ -73,7 +94,7 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
                             size="medium"
                             title="Ver detalles"
                           />
-                          {/* {[DocumentStatusEnum.REVIEW].includes(item.status) && ( */}
+                          {[DocumentStatusEnum.REVIEW].includes(item.status) && (
                             <>
                               <Fab
                                 onClick={() => setSelected({ mode: ModalStateEnum.APPROVE, data: item })}
@@ -88,13 +109,21 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
                                 title="Rechazar documento"
                               />
                             </>
-                          {/* )} */}
+                          )}
                           <Fab
                             onClick={() => setSelected({ mode: ModalStateEnum.DELETE, data: item })}
                             icon={<MdDelete size={20} className="text-red-500" />}
                             size="medium"
                             title="Eliminar documento"
                           />
+                          {[DocumentStatusEnum.APPROVED].includes(item.status) && (
+                            <Fab
+                              onClick={() => setSelected({ mode: ModalStateEnum.ENABLE, data: item })}
+                              icon={<IoCarSportSharp size={20} className="text-green-500" />}
+                              size="medium"
+                              title="Activar vehículo"
+                            />
+                          )}
                         </div>
                       </td>
                     </tr>

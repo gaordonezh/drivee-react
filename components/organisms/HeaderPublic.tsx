@@ -5,11 +5,11 @@ import Container from '../molecules/Container';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BiMenu } from 'react-icons/bi';
 import { combineClassnames } from '@/utils/functions';
-import { IMAGE_LIST, USER_SESSION_KEY } from '@/utils/constants';
+import { USER_SESSION_KEY } from '@/utils/constants';
 import Link from 'next/link';
 import { useAppContext } from '@/context';
 import Divider from '../protons/Divider';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdDashboard } from 'react-icons/md';
 import { FaUserAlt } from 'react-icons/fa';
 import { signOut } from 'next-auth/react';
 import { deleteCookie } from '@/utils/storage';
@@ -69,6 +69,9 @@ const HeaderPublic = () => {
                     <span className="text-xs font-normal">{user.email}</span>
                   </p>
                   <Divider />
+                  <Link href="/dashboard" className="text-gray-500 flex gap-2 items-center text-sm">
+                    <MdDashboard size={17} /> Administración
+                  </Link>
                   <Link href="/dashboard/profile" className="text-gray-500 flex gap-2 items-center text-sm">
                     <FaUserAlt size={15} /> Mi cuenta
                   </Link>
@@ -122,6 +125,9 @@ const HeaderPublic = () => {
 
             {user ? (
               <>
+                <Link href="/dashboard" className="text-gray-500 flex gap-2 items-center">
+                  <MdDashboard size={17} /> Administración
+                </Link>
                 <Link href="/dashboard/profile" className="text-gray-500 flex gap-2 items-center">
                   <FaUserAlt size={15} /> Mi cuenta
                 </Link>

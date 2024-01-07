@@ -56,7 +56,6 @@ const Documents = () => {
     setValue,
     reset,
   } = useForm<DocumentFieldsType>({ mode: 'onChange', defaultValues: { IDENTIFICATION_CARD: [] } });
-
   const { uploadFileState } = useAppSelector((state) => state.files);
   const { createDocumentStatus, documents, auxDocuments } = useAppSelector((state) => state.documents);
   const states = [uploadFileState, createDocumentStatus, documents.status];
@@ -65,11 +64,10 @@ const Documents = () => {
   const docId = auxDocuments.find((item) => item.type === 'IDENTIFICATION_CARD')?._id;
 
   useEffect(() => {
-    if (documents.docs.length) return;
     obtainDocuments();
   }, []);
 
-  const obtainDocuments = () => dispatch(getDocuments({ user: user?._id, kind: 'personal' }));
+  const obtainDocuments = () => dispatch(getDocuments({ user: user?._id, kind: 'user' }));
 
   const onSubmit: SubmitHandler<DocumentFieldsType> = async (data) => {
     const result = await dispatch(uploadFile(data.IDENTIFICATION_CARD[0]));
@@ -102,7 +100,7 @@ const Documents = () => {
           <CustomDropZone
             files={field.value || []}
             setFiles={(newFiles) => setValue(type, newFiles)}
-            accept={{ 'image/jpeg': ['.jpeg', '.png', 'jpg', '.webp'], 'application/pdf': ['.pdf'] }}
+            accept={{ 'image/*': ['.jpeg', '.png', 'jpg'], 'application/pdf': ['.pdf'] }}
             max={1}
           />
           {errors[type] && <p className="text-sm text-red-500 leading-3 mt-1">{errors[type]?.message}</p>}
@@ -132,6 +130,15 @@ const Documents = () => {
         <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <Alert variant="info" title="¡Recuerda!" description="Después de adjuntar tus documentos, estos ingresarán a revisión." />
 
+          {!user?.t_doc && (
+            <Alert
+              variant="warning"
+              title="¡Recuerda!"
+              description="Primero debes completar tus datos personales en "
+              link={{ path: '/dashboard/profile', text: 'datos personales' }}
+            />
+          )}
+
           <List title="Documentos personales" subtitle="Adjunte los documentos que se mencionan a continuación." data={listData} />
 
           <div className="flex flex-col-reverse justify-end sm:flex-row gap-5">
@@ -145,8 +152,8 @@ const Documents = () => {
                 </Button>
               </>
             ) : (
-              <Button size="large" type="button" variant="white" className="!border-black" onClick={() => setEdit(true)}>
-                {`${docId ? 'Actualizar' : 'Guardar'} documentos`}
+              <Button size="large" type="button" variant="white" className="!border-black" onClick={() => setEdit(true)} disabled={!user?.t_doc}>
+                {`${docId ? 'Actualizar' : 'Adjuntar'} documentos`}
               </Button>
             )}
           </div>
