@@ -79,10 +79,38 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
 
         {layout === LayoutEnum.PUBLIC ? null : (
           <>
-            <meta name="robots" content="noindex" />
+            <meta name="robots" content="noarchive, noimageindex"></meta>
             <meta name="googlebot" content="noindex" />
           </>
         )}
+        <link data-default-icon={image} rel="icon" sizes="192x192" href={image}></link>
+        <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
+        <meta charSet="utf-8"></meta>
+        <meta name="mobile-web-app-capable" content="yes"></meta>
+        <meta name="theme-color" content="#242526"></meta>
+        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"></meta>
+        <link rel="apple-touch-icon" sizes="76x76" href={image}></link>
+        <link rel="apple-touch-icon" sizes="120x120" href={image}></link>
+        <link rel="apple-touch-icon" sizes="152x152" href={image}></link>
+        <link rel="apple-touch-icon" sizes="167x167" href={image}></link>
+        <link rel="apple-touch-icon" sizes="180x180" href={image}></link>
+        <link data-default-icon={image} rel="shortcut icon" type="image/x-icon" href={image}></link>
+
+        <meta property="og:type" content="article"></meta>
+        <meta name="medium" content="image"></meta>
+        <meta name="twitter:card" content="summary_large_image"></meta>
+        <meta name="twitter:site" content="@drivee"></meta>
+        <meta name="twitter:maxage" content="86400"></meta>
+        <meta name="twitter:image" content={image}></meta>
+        <meta name="twitter:title" content={description}></meta>
+        <meta name="description" content={description}></meta>
+        <meta property="og:site_name" content="Drivee"></meta>
+        <meta property="og:title" content={title}></meta>
+        <meta property="og:image" content={image}></meta>
+        <meta property="og:url" content="https://drivee.aldo.codes"></meta>
+        <meta property="og:description" content={description}></meta>
+        <link rel="canonical" href="https://drivee.aldo.codes"></link>
+        <meta name="color-scheme" content="dark"></meta>
       </Head>
 
       <main className={inter.className}>
