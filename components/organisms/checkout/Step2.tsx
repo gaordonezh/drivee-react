@@ -30,7 +30,7 @@ const Step2 = ({ fields, handleBack, handleNext }: Step2Props) => {
             value: (
               <Spinner loading={!fields.location}>
                 <div className="border h-[250px] sm:h-[300px] md:h-[200px] xl:h-[250px] w-[100%] rounded">
-                  {fields.location ? <GoogleMapsViewer initialLocation={fields.location.position} /> : null}
+                  {fields.location ? <GoogleMapsViewer initialLocation={fields.location.location} /> : null}
                 </div>
               </Spinner>
             ),

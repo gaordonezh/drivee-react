@@ -20,6 +20,10 @@ const Home = () => {
     router.push({ pathname: '/booking', query: objectCleaner(queryParams) });
   };
 
+  const setVehicleParam = (type: 'car' | 'bike') => {
+    router.push({ pathname: '/booking', query: { type } });
+  };
+
   return (
     <Layout layout={LayoutEnum.PUBLIC}>
       <div className="hero__image">
@@ -34,10 +38,10 @@ const Home = () => {
                   Contribuye al cambio positivo y logra nuestros objetivos de sostenibilidad con muchas acciones extraordinarias.
                 </p>
                 <div className="flex flex-col md:flex-row gap-5">
-                  <Button variant="white" size="large">
+                  <Button variant="white" size="large" onClick={() => setVehicleParam('car')}>
                     Alquilar un carro
                   </Button>
-                  <Button variant="outlined" size="large">
+                  <Button variant="outlined" size="large" onClick={() => setVehicleParam('bike')}>
                     Alquilar una moto
                   </Button>
                 </div>

@@ -5,15 +5,15 @@ import moment, { Moment } from 'moment-timezone';
 import Step3 from './checkout/Step3';
 import Stepper from '../molecules/Stepper';
 import { useRouter } from 'next/router';
-import { VehicleLocationProps } from '@/pages/details';
+import { AddressProps } from '@/store/user/user';
 
 interface DetailsFormProps {
   price: number;
-  location: VehicleLocationProps;
+  location: AddressProps;
 }
 
 export type FieldsStateType = {
-  location: null | VehicleLocationProps;
+  location: null | AddressProps;
   dateStart: null | Moment;
   timeStart: null | Moment;
   dateEnd: null | Moment;

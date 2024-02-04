@@ -1,5 +1,6 @@
 import { CombinedDocumentEnum } from '@/store/documents/documents.enum';
 import { UserSexEnum, UserTypeDocumentEnum } from '@/store/user/user.enum';
+import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';
 
 export const USER_SEX_TRANSLATE = {
   [UserSexEnum.FEMALE]: 'Mujer',
@@ -21,4 +22,9 @@ export const DOCUMENT_TYPES_TRANSLATE = {
   [CombinedDocumentEnum.OWNERSHIP_CARD]: 'Tarjeta de propiedad',
   [CombinedDocumentEnum.TECHNICAL_INSPECTION]: 'Inspección técnica',
   [CombinedDocumentEnum.POLARIZED_GLASS]: 'Permiso para vidrio polarizado',
+};
+
+export const VEHICLE_TYPES_TRANSLATE = {
+  [VehicleTypeEnum.CAR]: 'Carro',
+  [VehicleTypeEnum.BIKE]: 'Motocicleta',
 };

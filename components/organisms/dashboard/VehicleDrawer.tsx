@@ -24,6 +24,9 @@ import Chip from '@/components/atoms/Chip';
 import Fab from '@/components/atoms/Fab';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import RadioButton from '@/components/atoms/RadioButton';
+import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';
+import { VEHICLE_TYPES_TRANSLATE } from '@/utils/translate';
 
 interface VehicleDrawerProps {
   handleClose: VoidFunction;
@@ -38,6 +41,7 @@ type VehicleInputs = {
   files: Array<File>;
   details: Array<VehicleDetailsProps>;
   address: null | AddressProps;
+  type: VehicleTypeEnum;
 };
 
 const VehicleDrawer = ({ handleClose, handleReload, data }: VehicleDrawerProps) => {
@@ -67,6 +71,7 @@ const VehicleDrawer = ({ handleClose, handleReload, data }: VehicleDrawerProps) 
       name: data ? data.name : '',
       description: data ? data.description : '',
       pricexhour: data ? String(data.pricexhour) : '',
+      type: data ? data.type : VehicleTypeEnum.CAR,
     },
   });
 
@@ -92,6 +97,7 @@ const VehicleDrawer = ({ handleClose, handleReload, data }: VehicleDrawerProps) 
       pricexhour: Number(formatMoney(Number(fields.pricexhour))),
       address: fields.address,
       details: fields.details.filter((item) => item.title && item.value),
+      type: fields.type,
     };
 
     let res = null;
@@ -121,7 +127,7 @@ const VehicleDrawer = ({ handleClose, handleReload, data }: VehicleDrawerProps) 
           <Spinner loading={isLoading} text="Cargando información...">
             <div className="flex flex-col gap-5" ref={topRef}>
               <div>
-                <h1 className="font-bold text-xl">AGREGAR VEHÍCULO</h1>
+                <h1 className="font-bold text-xl">{data ? 'ACTUALIZAR' : 'AGREGAR'} VEHÍCULO</h1>
                 <p className="text-gray-500 text-sm">Todos los campos son requeridos (*)</p>
               </div>
 
@@ -135,6 +141,23 @@ const VehicleDrawer = ({ handleClose, handleReload, data }: VehicleDrawerProps) 
               )}
 
               <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                <div>
+                  <p className="font-semibold">Tipo de vehículo (*)</p>
+                  <p className="text-gray-500 text-sm mb-2">Selecciona el tipo de vehículo que vas a registrar.</p>
+                  <Controller
+                    name="type"
+                    control={control}
+                    rules={{ required: { value: true, message: 'El tipo es requerido' } }}
+                    render={({ field }) => (
+                      <RadioButton
+                        value={field.value}
+                        options={Object.values(VehicleTypeEnum).map((item) => ({ label: VEHICLE_TYPES_TRANSLATE[item], value: item }))}
+                        onChange={(value) => setValue('type', value as VehicleTypeEnum, { shouldValidate: true })}
+                      />
+                    )}
+                  />
+                </div>
+
                 <Input
                   label="Nombre del vehículo (*)"
                   placeholder="Ej.: BMW M2 2020"

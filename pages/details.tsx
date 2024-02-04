@@ -3,28 +3,14 @@ import { NextPageContext } from 'next';
 import Container from '@/components/molecules/Container';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
-import { IMAGE_LIST } from '@/utils/constants';
 import Fab from '@/components/atoms/Fab';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 import DetailsForm from '@/components/organisms/DetailsForm';
 import Comments from '@/components/organisms/comments/Comments';
+import server from '@/server';
+import { VehicleProps } from '@/store/vehicle/vehicle';
 
-interface DetailsPageProps {
-  name: string;
-  description: string;
-  details: [{ key: string; value: string }];
-  id: string;
-  images: Array<string>;
-  price: number;
-  location: VehicleLocationProps;
-}
-
-export interface VehicleLocationProps {
-  address: string;
-  position: { lat: number; lng: number };
-}
-
-const DetailsPage = ({ name, description, details, id, images, price, location }: DetailsPageProps) => {
+const DetailsPage = ({ _id, name, description, images, pricexhour, address, details }: VehicleProps) => {
   const [index, setIndex] = useState(0);
 
   const handleChange = (action: 'next' | 'prev') => {
@@ -36,7 +22,7 @@ const DetailsPage = ({ name, description, details, id, images, price, location }
   const selected = images[index];
 
   return (
-    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={images[0]} key={id}>
+    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={images[0]}>
       <Container className="flex flex-col gap-10 p-5 md:gap-20 md:p-10">
         <div className="flex flex-col gap-3">
           <h1 className="font-bold text-2xl md:text-4xl">{name}</h1>
@@ -63,16 +49,16 @@ const DetailsPage = ({ name, description, details, id, images, price, location }
             </div>
           </div>
           <div className="w-full md:w-[50%] lg:w-[40%] rounded-xl bg-white p-5 xl:p-10 border border-gray-300">
-            <DetailsForm price={price} location={location} />
+            <DetailsForm price={pricexhour} location={address} />
           </div>
         </div>
 
         <div>
           <p className="font-bold text-2xl mb-5">Especificaciones</p>
           <ul className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-2">
-            {details.map((item) => (
-              <li key={item.key} className="border-b">
-                <p className="text-gray-600 text-sm">{item.key}</p>
+            {details.map((item, index) => (
+              <li key={index} className="border-b">
+                <p className="text-gray-600 text-sm">{item.title}</p>
                 <p className="text-gray-400 text-xs">{item.value}</p>
               </li>
             ))}
@@ -89,27 +75,10 @@ export async function getServerSideProps(context: NextPageContext) {
   const code = context.query.code;
   if (!code) return { redirect: { permanent: false, destination: '/' } };
 
-  const data = {
-    id: code,
-    price: 36.65,
-    name: 'BMW M2 2020',
-    description:
-      'EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado. EL BMW ME es la versión de alto rendimiento del cupé de 2 puertas de la serie 2. La primera generación del M2 es el F87 COUPÉ y está propulsado por turboalimentado.',
-    images: IMAGE_LIST,
-    details: [
-      { key: 'Asientos', value: '4' },
-      { key: 'Puertas', value: '2' },
-      { key: 'Transmisión', value: 'Automatico' },
-      { key: 'Año', value: '2020' },
-      { key: 'Combustible', value: 'Híbrido' },
-      { key: 'Caballos de fuerza', value: '400' },
-      { key: 'Dimensiones', value: '2mt. ancho x 4mt. largo x 1.5mt. altura' },
-      { key: 'Llantas', value: '4' },
-    ],
-    location: { address: 'Av. General Salaverry nro 3450, Jesús Maria', position: { lat: -12.094747804481793, lng: -77.05400206050557 } },
-  };
+  const res = await server.get<VehicleProps>(`/vehicles/list/${code}`);
+  if (!res.data?._id) return { redirect: { permanent: false, destination: '/' } };
 
-  return { props: { ...data } };
+  return { props: res.data };
 }
 
 export default DetailsPage;
