@@ -88,7 +88,6 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
         <meta charSet="utf-8"></meta>
         <meta name="mobile-web-app-capable" content="yes"></meta>
         <meta name="theme-color" content="#242526"></meta>
-        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"></meta>
         <link rel="apple-touch-icon" sizes="76x76" href={image}></link>
         <link rel="apple-touch-icon" sizes="120x120" href={image}></link>
         <link rel="apple-touch-icon" sizes="152x152" href={image}></link>
@@ -110,7 +109,6 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
         <meta property="og:url" content="https://drivee.aldo.codes"></meta>
         <meta property="og:description" content={description}></meta>
         <link rel="canonical" href="https://drivee.aldo.codes"></link>
-        <meta name="color-scheme" content="dark"></meta>
       </Head>
 
       <main className={inter.className}>
