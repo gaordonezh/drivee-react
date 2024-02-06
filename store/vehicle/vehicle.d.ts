@@ -58,3 +58,9 @@ export interface updateVehicleBodyProps {
   details?: Array<VehicleDetailsProps>;
   documents?: Array<VehicleDocumentTypesEnum>;
 }
+
+export interface SimpleVehicleProps {
+  id: string;
+  name: string;
+  description: string;
+}

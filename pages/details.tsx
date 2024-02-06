@@ -22,7 +22,7 @@ const DetailsPage = ({ _id, name, description, images, pricexhour, address, deta
   const selected = images[index];
 
   return (
-    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={images[0]}>
+    <Layout layout={LayoutEnum.PUBLIC} title={name} description={description} image={images[0]} path={`/details?code=${_id}`}>
       <Container className="flex flex-col gap-10 p-5 md:gap-20 md:p-10">
         <div className="flex flex-col gap-3">
           <h1 className="font-bold text-2xl md:text-4xl">{name}</h1>
@@ -65,20 +65,24 @@ const DetailsPage = ({ _id, name, description, images, pricexhour, address, deta
           </ul>
         </div>
 
-        <Comments />
+        <Comments vehicleSimpleData={{ name, description, id: _id }} />
       </Container>
     </Layout>
   );
 };
 
 export async function getServerSideProps(context: NextPageContext) {
-  const code = context.query.code;
-  if (!code) return { redirect: { permanent: false, destination: '/' } };
+  try {
+    const code = context.query.code;
+    if (!code) throw new Error('Not provide code');
 
-  const res = await server.get<VehicleProps>(`/vehicles/list/${code}`);
-  if (!res.data?._id) return { redirect: { permanent: false, destination: '/' } };
+    const res = await server.get<VehicleProps>(`/vehicles/list/${code}`);
+    if (!res.data?._id) throw new Error('Not found');
 
-  return { props: res.data };
+    return { props: res.data };
+  } catch (error) {
+    return { redirect: { permanent: false, destination: '/booking' } };
+  }
 }
 
 export default DetailsPage;

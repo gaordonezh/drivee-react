@@ -19,12 +19,14 @@ interface LayoutProps {
   description?: string;
   image?: string;
   authRoles?: Array<UserRolesEnum>;
+  path?: string;
 }
 
 const Layout = ({ children, layout, ...rest }: LayoutProps) => {
   const router = useRouter();
   const { user } = useAppContext();
   const [loading, setLoading] = useState(Boolean(rest.authRoles));
+  const realURL = `https://drivee-client.vercel.app/${rest.path ?? ''}`;
 
   useEffect(() => {
     if (!rest.authRoles || !user) return;
@@ -106,9 +108,9 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
         <meta property="og:site_name" content="Drivee"></meta>
         <meta property="og:title" content={title}></meta>
         <meta property="og:image" content={image}></meta>
-        <meta property="og:url" content="https://drivee.aldo.codes"></meta>
+        <meta property="og:url" content={realURL}></meta>
         <meta property="og:description" content={description}></meta>
-        <link rel="canonical" href="https://drivee.aldo.codes"></link>
+        <link rel="canonical" href={realURL}></link>
       </Head>
 
       <main className={inter.className}>
