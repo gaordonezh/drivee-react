@@ -12,6 +12,7 @@ import Skeleton from '@/components/atoms/Skeleton';
 import moment from 'moment-timezone';
 import ModalLogin from '../ModalLogin';
 import { useAppContext } from '@/context';
+import Empty from '@/components/molecules/Empty';
 
 interface CommentsProps {
   vehicleSimpleData: {
@@ -91,24 +92,30 @@ const Comments = ({ vehicleSimpleData }: CommentsProps) => {
           ))
         : null}
 
-      {comments.docs.map((item) => (
-        <React.Fragment key={item._id}>
-          <Divider className="my-5" />
-          <div>
-            <div className="flex flex-col md:flex-row justify-between">
-              <div>
-                <p className="text-gray-700 font-bold">{item.title}</p>
-                <div className="flex flex-col md:flex-row gap-1">
-                  <p className="text-gray-600 text-sm font-semibold">{item.user.f_name}</p>
-                  <Star value={item.stars} showArrow={false} />
+      {comments.docs.length ? (
+        comments.docs.map((item) => (
+          <React.Fragment key={item._id}>
+            <Divider className="my-5" />
+            <div>
+              <div className="flex flex-col md:flex-row justify-between">
+                <div>
+                  <p className="text-gray-700 font-bold">{item.title}</p>
+                  <div className="flex flex-col md:flex-row gap-1">
+                    <p className="text-gray-600 text-sm font-semibold">{item.user.f_name}</p>
+                    <Star value={item.stars} showArrow={false} />
+                  </div>
                 </div>
+                <p className="text-gray-600 text-sm">{moment(item.updatedAt).format('DD MMM YYYY')}</p>
               </div>
-              <p className="text-gray-600 text-sm">{moment(item.updatedAt).format('DD MMM YYYY')}</p>
+              <p className="text-gray-500 text-sm text-justify">{item.description}</p>
             </div>
-            <p className="text-gray-500 text-sm text-justify">{item.description}</p>
-          </div>
-        </React.Fragment>
-      ))}
+          </React.Fragment>
+        ))
+      ) : (
+        <div className="py-20">
+          <Empty title="Aún no hay comentarios. Sé el primero en dar tu opinión sobre este vehículo." />
+        </div>
+      )}
 
       {modal.mode === ModalStateEnum.BOX && (
         <CommentModal vehicleSimpleData={vehicleSimpleData} handleClose={() => setModal({ data: null, mode: null })} handleReload={onLoadComponent} />

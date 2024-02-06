@@ -44,6 +44,8 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1P
 
   const isDisabled = disabled || !(range.quantity && range.total);
 
+  const daysDiff = fields.dateEnd?.diff(fields.dateStart, 'day');
+
   return (
     <div className="flex flex-col gap-5">
       <div>
@@ -52,10 +54,10 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1P
       </div>
       <div>
         <p className="font-semibold">Fecha y hora de recojo</p>
-        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-1 mt-1">
           <DatePicker
             selected={fields.dateStart ? moment(fields.dateStart).toDate() : null}
-            onChange={(update) => handleChange({ dateStart: moment(update), dateEnd: null })}
+            onChange={(update) => handleChange({ dateStart: moment(update).startOf('day'), dateEnd: null })}
             minDate={moment().toDate()}
             maxDate={moment().add(2, 'months').subtract(1, 'day').toDate()}
           />
@@ -64,14 +66,18 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1P
       </div>
       <div>
         <p className="font-semibold">Fecha y hora de devolución</p>
-        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-1 mt-1">
           <DatePicker
             selected={fields.dateEnd ? moment(fields.dateEnd).toDate() : null}
-            onChange={(update) => handleChange({ dateEnd: moment(update) })}
+            onChange={(update) => handleChange({ dateEnd: moment(update).startOf('day') })}
             minDate={fields.dateStart ? moment(fields.dateStart).toDate() : null}
             maxDate={fields.dateStart ? moment(fields.dateStart).add(2, 'weeks').toDate() : null}
           />
-          <TimePicker time={fields.timeEnd} setTime={(timeEnd) => handleChange({ timeEnd })} minTime={fields.timeStart?.toDate()} />
+          <TimePicker
+            time={fields.timeEnd}
+            setTime={(timeEnd) => handleChange({ timeEnd })}
+            minTime={!daysDiff ? fields.timeStart?.toDate() : undefined}
+          />
         </div>
       </div>
       <div>

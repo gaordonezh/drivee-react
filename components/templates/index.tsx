@@ -44,23 +44,23 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
   const params = {
     [LayoutEnum.PUBLIC]: {
       element: <PublicLayout>{children}</PublicLayout>,
-      image: 'https://cdn-icons-png.flaticon.com/512/2554/2554936.png',
+      image: 'https://drivee-files.s3.amazonaws.com/drivee-logo-dark.png',
       title: 'Drivee',
     },
     [LayoutEnum.DASHBOARD]: {
       element: <DashboardLayout>{children}</DashboardLayout>,
-      image: 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_1280.jpg',
+      image: 'https://drivee-files.s3.amazonaws.com/drivee-logo-dark.png',
       title: 'Dashboard - Drivee',
     },
     [LayoutEnum.AUTH]: {
       element: <AuthLayout>{children}</AuthLayout>,
-      image: 'https://icons.veryicon.com/png/o/miscellaneous/simple-line-icon/authentication-16.png',
+      image: 'https://drivee-files.s3.amazonaws.com/drivee-logo-dark.png',
       title: 'Iniciar sesión - Drivee',
     },
   };
 
   const title = rest.title ?? params[layout].title;
-  const image = rest.image ?? params[layout].image;
+  const imagePath = rest.image ?? params[layout].image;
   const description =
     rest.description ??
     'El mejor mercado de vehículos compartidos. ¿Tiene un vehículo? Gana dinero como Anfitrión. Alquile el coche de sus sueños como invitado.';
@@ -72,12 +72,16 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="keywords" content="drivee, alquiler, alquiler de vehiculos" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link data-default-icon={imagePath} rel="icon" sizes="192x192" href={imagePath} />
+        <link rel="canonical" href={realURL} />
+        <meta charSet="utf-8" />
 
         {/* TWITTER TAGS - START */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@drivee" />
         <meta name="twitter:maxage" content="86400" />
-        <meta name="twitter:image" content={image} />
+        <meta name="twitter:image" content={imagePath} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         {/* TWITTER TAGS - END */}
@@ -86,13 +90,10 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
         <meta property="og:title" content={title} />
         <meta property="og:site_name" content="Drivee" />
         <meta property="og:type" content="article" />
-        <meta property="og:image" content={image} />
+        <meta property="og:image" content={imagePath} />
         <meta property="og:url" content={realURL} />
         <meta property="og:description" content={description} />
         {/* OG TAGS - END */}
-
-        <link rel="icon" href={image} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {layout === LayoutEnum.PUBLIC ? null : (
           <>
@@ -100,20 +101,6 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
             <meta name="googlebot" content="noindex" />
           </>
         )}
-
-        <link data-default-icon={image} rel="icon" sizes="192x192" href={image} />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta charSet="utf-8" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#242526" />
-        <link rel="apple-touch-icon" sizes="76x76" href={image} />
-        <link rel="apple-touch-icon" sizes="120x120" href={image} />
-        <link rel="apple-touch-icon" sizes="152x152" href={image} />
-        <link rel="apple-touch-icon" sizes="167x167" href={image} />
-        <link rel="apple-touch-icon" sizes="180x180" href={image} />
-
-        <meta name="medium" content="image" />
-        <link rel="canonical" href={realURL} />
       </Head>
 
       <main className={inter.className}>

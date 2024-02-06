@@ -91,7 +91,7 @@ const CommentModal = ({ handleClose, vehicleSimpleData, handleReload }: CommentM
                         if (!value.trim()) return 'El nombre es requerido';
                       },
                     },
-                    pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ]+$/i },
+                    pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ,.]+$/i },
                     minLength: { value: 3, message: 'Son 3 caracteres alfanuméricos como mínimo' },
                     maxLength: { value: 50, message: 'Son 50 caracteres alfanuméricos como máximo' },
                   })}
@@ -106,7 +106,7 @@ const CommentModal = ({ handleClose, vehicleSimpleData, handleReload }: CommentM
                         if (!value.trim()) return 'La descripción es requerida';
                       },
                     },
-                    pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ]+$/i },
+                    pattern: { message: 'Solo se aceptan caracteres alfanuméricos', value: /^[0-9a-z áéíóúñ,.]+$/i },
                     minLength: { value: 10, message: 'Son 10 caracteres alfanuméricos como mínimo' },
                     maxLength: { value: 150, message: 'Son 150 caracteres alfanuméricos como máximo' },
                   })}
