@@ -26,7 +26,7 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
   const router = useRouter();
   const { user } = useAppContext();
   const [loading, setLoading] = useState(Boolean(rest.authRoles));
-  const realURL = `https://drivee-client.vercel.app/${rest.path ?? ''}`;
+  const realURL = `https://drivee-client.vercel.app${rest.path ?? router.pathname}`;
 
   useEffect(() => {
     if (!rest.authRoles || !user) return;
@@ -69,48 +69,51 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
     <>
       <Head>
         <title>{title}</title>
-        <meta name="title" content={title} key="title" />
-        <meta name="description" content={description} key="description" />
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
         <meta name="keywords" content="drivee, alquiler, alquiler de vehiculos" />
-        <meta name="twitter:card" content="summary_large_image" key="twitter:card" />
-        <meta property="og:title" content={title} key="og:title" />
-        <meta property="og:description" content={description} key="og:description" />
-        <meta property="og:image" content={image} key="og:image" />
+
+        {/* TWITTER TAGS - START */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@drivee" />
+        <meta name="twitter:maxage" content="86400" />
+        <meta name="twitter:image" content={image} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        {/* TWITTER TAGS - END */}
+
+        {/* OG TAGS - START */}
+        <meta property="og:title" content={title} />
+        <meta property="og:site_name" content="Drivee" />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={realURL} />
+        <meta property="og:description" content={description} />
+        {/* OG TAGS - END */}
+
         <link rel="icon" href={image} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {layout === LayoutEnum.PUBLIC ? null : (
           <>
-            <meta name="robots" content="noarchive, noimageindex"></meta>
+            <meta name="robots" content="noarchive, noimageindex" />
             <meta name="googlebot" content="noindex" />
           </>
         )}
-        <link data-default-icon={image} rel="icon" sizes="192x192" href={image}></link>
-        <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
-        <meta charSet="utf-8"></meta>
-        <meta name="mobile-web-app-capable" content="yes"></meta>
-        <meta name="theme-color" content="#242526"></meta>
-        <link rel="apple-touch-icon" sizes="76x76" href={image}></link>
-        <link rel="apple-touch-icon" sizes="120x120" href={image}></link>
-        <link rel="apple-touch-icon" sizes="152x152" href={image}></link>
-        <link rel="apple-touch-icon" sizes="167x167" href={image}></link>
-        <link rel="apple-touch-icon" sizes="180x180" href={image}></link>
-        <link data-default-icon={image} rel="shortcut icon" type="image/x-icon" href={image}></link>
 
-        <meta property="og:type" content="article"></meta>
-        <meta name="medium" content="image"></meta>
-        <meta name="twitter:card" content="summary_large_image"></meta>
-        <meta name="twitter:site" content="@drivee"></meta>
-        <meta name="twitter:maxage" content="86400"></meta>
-        <meta name="twitter:image" content={image}></meta>
-        <meta name="twitter:title" content={description}></meta>
-        <meta name="description" content={description}></meta>
-        <meta property="og:site_name" content="Drivee"></meta>
-        <meta property="og:title" content={title}></meta>
-        <meta property="og:image" content={image}></meta>
-        <meta property="og:url" content={realURL}></meta>
-        <meta property="og:description" content={description}></meta>
-        <link rel="canonical" href={realURL}></link>
+        <link data-default-icon={image} rel="icon" sizes="192x192" href={image} />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta charSet="utf-8" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#242526" />
+        <link rel="apple-touch-icon" sizes="76x76" href={image} />
+        <link rel="apple-touch-icon" sizes="120x120" href={image} />
+        <link rel="apple-touch-icon" sizes="152x152" href={image} />
+        <link rel="apple-touch-icon" sizes="167x167" href={image} />
+        <link rel="apple-touch-icon" sizes="180x180" href={image} />
+
+        <meta name="medium" content="image" />
+        <link rel="canonical" href={realURL} />
       </Head>
 
       <main className={inter.className}>
