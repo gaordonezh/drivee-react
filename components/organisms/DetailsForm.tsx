@@ -44,7 +44,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
   const [range, setRange] = useState<RangeStateType>({ quantity: 0, total: 0 });
   const [step, setStep] = useState<keyof typeof steps>(0);
   const [modalLogin, setModalLogin] = useState(false);
-  const [disabledVehicle, setDisableVehicle] = useState(false);
+  const [disabledVehicle, setDisabledVehicle] = useState(false);
   const loading = [requestBookingState, valificationState].includes(RequestStatusEnum.PENDING);
   const error = requestBookingState === RequestStatusEnum.ERROR;
   const success = requestBookingState === RequestStatusEnum.SUCCESS;
@@ -63,7 +63,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
   const handleReserve = async () => {
     if (!user) return;
     const body: CreateBookingBodyProps = {
-      user: { id: user._id, f_name: user.f_name, l_name: user.l_name, email: user.email, phone: user.phone },
+      user: { id: user._id, f_name: user.f_name, l_name: user.l_name!, email: user.email, phone: user.phone! },
       vehicle: {
         id: vehicle._id,
         name: vehicle.name,
@@ -97,7 +97,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
 
     const res = await dispatch(getPublicVehicles(filters));
     const available = Boolean(res.payload.docs.length);
-    if (!available) return setDisableVehicle(true);
+    if (!available) return setDisabledVehicle(true);
     setStep(1);
   };
 
@@ -107,7 +107,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
         fields={fields}
         setFields={(newFields) => {
           setFields(newFields);
-          setDisableVehicle(false);
+          setDisabledVehicle(false);
         }}
         range={range}
         setRange={setRange}
