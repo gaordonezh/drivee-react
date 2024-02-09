@@ -6,7 +6,7 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   description?: string;
   variant: keyof typeof variantClasses;
-  link?: { text: string; path: string };
+  link?: { text: string; path: string; target?: string };
 }
 
 const variantClasses = {
@@ -24,7 +24,7 @@ const Alert = ({ title, description, variant, className, link, ...rest }: AlertP
     <div className={classes} role="alert" {...rest}>
       {title && <p className="font-semibold">{title}</p>} {description}
       {link && (
-        <Link className="underline" href={link.path}>
+        <Link className="underline" href={link.path} target={link.target}>
           {link.text}
         </Link>
       )}

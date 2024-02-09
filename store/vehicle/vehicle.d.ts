@@ -15,6 +15,7 @@ export interface VehicleProps {
   details: Array<VehicleDetailsProps>;
   documents: Array<VehicleDocumentTypesEnum>;
   type: VehicleTypeEnum;
+  distance?: number;
 }
 
 export interface VehicleDetailsProps {
@@ -35,6 +36,7 @@ export interface GetPublicVehiclesFilterProps extends PaginationProps {
   type?: VehicleTypeEnum;
   priceFrom?: string;
   priceTo?: string;
+  id?: string;
 }
 
 export interface CreateVehicleBodyProps {
@@ -63,4 +65,8 @@ export interface SimpleVehicleProps {
   id: string;
   name: string;
   description: string;
+  image?: string;
+  address?: AddressProps;
+  pricexhour?: number;
+  owner?: string | SimpleUserProps;
 }

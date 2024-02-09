@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import Button from '../atoms/Button';
 
-type ActionType = 'previous' | 'next';
+export type PaginationActionType = 'previous' | 'next';
 
 interface PaginationProps {
   total: number;
   perPage: number;
   disabled: boolean;
-  onChange: (action: ActionType) => void;
+  onChange: (action: PaginationActionType) => void;
 }
 
 const crearPaginador = (totalRegistros: number, porPagina: number, paginaActual: number) => {
@@ -33,7 +33,7 @@ const Pagination = ({ total, perPage, disabled, onChange }: PaginationProps) => 
   const disabledPrev = paginaActual === 1;
   const disabledNext = paginaActual === totalPaginas;
 
-  const handleChange = (action: ActionType) => {
+  const handleChange = (action: PaginationActionType) => {
     onChange(action);
     setCurrent(action === 'next' ? currentPage + 1 : currentPage - 1);
   };

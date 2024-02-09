@@ -41,6 +41,7 @@ export interface SimpleUserProps {
   email: string;
   phone: string;
   id: string;
+  photo?: string;
 }
 
 export interface UserProps {

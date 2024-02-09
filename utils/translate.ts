@@ -1,3 +1,4 @@
+import { BookingStatusEnum } from '@/store/booking/booking.enum';
 import { CombinedDocumentEnum } from '@/store/documents/documents.enum';
 import { UserSexEnum, UserTypeDocumentEnum } from '@/store/user/user.enum';
 import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';
@@ -27,4 +28,12 @@ export const DOCUMENT_TYPES_TRANSLATE = {
 export const VEHICLE_TYPES_TRANSLATE = {
   [VehicleTypeEnum.CAR]: 'Carro',
   [VehicleTypeEnum.BIKE]: 'Motocicleta',
+};
+
+export const BOOKING_STATUS_TRANSLATE = {
+  [BookingStatusEnum.PENDING]: 'Aprobación pendiente',
+  [BookingStatusEnum.APPROVED]: 'Aprobado',
+  [BookingStatusEnum.PAYMENT]: 'Pago pendiente',
+  [BookingStatusEnum.REJECTED]: 'Rechazado',
+  [BookingStatusEnum.FINISHED]: 'Finalizado',
 };

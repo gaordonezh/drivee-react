@@ -14,7 +14,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { signOut } from 'next-auth/react';
 import { deleteCookie } from '@/utils/storage';
 
-const HeaderPublic = () => {
+const Header = () => {
   const { push } = useRouter();
   const { user } = useAppContext();
   const [open, setOpen] = React.useState(false);
@@ -43,14 +43,14 @@ const HeaderPublic = () => {
           <Link href="/" className="font-black text-3xl text-white cursor-pointer">
             Drivee
           </Link>
+          <Link href="/booking" className="text-gray-400 hidden lg:block">
+            Alquila un vehículo
+          </Link>
           <Link href="/share" className="text-gray-400 hidden lg:block">
             Conviertete en socio
           </Link>
           <Link href="/rent" className="text-gray-400 hidden lg:block">
             Únete a nosotros
-          </Link>
-          <Link href="/booking" className="text-gray-400 hidden lg:block">
-            Alquila un vehículo
           </Link>
 
           <div className="flex-1" />
@@ -112,14 +112,14 @@ const HeaderPublic = () => {
               </>
             ) : null}
 
+            <Link href="/booking" className="text-gray-400">
+              Alquila un vehículo
+            </Link>
             <Link href="/share" className={combineClassnames('text-gray-400', user ? '' : 'mt-5')}>
               Conviertete en socio
             </Link>
             <Link href="/rent" className="text-gray-400">
               Únete a nosotros
-            </Link>
-            <Link href="/booking" className="text-gray-400">
-              Alquila un vehículo
             </Link>
             <div className="flex-1" />
 
@@ -147,4 +147,4 @@ const HeaderPublic = () => {
   );
 };
 
-export default HeaderPublic;
+export default Header;

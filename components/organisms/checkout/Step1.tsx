@@ -7,6 +7,7 @@ import TimePicker from '../TimePicker';
 import Chip from '@/components/atoms/Chip';
 import Button from '@/components/atoms/Button';
 import { FieldsStateType, RangeStateType } from '../DetailsForm';
+import Alert from '@/components/atoms/Alert';
 
 interface Step1Props {
   fields: FieldsStateType;
@@ -15,9 +16,11 @@ interface Step1Props {
   setRange: Dispatch<SetStateAction<RangeStateType>>;
   price: number;
   handleNext: VoidFunction;
+  notAvailable: boolean;
+  notRangeAvailable: boolean;
 }
 
-const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1Props) => {
+const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvailable, notRangeAvailable }: Step1Props) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -85,13 +88,24 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext }: Step1P
         <p className="text-sm text-slate-500">{`— S/ ${formatMoney(price)} por hora`}</p>
         <p className="text-sm text-slate-500">— {`${range.quantity} hora${range.quantity === 1 ? '' : 's'}`}</p>
       </div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center mb-5">
         <p className="font-semibold text-slate-700">Total</p>
         <Chip label={`S/ ${formatMoney(range.total)}`} />
       </div>
-      <Button fullWidth size="large" className="mt-5" disabled={isDisabled} onClick={handleNext}>
-        CONTINUAR <FaLongArrowAltRight />
-      </Button>
+      {notAvailable || notRangeAvailable ? (
+        <Alert
+          variant="warning"
+          title={
+            notRangeAvailable
+              ? 'El vehículo no se encuentra disponible en el rango de fechas seleccionado.'
+              : 'El vehículo no se encuentra disponible.'
+          }
+        />
+      ) : (
+        <Button fullWidth size="large" disabled={isDisabled} onClick={handleNext}>
+          CONTINUAR <FaLongArrowAltRight />
+        </Button>
+      )}
     </div>
   );
 };

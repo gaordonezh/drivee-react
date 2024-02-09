@@ -21,9 +21,9 @@ const VehicleList = ({ setModal }: VehicleListProps) => {
   const { vehicles } = useAppSelector((state) => state.vehicles);
 
   const statusNode = {
-    [VehicleStatusEnum.PENDING]: <Alert title="PENDIENTE" className="!py-2" variant="info" />,
+    [VehicleStatusEnum.PENDING]: <Alert title="PENDIENTE" className="!py-2" variant="warning" />,
     [VehicleStatusEnum.AVAILABLE]: <Alert title="DISPONIBLE" className="!py-2" variant="success" />,
-    [VehicleStatusEnum.NOT_AVAILABLE]: <Alert title="NO DISPONIBLE" className="!py-2" variant="warning" />,
+    [VehicleStatusEnum.NOT_AVAILABLE]: <Alert title="NO DISPONIBLE" className="!py-2" variant="info" />,
   };
 
   return (

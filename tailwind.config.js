@@ -23,6 +23,7 @@ module.exports = {
       },
       width: {
         'drawer-right': 'calc(100vw - 500px)',
+        'rent-car': 'calc(100% - 4rem)',
       },
       flex: {
         uno: '1',

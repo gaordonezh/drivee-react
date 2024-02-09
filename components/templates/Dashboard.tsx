@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-import HeaderPublic from '../organisms/HeaderPublic';
+import Header from '../organisms/Header';
 import { useAppContext } from '@/context';
 import { UserRolesEnum } from '@/store/user/user.enum';
 import { IoDocumentsSharp } from 'react-icons/io5';
@@ -24,7 +24,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
 
   return (
     <>
-      <HeaderPublic />
+      <Header />
       <div className="h-[85px] lg:h-[260px] bg-dashboard-hero bg-no-repeat bg-center bg-cover" />
       <Container className="p-3 lg:p-10">
         <div className="flex flex-col lg:flex-row gap-3 lg:gap-10">

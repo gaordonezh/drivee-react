@@ -17,6 +17,7 @@ import Card from '@/components/atoms/Card';
 import Empty from '@/components/molecules/Empty';
 import moment from 'moment-timezone';
 import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';
+import Link from 'next/link';
 
 const limit = 20;
 const Booking = () => {
@@ -43,11 +44,6 @@ const Booking = () => {
     getRealData();
   }, [fields]);
 
-  const handleContinue = (code: string) => {
-    const query = objectCleaner({ code, startAt: fields.startAt, endAt: fields.endAt });
-    router.push({ pathname: '/details', query });
-  };
-
   const getRealData = () => {
     const { location, startAt, endAt, type, willcard, priceFrom, priceTo, action } = fields;
 
@@ -56,8 +52,8 @@ const Booking = () => {
       willcard,
       latitude: location?.location.lat,
       longitude: location?.location.lng,
-      dateFrom: startAt ? moment(startAt).toISOString() : undefined,
-      dateTo: endAt ? moment(endAt).toISOString() : undefined,
+      dateFrom: startAt ? moment(startAt).startOf('day').toISOString() : undefined,
+      dateTo: endAt ? moment(endAt).endOf('day').toISOString() : undefined,
       type: type as VehicleTypeEnum,
       priceFrom,
       priceTo,
@@ -98,19 +94,29 @@ const Booking = () => {
             {data.docs.length
               ? data.docs.map((item) => (
                   <div key={item._id} className="bg-white rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg hover:shadow-xl">
-                    <Image src={item.images[0]} width={300} height={100} alt={item.name} className="w-full" />
-                    <div className="px-5 py-3">
-                      <p className="font-bold text-2xl mb-2">{item.name}</p>
+                    <Image src={item.images[0]} width={300} height={200} alt={item.name} className="w-full h-[200px]" />
+                    <div className="px-5 py-3 flex flex-col h-[255px]">
+                      <p className="font-bold text-2xl">{item.name}</p>
                       <DetailsRender details={item.details} />
-                      <footer className="flex flex-row justify-between items-center gap-2 ">
+
+                      <div className="flex-1" />
+
+                      {item.distance === undefined ? null : (
+                        <p className="border-b border-b-slate-200 text-sm text-slate-400">
+                          A <b>{Number(item.distance).toFixed(1)}</b> km. del punto marcado.
+                        </p>
+                      )}
+                      <footer className="flex flex-row justify-between items-center gap-2">
                         <div>
-                          <p className="text-xl font-semibold text-gray-500">Por hora</p>
+                          <p className="text-xl font-semibold text-slate-500">Por hora</p>
                           <p className="font-extrabold text-2xl">
                             <sup>S/</sup>
                             {formatMoney(item.pricexhour)}
                           </p>
                         </div>
-                        <Button onClick={() => handleContinue(item._id)}>Alquilar</Button>
+                        <Link href={{ pathname: '/details', query: objectCleaner({ code: item._id, startAt: fields.startAt, endAt: fields.endAt }) }}>
+                          <Button>Detalles</Button>
+                        </Link>
                       </footer>
                     </div>
                   </div>
@@ -152,7 +158,7 @@ const DetailsRender = ({ details }: { details: Array<VehicleDetailsProps> }) => 
   const extra = details.slice(3, details.length);
 
   return (
-    <ul className="mb-5">
+    <ul className="">
       {list.map((record) => (
         <li key={record.value} className="flex flex-row justify-between gap-2 mb-1">
           <p className="text-gray-500">{record.title}</p>

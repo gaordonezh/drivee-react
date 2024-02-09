@@ -1,25 +1,70 @@
-import React, { useState } from 'react';
-import TableOrders from '@/components/organisms/dashboard/TableOrders';
-import Tabs from '@/components/organisms/dashboard/Tabs';
+import { useEffect, useState } from 'react';
+import TableRentals from '@/components/organisms/dashboard/TableRentals';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
 import { UserRolesEnum } from '@/store/user/user.enum';
+import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
+import { useAppContext } from '@/context';
+import { GetBookingBodyProps } from '@/store/booking/booking';
+import { getBooking } from '@/store/booking/booking.slice';
+import Pagination, { PaginationActionType } from '@/components/molecules/Pagination';
+import { RequestStatusEnum } from '@/interfaces/global.enum';
+import { BookingStatusEnum } from '@/store/booking/booking.enum';
+import Select from '@/components/atoms/Select';
+import { BOOKING_STATUS_TAGS } from '@/components/organisms/dashboard/OrderCards';
 
-const labels = ['Pendientes', 'Completados', 'Cancelados'];
+type ParamsStateType = { limit: number; status?: BookingStatusEnum; action?: PaginationActionType };
 
 const Rentals = () => {
-  const [tab, setTab] = useState(labels[0]);
+  const dispatch = useAppDispatch();
+  const { user } = useAppContext();
+  const { data } = useAppSelector((state) => state.booking);
+  const [params, setParams] = useState<ParamsStateType>({ limit: 10 });
+  const loading = data.status === RequestStatusEnum.PENDING;
 
-  const tabs = {
-    [labels[0]]: <TableOrders title="Servicios pendientes" />,
-    [labels[1]]: <TableOrders title="Servicios completados" />,
-    [labels[2]]: <TableOrders title="Servicios cancelados" />,
+  useEffect(() => {
+    obtainData();
+  }, [params]);
+
+  const obtainData = () => {
+    const { limit, action, status } = params;
+    const body: GetBookingBodyProps = {
+      owner: user?._id,
+      limit: limit, // @ts-ignore
+      status: status === 'all' ? undefined : status,
+      next: action === 'next' ? data.next : undefined,
+      previous: action === 'previous' ? data.previous : undefined,
+    };
+    dispatch(getBooking(body));
   };
+
+  const selectData = [
+    ...Object.values(BookingStatusEnum).map((item) => ({ label: BOOKING_STATUS_TAGS[item].text, value: item })),
+    { label: 'Todos', value: 'all' },
+  ];
 
   return (
     <Layout layout={LayoutEnum.DASHBOARD} authRoles={[UserRolesEnum.OWNER, UserRolesEnum.ADMIN]}>
-      <Tabs labels={labels} active={tab} onChange={setTab} />
-      <div className="border border-gray-200 border-t-0 p-2">{tabs[tab]}</div>
+      <div className="flex flex-col md:flex-row gap-2 justify-between items-start mb-5">
+        <h2 className="text-xl font-bold">Revisa aquí el estado de tus alquileres</h2>
+        <Select
+          value={params.status}
+          data={selectData}
+          setValue={(newValue) => setParams({ ...params, status: newValue as BookingStatusEnum })}
+          keyToShow="label"
+          keyToGey="value"
+          className="w-full md:w-[250px]"
+        />
+      </div>
+
+      <TableRentals />
+
+      <Pagination
+        total={data.totalDocs}
+        perPage={params.limit}
+        disabled={loading || !data.docs.length}
+        onChange={(action) => setParams({ ...params, action })}
+      />
     </Layout>
   );
 };

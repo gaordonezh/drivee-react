@@ -1,5 +1,5 @@
 import React from 'react';
-import HeaderPublic from '../organisms/HeaderPublic';
+import Header from '../organisms/Header';
 import FooterPublic from '../organisms/FooterPublic';
 
 interface PublicLayoutProps {
@@ -9,7 +9,7 @@ interface PublicLayoutProps {
 const PublicLayout = ({ children }: PublicLayoutProps) => {
   return (
     <>
-      <HeaderPublic />
+      <Header />
 
       <div>{children}</div>
 

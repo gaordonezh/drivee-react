@@ -29,7 +29,7 @@ export const createComment = createAsyncThunk('comment/createComment', async (bo
   }
 });
 
-const userSlice = createSlice({
+const commentSlice = createSlice({
   name: 'comment',
   initialState,
   reducers: {},
@@ -58,6 +58,6 @@ const userSlice = createSlice({
   },
 });
 
-// export const {} = userSlice.actions;
+// export const {} = commentSlice.actions;
 
-export default userSlice.reducer;
+export default commentSlice.reducer;

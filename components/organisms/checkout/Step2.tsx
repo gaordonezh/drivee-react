@@ -49,7 +49,7 @@ const Step2 = ({ fields, handleBack, handleNext }: Step2Props) => {
           <FaLongArrowAltLeft /> Volver
         </Button>
         <Button fullWidth size="large" onClick={handleNext}>
-          Continuar <FaLongArrowAltRight />
+          Reservar <FaLongArrowAltRight />
         </Button>
       </div>
     </>

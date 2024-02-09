@@ -14,6 +14,8 @@ const staticData = {
 export default NextAuth({
   session: {
     strategy: 'jwt',
+    maxAge: 7 * 24 * 60 * 60, // 7 DAYS
+    updateAge: 8 * 24 * 60 * 60, // 8 DAYS - deshabilitar la generación de token
   },
   providers: [
     GoogleProvider({

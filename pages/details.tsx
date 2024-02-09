@@ -10,7 +10,8 @@ import Comments from '@/components/organisms/comments/Comments';
 import server from '@/server';
 import { VehicleProps } from '@/store/vehicle/vehicle';
 
-const DetailsPage = ({ _id, name, description, images, pricexhour, address, details }: VehicleProps) => {
+const DetailsPage = (vehicle: VehicleProps) => {
+  const { _id, name, description, images, details } = vehicle;
   const [index, setIndex] = useState(0);
 
   const handleChange = (action: 'next' | 'prev') => {
@@ -49,15 +50,15 @@ const DetailsPage = ({ _id, name, description, images, pricexhour, address, deta
             </div>
           </div>
           <div className="w-full md:w-[50%] lg:w-[40%] rounded-xl bg-white p-5 xl:p-10 border border-gray-300">
-            <DetailsForm price={pricexhour} location={address} />
+            <DetailsForm vehicle={vehicle} />
           </div>
         </div>
 
         <div>
           <p className="font-bold text-2xl mb-5">Especificaciones</p>
           <ul className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-2">
-            {details.map((item, index) => (
-              <li key={index} className="border-b">
+            {details.map((item) => (
+              <li key={JSON.stringify(item)} className="border-b">
                 <p className="text-gray-600 text-sm">{item.title}</p>
                 <p className="text-gray-400 text-xs">{item.value}</p>
               </li>

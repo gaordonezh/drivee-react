@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
-import { MdOutlinePayment } from 'react-icons/md';
 import { FaCheck } from 'react-icons/fa';
 import { combineClassnames } from '@/utils/functions';
 
@@ -21,13 +20,7 @@ const Stepper = ({ steps }: { steps: Array<number> }) => {
       </li>
       <li className={combineClassnames(itemClass)}>
         <div className={combineClassnames(dotClass, steps.includes(1) ? active : inactive)}>
-          <MdOutlinePayment size={25} />
-        </div>
-        <div className="w-full h-px bg-gray-200 absolute z-0"></div>
-      </li>
-      <li className={combineClassnames(itemClass)}>
-        <div className={combineClassnames(dotClass, steps.includes(2) ? active : inactive)}>
-          <FaCheck size={20} />
+          <FaCheck size={25} />
         </div>
         <div className="w-full h-px bg-gray-200 absolute z-0"></div>
       </li>

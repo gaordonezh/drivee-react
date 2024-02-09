@@ -18,6 +18,7 @@ export interface SelectProps {
   error?: boolean;
   errorMessage?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 const Select = ({
@@ -33,6 +34,7 @@ const Select = ({
   setValue,
   onSearch,
   disabled,
+  className,
 }: SelectProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -89,7 +91,7 @@ const Select = ({
   const iconProps = { className: combineClassnames('absolute right-2 bg-white', errorMessage ? 'bottom-7' : 'bottom-3'), size: 20 };
 
   return (
-    <div className="relative w-full">
+    <div className={combineClassnames('relative w-full', className)}>
       <Input
         label={label}
         autoComplete="off"
