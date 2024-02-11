@@ -63,7 +63,7 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvail
             selected={fields.dateStart ? moment(fields.dateStart).toDate() : null}
             onChange={(update) => handleChange({ dateStart: moment(update).startOf('day'), dateEnd: null })}
             minDate={moment().toDate()}
-            maxDate={moment().add(2, 'months').subtract(1, 'day').toDate()}
+            maxDate={moment().add(6, 'months').subtract(1, 'day').toDate()}
           />
           <TimePicker time={fields.timeStart} setTime={(timeStart) => handleChange({ timeStart, timeEnd: null })} />
         </div>
@@ -75,7 +75,7 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvail
             selected={fields.dateEnd ? moment(fields.dateEnd).toDate() : null}
             onChange={(update) => handleChange({ dateEnd: moment(update).startOf('day') })}
             minDate={fields.dateStart ? moment(fields.dateStart).toDate() : null}
-            maxDate={fields.dateStart ? moment(fields.dateStart).add(2, 'weeks').toDate() : null}
+            maxDate={fields.dateStart ? moment(fields.dateStart).add(3, 'weeks').toDate() : null}
           />
           <TimePicker
             time={fields.timeEnd}

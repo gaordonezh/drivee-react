@@ -59,6 +59,7 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
                           width={50}
                           height={50}
                           className="rounded-md"
+                          loading="lazy"
                         />
                       </td>
                       <td className="whitespace-nowrap px-6 py-4" align="left">

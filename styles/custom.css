@@ -27,10 +27,10 @@
   @apply relative;
 }
 .booking__filters--box {
-  @apply absolute bottom-0 right-0 left-0 flex justify-center px-10;
+  @apply absolute bottom-0 right-0 left-0 px-10;
 }
 .booking__filters--card {
-  @apply bg-white w-full md:max-w-4xl rounded-md shadow-md shadow-gray-500 px-5 py-5;
+  @apply bg-white rounded-md shadow-md shadow-gray-500 px-5 py-5;
 }
 .booking__filters--main {
   @apply flex flex-col gap-5 mb-5 md:flex-row;
@@ -56,14 +56,13 @@
 
 /* GRID CHIPS */
 .filter__chips--container {
-  @apply flex items-center;
+  @apply flex flex-col items-center sm:flex-row gap-3;
 }
 .filter__chips--action {
   @apply w-[200px] md:w-[210px];
 }
 .filter__chips--items {
-  @apply flex flex-wrap gap-1 overflow-hidden;
-  width: calc(100% - 200px);
+  @apply flex flex-wrap gap-1;
 }
 
 /* INPUT DATE PICKER */

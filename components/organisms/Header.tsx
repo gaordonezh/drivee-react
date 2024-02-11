@@ -15,7 +15,7 @@ import { signOut } from 'next-auth/react';
 import { deleteCookie } from '@/utils/storage';
 
 const Header = () => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const { user } = useAppContext();
   const [open, setOpen] = React.useState(false);
   const [fixed, setFixed] = React.useState(false);
@@ -43,13 +43,19 @@ const Header = () => {
           <Link href="/" className="font-black text-3xl text-white cursor-pointer">
             Drivee
           </Link>
-          <Link href="/booking" className="text-gray-400 hidden lg:block">
+          <Link
+            href="/booking"
+            className={combineClassnames('hidden lg:block', pathname === '/booking' ? 'text-gray-200 font-semibold' : 'text-gray-400')}
+          >
             Alquila un vehículo
           </Link>
-          <Link href="/share" className="text-gray-400 hidden lg:block">
+          <Link
+            href="/share"
+            className={combineClassnames('hidden lg:block', pathname === '/share' ? 'text-gray-200 font-semibold' : 'text-gray-400')}
+          >
             Conviertete en socio
           </Link>
-          <Link href="/rent" className="text-gray-400 hidden lg:block">
+          <Link href="/rent" className={combineClassnames('hidden lg:block', pathname === '/rent' ? 'text-gray-200 font-semibold' : 'text-gray-400')}>
             Únete a nosotros
           </Link>
 
@@ -100,7 +106,7 @@ const Header = () => {
                 <div className="flex flex-row gap-5 items-center">
                   <div
                     className="h-[50px] w-[50px] rounded-full bg-no-repeat bg-cover bg-center"
-                    style={{ backgroundImage: `url(${user.phone ?? '/images/profile.png'})` }}
+                    style={{ backgroundImage: `url(${user.photo ?? '/images/profile.png'})` }}
                   />
                   <div>
                     <p className="text-white font-semibold text-lg">Hola {user.f_name}</p>
@@ -112,13 +118,16 @@ const Header = () => {
               </>
             ) : null}
 
-            <Link href="/booking" className="text-gray-400">
+            <Link href="/booking" className={combineClassnames(pathname === '/booking' ? 'text-gray-200 font-semibold' : 'text-gray-400')}>
               Alquila un vehículo
             </Link>
-            <Link href="/share" className={combineClassnames('text-gray-400', user ? '' : 'mt-5')}>
+            <Link
+              href="/share"
+              className={combineClassnames(user ? '' : 'mt-5', pathname === '/share' ? 'text-gray-200 font-semibold' : 'text-gray-400')}
+            >
               Conviertete en socio
             </Link>
-            <Link href="/rent" className="text-gray-400">
+            <Link href="/rent" className={combineClassnames(pathname === '/rent' ? 'text-gray-200 font-semibold' : 'text-gray-400')}>
               Únete a nosotros
             </Link>
             <div className="flex-1" />

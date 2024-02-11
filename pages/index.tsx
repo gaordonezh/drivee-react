@@ -9,7 +9,30 @@ import { objectCleaner } from '@/utils/functions';
 import GeneralInputFilters, { FieldsFiltersType } from '@/components/organisms/GeneralInputFilters';
 import Layout from '@/components/templates';
 import LayoutEnum from '@/enums/layout.enum';
-import { IMAGE_LIST } from '@/utils/constants';
+
+const opinions = [
+  {
+    id: 1,
+    name: 'María López',
+    title: 'Servicio excepcional y sin complicaciones',
+    comment:
+      'Increíble experiencia utilizando esta plataforma de alquiler de vehículos. Necesitaba un coche para un viaje de negocios y la gestión a través de la plataforma fue impecable. El proceso de reserva fue rápido y sencillo, y el coche estaba en excelentes condiciones. Definitivamente volveré a utilizar este servicio en el futuro.',
+  },
+  {
+    id: 2,
+    name: 'Juan Pérez',
+    title: 'La mejor opción para aventuras al aire libre',
+    comment:
+      'Alquilé una camioneta para un viaje de aventura por la montaña y fue perfecto. La plataforma fue fácil de usar, el proceso de alquiler fue rápido y el vehículo estaba en excelentes condiciones. ¡Altamente recomendado para aventuras al aire libre!',
+  },
+  {
+    id: 3,
+    name: 'Ana Martínez',
+    title: 'Comodidad y espacio para toda la familia',
+    comment:
+      'Utilizamos esta plataforma para alquilar un SUV para nuestras vacaciones familiares y quedamos encantados. Fue fácil encontrar un vehículo espacioso y cómodo, y el proceso de reserva fue rápido y sin complicaciones. Sin duda utilizaremos esta plataforma en nuestro próximo viaje en familia.',
+  },
+];
 
 const Home = () => {
   const router = useRouter();
@@ -98,7 +121,7 @@ const Home = () => {
                 Ver más <BsArrowUpRight />
               </>
             ),
-            link: '/tour',
+            link: '/share',
           }}
           imageProps={{ src: '/images/car-owner.jpg', alt: 'Dueño del vehiculo' }}
         />
@@ -106,23 +129,25 @@ const Home = () => {
           <div>
             <h3 className="text-3xl font-bold">¿Por qué elegirnos?</h3>
             <p className="text-gray-500 mt-5">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad similique rem ipsa corrupti quae, dolores illum nesciunt reiciendis nulla.
-              Eveniet hic ducimus, exercitationem dolorem minus iusto quod aspernatur recusandae praesentium.
+              Nos enorgullecemos de ofrecer una experiencia confiable y de calidad. Desde coches compactos hasta vehículos de lujo, nuestra amplia
+              gama de opciones garantiza encontrar el vehículo perfecto para tus necesidades, todo a precios competitivos y transparentes. Con
+              rigurosas inspecciones de seguridad y mantenimiento regular en todos nuestros vehículos, junto con un proceso de reserva en línea fácil
+              y rápido, estamos comprometidos a proporcionarte una experiencia de alquiler sin complicaciones y segura en cada viaje.
             </p>
           </div>
           <div className="flex items-center justify-center">
             <div className="shadow-md shadow-gray-500 grid grid-cols-1 md:grid-cols-3 rounded-2xl max-w-[450px] p-5 gap-5">
               <div className="text-center">
-                <h4 className="text-3xl font-extrabold">45K+</h4>
-                <p className="text-gray-500 text-sm">Success Tour</p>
+                <h4 className="text-3xl font-extrabold">100 +</h4>
+                <p className="text-gray-500 text-sm">Operaciones finalizadas</p>
               </div>
               <div className="text-center">
-                <h4 className="text-3xl font-extrabold">1M+</h4>
-                <p className="text-gray-500 text-sm">Happy Customers</p>
+                <h4 className="text-3xl font-extrabold">75 +</h4>
+                <p className="text-gray-500 text-sm">Cliente felices</p>
               </div>
               <div className="text-center">
-                <h4 className="text-3xl font-extrabold">3+</h4>
-                <p className="text-gray-500 text-sm">Year Experience</p>
+                <h4 className="text-3xl font-extrabold">1 +</h4>
+                <p className="text-gray-500 text-sm">Años de experiencia</p>
               </div>
             </div>
           </div>
@@ -134,28 +159,21 @@ const Home = () => {
           <div className="text-center pt-20 pb-10">
             <h3 className="text-xl md:text-3xl lg:text-5xl font-bold">Lo que dicen nuestros clientes...</h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-20">
-            {IMAGE_LIST.map((item) => (
-              <div
-                key={item}
-                className="rounded-xl shadow-md shadow-gray-500 bg-no-repeat bg-cover bg-top sm:bg-center overflow-hidden flex flex-col items-end justify-end"
-                style={{ backgroundImage: `url(${item})` }}
-              >
-                <div className="sm:min-h-[250px]" />
-                <div className="p-5 bg-people-say flex flex-col gap-3">
-                  <p className="text-white font-bold text-base">Super title</p>
-                  <p className="text-white font-light text-base">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi autem natus optio, vitae deserunt debitis molestias laborum nisi
-                    recusandae voluptas.
-                  </p>
-                  <p className="text-white font-semibold text-base">—— Robert Harvest</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-20">
+            {opinions.map((item) => (
+              <div key={item.id} className="rounded-xl bg-slate-800 shadow-md shadow-gray-500 overflow-hidden flex flex-col items-end justify-end">
+                <div className="p-5 bg-people-say flex flex-col gap-3 h-full">
+                  <p className="text-white font-bold text-base">{item.title}</p>
+                  <p className="text-white font-light text-base">{item.comment}</p>
+                  <p className="flex-1"></p>
+                  <p className="text-white font-semibold text-base">—— {item.name}</p>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="text-center">
-            <h3 className="text-xl md:text-3xl lg:text-5xl font-bold mt-32 mb-20">Lugares donde brindamos nuestros servicios</h3>
+            <h3 className="text-xl md:text-3xl lg:text-5xl font-bold mt-32 mb-20">Principales lugares donde brindamos nuestros servicios en Perú</h3>
             <Carousel />
           </div>
         </Container>

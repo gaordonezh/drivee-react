@@ -8,9 +8,11 @@ interface ChipProps {
   size: 'large' | 'small';
   className?: string;
   disabled?: boolean;
+  whiteSpace: boolean;
+  bold: boolean;
 }
 
-const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled }: ChipProps) => {
+const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled, whiteSpace, bold }: ChipProps) => {
   const sizeClass = {
     large: 'px-5 py-2',
     small: 'px-3 py-1',
@@ -28,7 +30,7 @@ const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled }
       onClick={onClick}
     >
       {iconLeft}
-      {label && <p className="text-sm font-semibold whitespace-nowrap">{label}</p>}
+      {label && <p className={combineClassnames('text-sm', whiteSpace ? 'whitespace-nowrap' : '', bold ? 'font-semibold' : '')}>{label}</p>}
       {iconRight}
     </div>
   );
@@ -36,6 +38,8 @@ const Chip = ({ iconLeft, iconRight, label, onClick, size, className, disabled }
 
 Chip.defaultProps = {
   size: 'large',
+  whiteSpace: true,
+  bold: true,
 };
 
 export default Chip;

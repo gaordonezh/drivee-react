@@ -14,6 +14,7 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';
 import { VEHICLE_TYPES_TRANSLATE } from '@/utils/translate';
 import Spinner from '../molecules/Spinner';
+import Container from '../molecules/Container';
 
 export interface BookingFiltersStateType extends FieldsFiltersType {
   type: string;
@@ -69,11 +70,11 @@ const BookingFilters = ({ loading, fields, setFields }: BookingFiltersProps) => 
 
   return (
     <>
-      <div className="h-[300px] bg-booking bg-no-repeat bg-top bg-cover text-center pt-28 md:pt-20">
+      <div className="h-[150px] md:h-[250px] bg-booking bg-no-repeat bg-top bg-cover text-center pt-10 md:pt-14">
         <h1 className={combineClassnames('text-white text-xl font-semibold lg:text-3xl')}>Alquila un coche, alquila tu libertad</h1>
       </div>
 
-      <div className={combineClassnames('booking__filters h-[40px] md:h-[80px]')}>
+      <Container className="px-10 booking__filters h-[40px] md:h-[80px]">
         <div className="booking__filters--box">
           <Spinner loading={loading}>
             <div className="booking__filters--card">
@@ -89,7 +90,7 @@ const BookingFilters = ({ loading, fields, setFields }: BookingFiltersProps) => 
               ) : null}
               <div className="filter__chips--container">
                 <div className="filter__chips--action">
-                  <Button size={width > 768 ? 'large' : 'medium'} onClick={() => setShowDrawer((prev) => !prev)}>
+                  <Button fullWidth={width < 500} size={width > 768 ? 'large' : 'medium'} onClick={() => setShowDrawer((prev) => !prev)}>
                     <LuSettings2 size={20} /> Agregar filtros
                   </Button>
                 </div>
@@ -98,9 +99,13 @@ const BookingFilters = ({ loading, fields, setFields }: BookingFiltersProps) => 
                     <Chip
                       key={item.value}
                       label={item.value}
+                      bold={false}
+                      whiteSpace={false}
                       size="small"
                       iconRight={
-                        <IoCloseCircleOutline size={20} cursor="pointer" onClick={() => handleRemove(item.keys as Array<keyof typeof fields>)} />
+                        <div className="h-[20px] w-[20px]">
+                          <IoCloseCircleOutline size={20} cursor="pointer" onClick={() => handleRemove(item.keys as Array<keyof typeof fields>)} />
+                        </div>
                       }
                     />
                   ))}
@@ -109,7 +114,7 @@ const BookingFilters = ({ loading, fields, setFields }: BookingFiltersProps) => 
             </div>
           </Spinner>
         </div>
-      </div>
+      </Container>
 
       {showDrawer && (
         <FiltersDrawer onClose={handleClose}>

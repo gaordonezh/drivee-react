@@ -24,7 +24,7 @@ const DateRangePicker = ({ dates, setDates }: DateRangePickerProps) => {
         disabledKeyboardNavigation
         inline
         minDate={moment().toDate()}
-        maxDate={moment().add(2, 'months').subtract(1, 'day').toDate()}
+        maxDate={moment().add(6, 'months').subtract(1, 'day').toDate()}
       />
     </div>
   );

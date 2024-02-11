@@ -94,7 +94,7 @@ const Booking = () => {
             {data.docs.length
               ? data.docs.map((item) => (
                   <div key={item._id} className="bg-white rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg hover:shadow-xl">
-                    <Image src={item.images[0]} width={300} height={200} alt={item.name} className="w-full h-[200px]" />
+                    <Image src={item.images[0]} width={300} height={200} alt={item.name} className="w-full h-[200px]" loading="lazy" />
                     <div className="px-5 py-3 flex flex-col h-[255px]">
                       <p className="font-bold text-2xl">{item.name}</p>
                       <DetailsRender details={item.details} />
