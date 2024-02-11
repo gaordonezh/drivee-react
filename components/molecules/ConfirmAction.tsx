@@ -6,12 +6,13 @@ import Button from '../atoms/Button';
 import { MdCheck, MdClose } from 'react-icons/md';
 import server from '@/server';
 import { objectCleaner } from '@/utils/functions';
+import Spinner from './Spinner';
 
 interface ConfirmActionProps {
   handleClose: VoidFunction;
   method: Method;
   endpoint: string;
-  handleResponse: ({ success, response }: { success: boolean; response?: any }) => void;
+  handleResponse: ({ success, response }: { success: boolean; response: any }) => void;
   body?: Record<string, any>;
   params?: Record<string, any>;
   title: string;
@@ -38,7 +39,7 @@ const ConfirmAction = ({ handleClose, method, endpoint, handleResponse, body, pa
       handleResponse({ success: true, response });
       handleClose();
     } catch (error) {
-      handleResponse({ success: false });
+      handleResponse({ success: false, response: error });
     } finally {
       setLoading(false);
     }
@@ -49,19 +50,21 @@ const ConfirmAction = ({ handleClose, method, endpoint, handleResponse, body, pa
       uniqueGlobalId={uniqueGlobalId}
       component={
         <Modal onClose={() => !loading && handleClose()}>
-          <div className="w-[400px] flex flex-col gap-2">
-            <h2 className="font-semibold text-xl">{title}</h2>
-            {subtitle && <p className="text-gray-700">{subtitle}</p>}
-            {content}
-            <div className="flex flex-row gap-5 justify-end mt-5">
-              <Button variant="white" onClick={handleClose} disabled={loading} className="!border-black">
-                CANCELAR <MdClose size={20} />
-              </Button>
-              <Button onClick={handleDelete} disabled={loading}>
-                CONFIRMAR <MdCheck size={20} />
-              </Button>
+          <Spinner loading={loading}>
+            <div className="w-[400px] flex flex-col gap-2">
+              <h2 className="font-semibold text-xl">{title}</h2>
+              {subtitle && <p className="text-gray-700">{subtitle}</p>}
+              {content}
+              <div className="flex flex-row gap-5 justify-end mt-5">
+                <Button variant="white" onClick={handleClose} disabled={loading} className="!border-black">
+                  CANCELAR <MdClose size={20} />
+                </Button>
+                <Button onClick={handleDelete} disabled={loading}>
+                  CONFIRMAR <MdCheck size={20} />
+                </Button>
+              </div>
             </div>
-          </div>
+          </Spinner>
         </Modal>
       }
     />

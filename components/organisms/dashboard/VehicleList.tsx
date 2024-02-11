@@ -7,7 +7,7 @@ import { useAppSelector } from '@/hooks/useStore';
 import { ModalStateEnum, RequestStatusEnum } from '@/interfaces/global.enum';
 import { CarsModalStateType } from '@/pages/dashboard/cars';
 import { VehicleStatusEnum } from '@/store/vehicle/vehicle.enum';
-import { formatMoney } from '@/utils/functions';
+import { combineClassnames, formatMoney } from '@/utils/functions';
 import React, { Dispatch, SetStateAction } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { IoDocumentTextSharp } from 'react-icons/io5';
@@ -15,9 +15,10 @@ import { MdCarCrash, MdEdit } from 'react-icons/md';
 
 interface VehicleListProps {
   setModal: Dispatch<SetStateAction<CarsModalStateType>>;
+  disabled: boolean;
 }
 
-const VehicleList = ({ setModal }: VehicleListProps) => {
+const VehicleList = ({ setModal, disabled }: VehicleListProps) => {
   const { vehicles } = useAppSelector((state) => state.vehicles);
 
   const statusNode = {
@@ -30,10 +31,16 @@ const VehicleList = ({ setModal }: VehicleListProps) => {
     <Spinner loading={vehicles.status === RequestStatusEnum.PENDING}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-10">
         <Card
-          className="cursor-pointer flex flex-col items-center justify-center hover:opacity-75 hover:shadow-lg min-h-[150px]"
-          onClick={() => setModal({ mode: ModalStateEnum.BOX, data: null })}
+          className={combineClassnames(
+            'flex flex-col items-center justify-center min-h-[150px]',
+            disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:opacity-75 hover:shadow-lg'
+          )}
+          onClick={() => {
+            if (disabled) return;
+            setModal({ mode: ModalStateEnum.BOX, data: null });
+          }}
         >
-          <IoMdAdd size={50} className="hover:scale-105 hover:transition-all" />
+          <IoMdAdd size={50} className={combineClassnames(disabled ? '' : 'hover:scale-105 hover:transition-all')} />
           <p className="font-semibold text-sm">Agregar vehículo</p>
         </Card>
         {vehicles.docs.length ? (

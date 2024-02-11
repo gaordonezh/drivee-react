@@ -1,7 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import server from '@/server';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
-import { AuxDocumentProps, CreateDocumentProps, DocumentProps, GetDocumentsFilterProps, UpdateDocumentProps } from './documents';
+import {
+  AuxDocumentProps,
+  CreateDocumentProps,
+  DocumentProps,
+  GetDocumentsFilterProps,
+  UpdateDocumentProps,
+  VerifyDocumentsParamsProps,
+} from './documents';
 import { DocumentStatusEnum, DocumentTypesEnum, PersonalDocumentTypesEnum, VehicleDocumentTypesEnum } from './documents.enum';
 import { DOCUMENT_TYPES_TRANSLATE } from '@/utils/translate';
 import { objectCleaner } from '@/utils/functions';
@@ -44,6 +51,15 @@ export const updateDocument = createAsyncThunk(
     }
   }
 );
+
+export const verifyDocuments = createAsyncThunk('document/verifyDocuments', async (params: VerifyDocumentsParamsProps, thunkAPI) => {
+  try {
+    const response = await server.get(`documents/verify`, { params });
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
 
 const userSlice = createSlice({
   name: 'document',
@@ -97,6 +113,16 @@ const userSlice = createSlice({
       })
       .addCase(String(updateDocument.rejected), (state) => {
         state.createDocumentStatus = RequestStatusEnum.ERROR;
+      })
+
+      .addCase(String(verifyDocuments.pending), (state) => {
+        state.createDocumentStatus = RequestStatusEnum.PENDING;
+      })
+      .addCase(String(verifyDocuments.fulfilled), (state) => {
+        state.createDocumentStatus = RequestStatusEnum.IDLE;
+      })
+      .addCase(String(verifyDocuments.rejected), (state) => {
+        state.createDocumentStatus = RequestStatusEnum.IDLE;
       });
   },
 });

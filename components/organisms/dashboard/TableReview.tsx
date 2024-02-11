@@ -116,7 +116,7 @@ const TableReview = ({ setSelected }: TableReviewProps) => {
                             size="medium"
                             title="Eliminar documento"
                           />
-                          {[DocumentStatusEnum.APPROVED].includes(item.status) && (
+                          {[DocumentStatusEnum.APPROVED].includes(item.status) && item.vehicle?._id && (
                             <Fab
                               onClick={() => setSelected({ mode: ModalStateEnum.ENABLE, data: item })}
                               icon={<IoCarSportSharp size={20} className="text-green-500" />}

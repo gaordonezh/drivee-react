@@ -2,7 +2,7 @@ import React from 'react';
 import Container from '../molecules/Container';
 import Card from '../atoms/Card';
 import { MdFactCheck } from 'react-icons/md';
-import { FaListAlt, FaCar, FaThList, FaHome } from 'react-icons/fa';
+import { FaListAlt, FaCar, FaThList } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { combineClassnames } from '@/utils/functions';
@@ -31,7 +31,6 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
           <div className="w-full lg:w-[300px]">
             <Card className="h-full">
               <ul className="flex flex-row lg:flex-col gap-2 lg:w-full justify-center">
-                <Item label={isSmall ? '' : 'Inicio'} path="/dashboard" current={pathname} icon={<FaHome className="w-[20px] h-[20px]" />} />
                 {user?.roles.includes(UserRolesEnum.USER) && (
                   <Item
                     label={isSmall ? '' : 'Mis Rentas'}

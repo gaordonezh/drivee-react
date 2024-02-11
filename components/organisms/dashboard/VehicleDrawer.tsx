@@ -22,7 +22,6 @@ import Spinner from '@/components/molecules/Spinner';
 import { createVehicle, resetVehicleStatus, updateVehicle } from '@/store/vehicle/vehicle.slice';
 import Chip from '@/components/atoms/Chip';
 import Fab from '@/components/atoms/Fab';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import RadioButton from '@/components/atoms/RadioButton';
 import { VehicleTypeEnum } from '@/store/vehicle/vehicle.enum';

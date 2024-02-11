@@ -5,21 +5,25 @@ import LayoutEnum from '@/enums/layout.enum';
 import { UserRolesEnum } from '@/store/user/user.enum';
 import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
 import { useAppContext } from '@/context';
-import { GetBookingBodyProps } from '@/store/booking/booking';
+import { BookingProps, GetBookingBodyProps } from '@/store/booking/booking';
 import { getBooking } from '@/store/booking/booking.slice';
 import Pagination, { PaginationActionType } from '@/components/molecules/Pagination';
-import { RequestStatusEnum } from '@/interfaces/global.enum';
+import { ModalStateEnum, RequestStatusEnum } from '@/interfaces/global.enum';
 import { BookingStatusEnum } from '@/store/booking/booking.enum';
 import Select from '@/components/atoms/Select';
 import { BOOKING_STATUS_TAGS } from '@/components/organisms/dashboard/OrderCards';
+import RentalsDrawer from '@/components/organisms/dashboard/RentalsDrawer';
+import Alert from '@/components/atoms/Alert';
 
 type ParamsStateType = { limit: number; status?: BookingStatusEnum; action?: PaginationActionType };
+export type RentalsModalStateType = null | { mode: ModalStateEnum; data: BookingProps };
 
 const Rentals = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppContext();
-  const { data } = useAppSelector((state) => state.booking);
+  const { data, requestBookingState } = useAppSelector((state) => state.booking);
   const [params, setParams] = useState<ParamsStateType>({ limit: 10 });
+  const [modals, setModals] = useState<RentalsModalStateType>(null);
   const loading = data.status === RequestStatusEnum.PENDING;
 
   useEffect(() => {
@@ -54,10 +58,13 @@ const Rentals = () => {
           keyToShow="label"
           keyToGey="value"
           className="w-full md:w-[250px]"
+          placeholder="Selecciona un estado"
         />
       </div>
 
-      <TableRentals />
+      {requestBookingState === RequestStatusEnum.SUCCESS && <Alert title="El estado de la solicitud se actualizó correctamente" className="mb-5" />}
+
+      <TableRentals setModals={setModals} />
 
       <Pagination
         total={data.totalDocs}
@@ -65,6 +72,8 @@ const Rentals = () => {
         disabled={loading || !data.docs.length}
         onChange={(action) => setParams({ ...params, action })}
       />
+
+      {modals && <RentalsDrawer data={modals.data} handleClose={() => setModals(null)} handleReload={obtainData} />}
     </Layout>
   );
 };

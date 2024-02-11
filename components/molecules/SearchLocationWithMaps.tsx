@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from '../atoms/Select';
 import Spinner from './Spinner';
 import GoogleMapReact from 'google-map-react';
 import { InputMapsStateType } from './InputMaps';
 import { combineClassnames } from '@/utils/functions';
+import useUserLocation from '@/hooks/useUserLocation';
 
 interface SearchLocationWithMapsProps {
   setAuxValue: (params: InputMapsStateType) => void;
@@ -24,12 +25,17 @@ const getGeoCode: any = (placeId: string) => {
 };
 
 const SearchLocationWithMaps = ({ setAuxValue, auxValue, className, error, errorMessage }: SearchLocationWithMapsProps) => {
+  const useLocation = useUserLocation();
   const [marker, setMarker] = useState<any>(null);
-  const [currentLocation, setCurrentLocation] = useState({ lat: -12.044062386030685, lng: -77.04334164909426 });
+  const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [currentZoom, setCurrentZoom] = useState(13);
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<Array<Record<string, any>>>([]);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
+
+  useEffect(() => {
+    setCurrentLocation(useLocation);
+  }, [useLocation]);
 
   const loadMap = (map: any, maps: any) => {
     const myMarker = new maps.Marker({

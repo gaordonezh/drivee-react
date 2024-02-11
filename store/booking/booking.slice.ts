@@ -42,8 +42,8 @@ const bookingSlice = createSlice({
   name: 'booking',
   initialState,
   reducers: {
-    resetBookingState: (state) => {
-      state.requestBookingState = RequestStatusEnum.IDLE;
+    updateBookingState: (state, action: { payload: RequestStatusEnum }) => {
+      state.requestBookingState = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -72,6 +72,6 @@ const bookingSlice = createSlice({
   },
 });
 
-export const { resetBookingState } = bookingSlice.actions;
+export const { updateBookingState } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

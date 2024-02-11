@@ -17,6 +17,7 @@ import Alert from '../atoms/Alert';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import Spinner from '../molecules/Spinner';
 import { getPublicVehicles } from '@/store/vehicle/vehicle.slice';
+import { verifyDocuments } from '@/store/documents/documents.slice';
 
 interface DetailsFormProps {
   vehicle: VehicleProps;
@@ -38,6 +39,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
   const dispatch = useAppDispatch();
   const { requestBookingState } = useAppSelector((state) => state.booking);
   const valificationState = useAppSelector((state) => state.vehicles.publicVehicles.status);
+  const verifyStatus = useAppSelector((state) => state.documents.createDocumentStatus);
   const { user } = useAppContext();
   const { query } = useRouter();
   const [fields, setFields] = useState<FieldsStateType>({ location: null, dateStart: null, timeStart: null, dateEnd: null, timeEnd: null });
@@ -45,7 +47,8 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
   const [step, setStep] = useState<keyof typeof steps>(0);
   const [modalLogin, setModalLogin] = useState(false);
   const [disabledVehicle, setDisabledVehicle] = useState(false);
-  const loading = [requestBookingState, valificationState].includes(RequestStatusEnum.PENDING);
+  const [disableDocument, setDisableDocument] = useState(false);
+  const loading = [requestBookingState, valificationState, verifyStatus].includes(RequestStatusEnum.PENDING);
   const error = requestBookingState === RequestStatusEnum.ERROR;
   const success = requestBookingState === RequestStatusEnum.SUCCESS;
 
@@ -89,6 +92,10 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
   const handleNextStep = async () => {
     if (!user) return setModalLogin(true);
 
+    const verify = await dispatch(verifyDocuments({ user: user._id }));
+    setDisableDocument(verify.payload.user);
+    if (verify.payload.user) return;
+
     const filters: GetPublicVehiclesFilterProps = {
       dateFrom: moment(fields.dateStart).startOf('day').toISOString(),
       dateTo: moment(fields.dateEnd).endOf('day').toISOString(),
@@ -115,6 +122,7 @@ const DetailsForm = ({ vehicle }: DetailsFormProps) => {
         handleNext={handleNextStep}
         notAvailable={vehicle.status !== VehicleStatusEnum.AVAILABLE}
         notRangeAvailable={disabledVehicle}
+        disableDocument={disableDocument}
       />
     ),
     1: <Step2 fields={{ ...fields, ...range }} handleNext={handleReserve} handleBack={() => setStep(0)} />,

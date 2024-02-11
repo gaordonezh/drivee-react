@@ -1,7 +1,7 @@
 import { combineClassnames } from '@/utils/functions';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   size: keyof typeof sizeClasses;
   variant: keyof typeof variantClasses;
   fullWidth: boolean;

@@ -12,6 +12,7 @@ export interface BookingProps {
   totalPrice: number;
   totalHours: number;
   status: BookingStatusEnum;
+  comment?: string;
 }
 
 export interface GetBookingBodyProps extends PaginationProps {

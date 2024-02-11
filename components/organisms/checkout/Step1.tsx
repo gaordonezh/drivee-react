@@ -18,9 +18,10 @@ interface Step1Props {
   handleNext: VoidFunction;
   notAvailable: boolean;
   notRangeAvailable: boolean;
+  disableDocument: boolean;
 }
 
-const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvailable, notRangeAvailable }: Step1Props) => {
+const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvailable, notRangeAvailable, disableDocument }: Step1Props) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -92,16 +93,19 @@ const Step1 = ({ fields, setFields, range, setRange, price, handleNext, notAvail
         <p className="font-semibold text-slate-700">Total</p>
         <Chip label={`S/ ${formatMoney(range.total)}`} />
       </div>
-      {notAvailable || notRangeAvailable ? (
+
+      {notAvailable && <Alert variant="warning" title="El vehículo no se encuentra disponible." />}
+      {notRangeAvailable && <Alert variant="warning" title="El vehículo no se encuentra disponible en el rango de fechas seleccionado." />}
+      {disableDocument && (
         <Alert
           variant="warning"
-          title={
-            notRangeAvailable
-              ? 'El vehículo no se encuentra disponible en el rango de fechas seleccionado.'
-              : 'El vehículo no se encuentra disponible.'
-          }
+          title="Documentos personales pendientes"
+          description="Tus documentos aún no fueron adjuntados y/o aprobados. Puedes verificar en tu perfíl y subirlo en la sección de "
+          link={{ path: '/dashboard/documents', text: 'mis documentos' }}
         />
-      ) : (
+      )}
+
+      {notAvailable || notRangeAvailable || disableDocument ? null : (
         <Button fullWidth size="large" disabled={isDisabled} onClick={handleNext}>
           CONTINUAR <FaLongArrowAltRight />
         </Button>

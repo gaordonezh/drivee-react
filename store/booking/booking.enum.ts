@@ -3,5 +3,6 @@ export enum BookingStatusEnum {
   APPROVED = 'approved',
   REJECTED = 'rejected',
   PAYMENT = 'payment',
+  IN_PROCCESS = 'in_process',
   FINISHED = 'finished',
 }

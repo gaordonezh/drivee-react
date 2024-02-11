@@ -52,3 +52,8 @@ export interface AuxDocumentProps {
   _id?: string;
   url?: string;
 }
+
+export interface VerifyDocumentsParamsProps {
+  user?: string;
+  vehicle?: string;
+}

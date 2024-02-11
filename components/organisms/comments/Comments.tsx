@@ -52,7 +52,7 @@ const Comments = ({ vehicleSimpleData }: CommentsProps) => {
   const avg = String(avgAux).length === 1 ? avgAux : avgAux.toFixed(1);
 
   return (
-    <div>
+    <div id="comments">
       <div className="flex flex-col md:flex-row justify-between items-center">
         <div>
           <p className="font-bold text-2xl">Calificación general</p>

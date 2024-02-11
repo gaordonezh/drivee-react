@@ -1,16 +1,19 @@
-import Fab from '@/components/atoms/Fab';
 import Loader from '@/components/atoms/Loader';
 import Empty from '@/components/molecules/Empty';
 import { useAppSelector } from '@/hooks/useStore';
-import { RequestStatusEnum } from '@/interfaces/global.enum';
+import { ModalStateEnum, RequestStatusEnum } from '@/interfaces/global.enum';
 import { formatMoney } from '@/utils/functions';
 import moment from 'moment-timezone';
 import Link from 'next/link';
-import { BiCheck } from 'react-icons/bi';
-import { IoClose } from 'react-icons/io5';
 import { BOOKING_STATUS_TAGS } from './OrderCards';
+import { Dispatch, SetStateAction } from 'react';
+import { RentalsModalStateType } from '@/pages/dashboard/rentals';
 
-const TableRentals = () => {
+interface TableRentalsProps {
+  setModals: Dispatch<SetStateAction<RentalsModalStateType>>;
+}
+
+const TableRentals = ({ setModals }: TableRentalsProps) => {
   const { data } = useAppSelector((state) => state.booking);
   const loading = data.status === RequestStatusEnum.PENDING;
 
@@ -48,7 +51,11 @@ const TableRentals = () => {
             <tbody>
               {data.docs.length && !loading ? (
                 data.docs.map((item) => (
-                  <tr key={item._id}>
+                  <tr
+                    key={item._id}
+                    className="cursor-pointer hover:bg-gray-100 active:bg-gray-200"
+                    onClick={() => setModals({ mode: ModalStateEnum.BOX, data: item })}
+                  >
                     <td className="px-6 py-4 flex flex-row gap-2">
                       <p>{BOOKING_STATUS_TAGS[item.status].icon}</p>
                       <p>{BOOKING_STATUS_TAGS[item.status].label}</p>
@@ -92,12 +99,6 @@ const TableRentals = () => {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">{formatMoney(item.totalHours)} hrs.</td>
                     <td className="whitespace-nowrap px-6 py-4">S/ {formatMoney(item.totalPrice)}</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <div className="flex flex-row gap-1 justify-center">
-                        <Fab icon={<BiCheck size={30} className="text-green-500" />} size="large" title="Aprobar" />
-                        <Fab icon={<IoClose size={30} className="text-red-500" />} size="large" title="Rechazar" />
-                      </div>
-                    </td>
                   </tr>
                 ))
               ) : (

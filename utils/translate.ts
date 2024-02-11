@@ -31,9 +31,10 @@ export const VEHICLE_TYPES_TRANSLATE = {
 };
 
 export const BOOKING_STATUS_TRANSLATE = {
-  [BookingStatusEnum.PENDING]: 'Aprobación pendiente',
-  [BookingStatusEnum.APPROVED]: 'Aprobado',
+  [BookingStatusEnum.PENDING]: 'Confirmación pendiente',
+  [BookingStatusEnum.APPROVED]: 'Confirmado',
   [BookingStatusEnum.PAYMENT]: 'Pago pendiente',
   [BookingStatusEnum.REJECTED]: 'Rechazado',
+  [BookingStatusEnum.IN_PROCCESS]: 'En proceso',
   [BookingStatusEnum.FINISHED]: 'Finalizado',
 };
