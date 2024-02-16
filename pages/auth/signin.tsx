@@ -12,6 +12,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import InputPassword from '@/components/molecules/InputPassword';
 import Spinner from '@/components/molecules/Spinner';
 import { EMAIL_PATTERN } from '@/utils/constants';
+import Link from 'next/link';
 
 type InputsType = {
   email: string;
@@ -96,12 +97,12 @@ const Signin = () => {
             <Button fullWidth size="large" type="submit" className="mt-4">
               Iniciar sesión
             </Button>
-            <a href="/rent#register" className="text-gray-700 text-sm underline mt-5">
+            <Link href="/rent#register" className="text-gray-700 text-sm underline mt-5">
               ¿No tienes una cuenta? Regístrate
-            </a>
-            <a href="/auth/forgot-password" className="text-gray-700 text-sm underline">
+            </Link>
+            <Link href="/auth/forgot-password" className="text-gray-700 text-sm underline">
               ¿Olvidaste tu contraseña?
-            </a>
+            </Link>
           </form>
         </Spinner>
       </div>

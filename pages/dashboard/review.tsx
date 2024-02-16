@@ -16,6 +16,7 @@ import { FILE_STATUS_TAGS } from './documents';
 import List from '@/components/molecules/List';
 import Button from '@/components/atoms/Button';
 import { VehicleStatusEnum } from '@/store/vehicle/vehicle.enum';
+import Link from 'next/link';
 
 export type ReviewSelectStateType = {
   mode: null | ModalStateEnum;
@@ -135,9 +136,9 @@ const ReviewDocuments = () => {
               {
                 title: 'Archivo',
                 value: (
-                  <a href={selected.data.url} target="_blank" className="text-blue-500 underline">
+                  <Link href={selected.data.url} target="_blank" className="text-blue-500 underline">
                     Ver documento
-                  </a>
+                  </Link>
                 ),
               },
               {
