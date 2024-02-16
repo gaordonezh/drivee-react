@@ -71,7 +71,7 @@ const Orders = () => {
 
       {!data.docs.length && !loading ? (
         <div className="py-10">
-          <Empty title="No tiene rentas en curso" />
+          <Empty title="No tiene rentas" />
         </div>
       ) : null}
 

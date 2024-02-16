@@ -15,6 +15,7 @@ import Input from '@/components/atoms/Input';
 interface CreatePasswordProps {
   token: string;
   email: string;
+  action?: string;
 }
 
 type InputsType = {
@@ -22,21 +23,21 @@ type InputsType = {
   passwordConfirm: string;
 };
 
-const CreatePassword = ({ token, email }: CreatePasswordProps) => {
+const CreatePassword = ({ token, email, action }: CreatePasswordProps) => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit, watch, formState } = useForm<InputsType>({ mode: 'onChange' });
   const { createPasswordState } = useAppSelector((state) => state.user);
 
   const handleSend: SubmitHandler<InputsType> = async (fields) => {
-    await dispatch(createPassword({ password: fields.password, token }));
+    await dispatch(createPassword({ password: fields.password, token, action }));
   };
 
   return (
-    <Layout layout={LayoutEnum.AUTH}>
+    <Layout layout={LayoutEnum.AUTH} title="Creación de contraseña">
       {createPasswordState === RequestStatusEnum.SUCCESS ? (
         <>
           <h2 className="text-xl font-bold mb-5">Tu contraseña se creó correctamente</h2>
-          <p className="text-sm text-gray-500">En unos segundos seras redirigido a tu cuenta.</p>
+          <p className="text-sm text-gray-500">En unos segundos serás redirigido a al inicio de sesión.</p>
         </>
       ) : (
         <Spinner loading={createPasswordState === RequestStatusEnum.PENDING}>
@@ -89,9 +90,9 @@ const CreatePassword = ({ token, email }: CreatePasswordProps) => {
 };
 
 export function getServerSideProps(context: NextPageContext) {
-  const { token, email } = context.query;
+  const { token, email, action } = context.query;
   if (!token || !email) return { redirect: { permanent: false, destination: '/' } };
-  return { props: { token, email } };
+  return { props: { token, email, action } };
 }
 
 export default CreatePassword;

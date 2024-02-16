@@ -3,6 +3,20 @@ import { UserRolesEnum, UserSexEnum, UserTypeDocumentEnum } from './user.enum';
 export interface CreatePasswordBodyProps {
   token: string;
   password: string;
+  action?: string;
+}
+
+export interface ForgotPasswordBodyProps {
+  email: string;
+}
+
+export interface UpdatePasswordBodyProps {
+  userId: string;
+  body: {
+    current: string;
+    new: string;
+    confirm: string;
+  };
 }
 
 export interface ValidateUserBodyProps {
@@ -28,11 +42,12 @@ export interface UpdateUserBodyProps {
   t_doc: UserTypeDocumentEnum;
   n_doc: string;
   phone: string;
-  sex: UserSexEnum;
+  // sex: UserSexEnum;
   date_birth: Date | null;
   address: AddressProps | null;
   photo: string;
   files?: Array<File>;
+  roles?: Array<UserRolesEnum>;
 }
 
 export interface SimpleUserProps {
@@ -52,7 +67,7 @@ export interface UserProps {
   phone?: string;
   t_doc?: UserTypeDocumentEnum;
   n_doc?: string;
-  sex?: UserSexEnum;
+  // sex?: UserSexEnum;
   address?: AddressProps;
   roles: Array<UserRolesEnum>;
   date_birth?: string;

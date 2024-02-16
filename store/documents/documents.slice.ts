@@ -24,7 +24,7 @@ const initialState = {
 
 export const getDocuments = createAsyncThunk('document/getDocuments', async (params: GetDocumentsFilterProps, thunkAPI) => {
   try {
-    const response = await server.get('documents', { params: { ...params, limit: 100 } });
+    const response = await server.get('documents', { params: { limit: 100, ...params } });
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error);

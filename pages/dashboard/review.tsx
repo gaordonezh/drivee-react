@@ -31,7 +31,7 @@ const ReviewDocuments = () => {
     obtainDocuments();
   }, []);
 
-  const obtainDocuments = () => dispatch(getDocuments({ populate: ['user', 'vehicle'] }));
+  const obtainDocuments = () => dispatch(getDocuments({ populate: ['user', 'vehicle'], sortAscending: false, sortField: 'status' }));
 
   const handleClose = () => {
     setSelected({ data: null, mode: null });

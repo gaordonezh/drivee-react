@@ -148,7 +148,7 @@ const Documents = () => {
                   Cancelar
                 </Button>
                 <Button size="large" type="submit" disabled={disabledForm}>
-                  {`${docId ? 'Guardar' : ''} cambios`}
+                  Guardar {`${docId ? 'cambios' : ''}`}
                 </Button>
               </>
             ) : (

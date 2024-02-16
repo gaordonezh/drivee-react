@@ -82,7 +82,7 @@ const GeneralInformation = ({ steps, title, description, extraTitle, extraDescri
         </Container>
       </div>
 
-      <div className="bg-share-texture bg-no-repeat bg-center bg-cover">
+      <div className="bg-share-texture bg-no-repeat bg-center bg-cover" id="register">
         <Container className="px-5 py-16 md:px-10 md:py-32">
           <div className="flex flex-col md:flex-row-reverse gap-20">
             <div className="flex-1 flex flex-col">

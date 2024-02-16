@@ -15,7 +15,7 @@ import { signOut } from 'next-auth/react';
 import { deleteCookie } from '@/utils/storage';
 
 const Header = () => {
-  const { push, pathname } = useRouter();
+  const { push, pathname, asPath } = useRouter();
   const { user } = useAppContext();
   const [open, setOpen] = React.useState(false);
   const [fixed, setFixed] = React.useState(false);
@@ -88,7 +88,12 @@ const Header = () => {
               </div>
             </div>
           ) : (
-            <Button size="large" variant="outlined" onClick={() => push('/auth/signin')} className="hidden lg:block">
+            <Button
+              size="large"
+              variant="outlined"
+              onClick={() => push({ pathname: '/auth/signin', query: { page: asPath } })}
+              className="hidden lg:block"
+            >
               Iniciar sesión
             </Button>
           )}
@@ -145,7 +150,7 @@ const Header = () => {
                 </button>
               </>
             ) : (
-              <Button fullWidth size="large" variant="white" onClick={() => push('/auth/signin')}>
+              <Button fullWidth size="large" variant="white" onClick={() => push({ pathname: '/auth/signin', query: { page: asPath } })}>
                 Iniciar sesión
               </Button>
             )}

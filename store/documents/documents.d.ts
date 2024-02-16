@@ -1,3 +1,4 @@
+import { PaginationProps } from '@/interfaces/global';
 import { UserProps } from '../user/user';
 import { VehicleProps } from '../vehicle/vehicle';
 import { DocumentStatusEnum, DocumentTypesEnum } from './documents.enum';
@@ -24,7 +25,7 @@ export interface UpdateDocumentProps {
   email: string;
 }
 
-export interface GetDocumentsFilterProps {
+export interface GetDocumentsFilterProps extends PaginationProps {
   user?: string;
   vehicle?: string;
   type?: DocumentTypesEnum;

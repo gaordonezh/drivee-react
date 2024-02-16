@@ -17,8 +17,6 @@ const FooterPublic = () => (
             className="border-2 border-gray-500 rounded-full mt-5"
           />
 
-          <h1 className="text-white text-2xl font-extrabold mt-5">Drivee</h1>
-
           <p className="text-gray-400 text-sm mt-5">
             Está a sólo un <b>Drivee</b> de distancia. Toma el control de tu viaje hoy
           </p>

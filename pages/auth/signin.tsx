@@ -38,7 +38,7 @@ const Signin = () => {
       setLoading(true);
       const res = await signIn('credentials', { ...fields, redirect: false });
       if (res?.error) throw new Error(res.error);
-      await router.push((router.query.page as string) || '/dashboard');
+      window.location.href = (router.query.page as string) || '/dashboard';
     } catch (error) {
       setError('email', { message: 'Usuario incorrecto.' });
       setError('password', { message: 'Contraseña incorrecta.' });
@@ -51,9 +51,9 @@ const Signin = () => {
     <Layout layout={LayoutEnum.AUTH}>
       <div className="mt-5">
         <h2 className="font-bold text-2xl">Iniciar Sesión</h2>
-        <p className="text-sm">Selecciona una cuenta para continuar</p>
+        <p className="text-sm">Registrate o inicia sesión con:</p>
         <div className="flex flex-col gap-2 mt-5">
-          <Chip label="Continuar con Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} disabled={loading} />
+          <Chip label="Google" iconLeft={<FcGoogle size={20} />} onClick={() => signIn('google')} disabled={loading} />
         </div>
         <Divider className="my-5" />
 
@@ -96,9 +96,12 @@ const Signin = () => {
             <Button fullWidth size="large" type="submit" className="mt-4">
               Iniciar sesión
             </Button>
-            <Button fullWidth size="large" type="button" variant="white" className="!border-black" onClick={() => router.push('/')}>
-              Cancelar
-            </Button>
+            <a href="/rent#register" className="text-gray-700 text-sm underline mt-5">
+              ¿No tienes una cuenta? Regístrate
+            </a>
+            <a href="/auth/forgot-password" className="text-gray-700 text-sm underline">
+              ¿Olvidaste tu contraseña?
+            </a>
           </form>
         </Spinner>
       </div>

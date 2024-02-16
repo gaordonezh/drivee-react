@@ -1,11 +1,11 @@
 import Input from '@/components/atoms/Input';
 import { useAppContext } from '@/context';
 import { UpdateUserBodyProps } from '@/store/user/user';
-import { UserSexEnum, UserTypeDocumentEnum } from '@/store/user/user.enum';
+import { UserTypeDocumentEnum } from '@/store/user/user.enum';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { resetUpdateUserState, updateUser } from '@/store/user/user.slice';
+import { updateUser } from '@/store/user/user.slice';
 import { useAppDispatch, useAppSelector } from '@/hooks/useStore';
-import { EMAIL_PATTERN, N_DOC_PATTERN, PHONE_PATTERN } from '@/utils/constants';
+import { EMAIL_PATTERN, N_DOC_PATTERN, PHONE_PATTERN, staticGoogleData } from '@/utils/constants';
 import DatePicker from '../DatePicker';
 import moment from 'moment-timezone';
 import { combineClassnames, objectCleaner } from '@/utils/functions';
@@ -13,12 +13,14 @@ import Button from '@/components/atoms/Button';
 import { RequestStatusEnum } from '@/interfaces/global.enum';
 import Spinner from '@/components/molecules/Spinner';
 import Select from '@/components/atoms/Select';
-import { USER_SEX_TRANSLATE, USER_TDOC_TRANSLATE } from '@/utils/translate';
+import { USER_TDOC_TRANSLATE } from '@/utils/translate';
 import Alert from '@/components/atoms/Alert';
 import CustomDropZone from '../DropZone';
 import { uploadFile } from '@/store/files/files.slice';
 import SearchLocationWithMaps from '@/components/molecules/SearchLocationWithMaps';
 import useUserDataValidations from '@/hooks/useUserDataValidations';
+import { useSession } from 'next-auth/react';
+import server from '@/server';
 
 interface ProfileFormProps {
   handleClose: VoidFunction;
@@ -26,6 +28,7 @@ interface ProfileFormProps {
 
 const ProfileForm = ({ handleClose }: ProfileFormProps) => {
   const { user } = useAppContext();
+  const { update } = useSession();
   const dispatch = useAppDispatch();
   const validateUserFields = useUserDataValidations();
   const { validateUserState, updateUserState } = useAppSelector((state) => state.user);
@@ -50,7 +53,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
       t_doc: user?.t_doc,
       n_doc: user?.n_doc,
       phone: user?.phone,
-      sex: user?.sex,
+      // sex: user?.sex,
       date_birth: user?.date_birth ? new Date(user.date_birth) : null,
       address: user?.address,
       photo: user?.photo,
@@ -67,10 +70,10 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
     const res = await dispatch(updateUser({ body: objectCleaner(data), user_id: user?._id! }));
     // @ts-ignore
     if (res.error) return;
-    handleClose();
-    setTimeout(() => {
-      dispatch(resetUpdateUserState());
-    }, 7000);
+
+    const response = await server.post('auth/google', { email: data.email, f_name: staticGoogleData.provider, ...staticGoogleData });
+    await update({ info: response.data });
+    window.location.reload();
   };
 
   return (
@@ -212,7 +215,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
           })}
         />
 
-        <Controller
+        {/* <Controller
           name="sex"
           rules={{ required: { value: true, message: 'El sexo es requerido' } }}
           control={control}
@@ -226,7 +229,7 @@ const ProfileForm = ({ handleClose }: ProfileFormProps) => {
               errorMessage={errors.sex?.message ?? ''}
             />
           )}
-        />
+        /> */}
 
         <Controller
           name="files"
