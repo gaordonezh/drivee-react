@@ -31,10 +31,9 @@ const RentalsDrawer = ({ handleClose, handleReload, data }: RentalsDrawerProps) 
   const dispatch = useAppDispatch();
   const { requestBookingState } = useAppSelector((state) => state.booking);
   const [action, setAction] = useState<null | BookingStatusEnum>(null);
-  const [comment, setComment] = useState(data.comment || '');
+  const [comment, setComment] = useState(data.comment ?? '');
 
   const handleResponse = (res: boolean) => {
-    return;
     dispatch(updateBookingState(res ? RequestStatusEnum.SUCCESS : RequestStatusEnum.ERROR));
     if (!res) return;
     handleReload();
@@ -67,7 +66,7 @@ const RentalsDrawer = ({ handleClose, handleReload, data }: RentalsDrawerProps) 
 
   const buttons = {
     [BookingStatusEnum.PENDING]: [rejectedBTN, approvedBTN],
-    [BookingStatusEnum.REJECTED]: [rejectedBTN],
+    [BookingStatusEnum.REJECTED]: [],
     [BookingStatusEnum.APPROVED]: [],
     [BookingStatusEnum.PAYMENT]: [paymentBTN],
     [BookingStatusEnum.IN_PROCCESS]: [processBTN],

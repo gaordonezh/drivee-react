@@ -26,7 +26,7 @@ const Layout = ({ children, layout, ...rest }: LayoutProps) => {
   const router = useRouter();
   const { user } = useAppContext();
   const [loading, setLoading] = useState(Boolean(rest.authRoles));
-  const realURL = `https://drivee-client.vercel.app${rest.path ?? router.pathname}`;
+  const realURL = `https://drivee.aldo.codes${rest.path ?? router.pathname}`;
 
   useEffect(() => {
     if (!rest.authRoles || !user) return;
