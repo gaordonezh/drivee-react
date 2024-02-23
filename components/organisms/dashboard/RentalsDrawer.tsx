@@ -53,9 +53,9 @@ const RentalsDrawer = ({ handleClose, handleReload, data }: RentalsDrawerProps) 
       APROBAR
     </Button>
   );
-  const paymentBTN = (
+  const startBTN = (
     <Button size="large" style={{ width: 'calc((50%) - 0.5rem)' }} onClick={() => setAction(BookingStatusEnum.IN_PROCCESS)}>
-      APROBAR PAGO DIRECTO
+      INICIAR
     </Button>
   );
   const processBTN = (
@@ -67,8 +67,7 @@ const RentalsDrawer = ({ handleClose, handleReload, data }: RentalsDrawerProps) 
   const buttons = {
     [BookingStatusEnum.PENDING]: [rejectedBTN, approvedBTN],
     [BookingStatusEnum.REJECTED]: [],
-    [BookingStatusEnum.APPROVED]: [],
-    [BookingStatusEnum.PAYMENT]: [paymentBTN],
+    [BookingStatusEnum.APPROVED]: [startBTN],
     [BookingStatusEnum.IN_PROCCESS]: [processBTN],
     [BookingStatusEnum.FINISHED]: [],
   };

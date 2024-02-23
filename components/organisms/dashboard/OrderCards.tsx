@@ -3,12 +3,11 @@ import List, { ListItemProps } from '@/components/molecules/List';
 import { useAppSelector } from '@/hooks/useStore';
 import { BookingStatusEnum } from '@/store/booking/booking.enum';
 import Link from 'next/link';
-import { MdInfoOutline, MdOutlineCheck, MdOutlineClose, MdOutlinePayment, MdWallet } from 'react-icons/md';
+import { MdInfoOutline, MdOutlineCheck, MdOutlineClose } from 'react-icons/md';
 import { formatMoney } from '@/utils/functions';
 import moment from 'moment-timezone';
 import { BOOKING_STATUS_TRANSLATE } from '@/utils/translate';
 import { BookingProps } from '@/store/booking/booking';
-import Button from '@/components/atoms/Button';
 import Alert from '@/components/atoms/Alert';
 import { IoCarSportSharp } from 'react-icons/io5';
 import Accordion from '@/components/atoms/Accordion';
@@ -23,11 +22,6 @@ export const BOOKING_STATUS_TAGS = {
     label: <span className="text-blue-500 font-semibold text-sm">{BOOKING_STATUS_TRANSLATE[BookingStatusEnum.APPROVED]}</span>,
     icon: <MdOutlineCheck size={20} className="text-blue-500" />,
     text: BOOKING_STATUS_TRANSLATE[BookingStatusEnum.APPROVED],
-  },
-  [BookingStatusEnum.PAYMENT]: {
-    label: <span className="text-slate-500 font-semibold text-sm">{BOOKING_STATUS_TRANSLATE[BookingStatusEnum.PAYMENT]}</span>,
-    icon: <MdWallet size={20} className="text-slate-500" />,
-    text: BOOKING_STATUS_TRANSLATE[BookingStatusEnum.PAYMENT],
   },
   [BookingStatusEnum.REJECTED]: {
     label: <span className="text-red-500 font-semibold text-sm">{BOOKING_STATUS_TRANSLATE[BookingStatusEnum.REJECTED]}</span>,
@@ -116,18 +110,13 @@ const OrderCards = () => {
               />
             )}
 
-            {item.status === BookingStatusEnum.PAYMENT && (
+            {item.status === BookingStatusEnum.APPROVED && (
               <Alert
-                description="Para el PAGO DIRECTO el dueño del vehículo tiene que realizar la habilitación desde su panel de control."
+                title="¡Recuerda!"
+                description="Tienes que coordinar el PAGO DIRECTO con el dueño del vehículo."
                 className="my-5"
                 variant="info"
               />
-            )}
-
-            {item.status === BookingStatusEnum.PAYMENT && (
-              <Button fullWidth>
-                REALIZAR PAGO <MdOutlinePayment />
-              </Button>
             )}
 
             <Accordion title="Detalles" className="my-5">
